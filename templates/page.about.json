@@ -1,1 +1,9 @@
-﻿{"sections":{"page-about":{"type":"page-about","settings":{"eyebrow":"Our Story","hero_heading":"Built for Collectors. Crafted for Players.","hero_sub":"We are a passionate small business making custom gaming accessories, collectibles, and unique gifts — one order at a time.","story_heading":"Who We Are","story_p1":"The Doggie Oreo started as a love for gaming culture and a drive to make something real — physical products that players and collectors actually want on their desks, shelves, and setups.","story_p2":"From custom trophies and awards to unique gaming gear and seasonal collectibles, every product is designed with care and shipped with pride.","story_p3":"Whether you are celebrating a tournament win, gifting something unique, or upgrading your setup, you are in the right place.","cta_primary_label":"Shop Now","cta_primary_link":"shopify:\/\/collections\/all","cta_secondary_label":"How to Order a Trophy","cta_secondary_link":"shopify:\/\/pages\/trophy-order","accent_color":"#0066ff"}}},"order":["page-about"]}
+﻿{
+  "sections": {
+    "page-about": {
+      "type": "page-about",
+      "settings": {}
+    }
+  },
+  "order": ["page-about"]
+}

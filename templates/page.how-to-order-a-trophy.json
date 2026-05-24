@@ -1,1 +1,9 @@
-{"sections":{"page-trophy-order":{"type":"page-trophy-order","settings":{"cta_shop_label":"Shop Trophies","cta_shop_link":"shopify:\/\/collections\/all","cta_contact_label":"Contact Us","cta_contact_link":"shopify:\/\/pages\/contact","accent_color":"#0066ff"}}},"order":["page-trophy-order"]}
+﻿{
+  "sections": {
+    "page-trophy-order": {
+      "type": "page-trophy-order",
+      "settings": {}
+    }
+  },
+  "order": ["page-trophy-order"]
+}
