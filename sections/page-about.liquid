@@ -2,10 +2,10 @@
 <style>
   .kga { color: #f4f4f5; font-family: 'Space Grotesk', sans-serif; }
 
-  /* HERO */
+  /* HERO - Re-Engineered for transparent visibility over the backdrop grid */
   .kga-hero {
     position: relative;
-    background: linear-gradient(135deg, #05070d 0%, #0a1220 60%, #04060b 100%);
+    background: transparent !important;
     overflow: hidden;
     padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 6rem);
     text-align: center;
@@ -13,15 +13,17 @@
   .kga-hero::before {
     content: ''; position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(244,244,245,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(244,244,245,0.04) 1px, transparent 1px);
+      linear-gradient(var(--kg-border-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--kg-border-line) 1px, transparent 1px);
     background-size: 40px 40px; pointer-events: none;
+    display: none; /* Suppressed to avoid duplicate layer lines over master grid */
   }
   .kga-hero::after {
     content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
     width: 70%; height: 80%;
-    background: radial-gradient(ellipse at center, rgba(0,102,255,0.18) 0%, transparent 65%);
+    background: radial-gradient(ellipse at center, rgba(0,102,255,0.25) 0%, transparent 65%);
     pointer-events: none;
+    z-index: 1;
   }
   .kga-hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
   .kga-badge {
@@ -56,11 +58,14 @@
   }
   .kga-story-text h2 span { color: #0066ff; }
   .kga-story-text p { font-size: 1.05rem; line-height: 1.75; color: rgba(244,244,245,0.75); margin: 0 0 1.25rem; }
+  
+  /* Solid Opaque Frame Protection for About Visual Panel */
   .kga-story-image {
     position: relative; border-radius: 12px; overflow: hidden;
     border: 1px solid rgba(0,102,255,0.22);
     box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 80px rgba(0,102,255,0.08);
-    aspect-ratio: 4 / 3; background: rgba(9,9,11,0.5);
+    aspect-ratio: 4 / 3; 
+    background-color: var(--kg-panel-bg) !important; /* Forces perfect solid color matching */
     display: flex; align-items: center; justify-content: center;
     min-height: 280px;
   }
@@ -68,11 +73,13 @@
   .kga-img-placeholder {
     font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
     color: rgba(244,244,245,0.3); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2rem;
+    text-align: center;
   }
 
-  /* VALUES */
+  /* VALUES CONTAINER TRANSPARENCY OVERRIDES */
   .kga-values {
-    background: rgba(0,102,255,0.03);
+    background: transparent !important;
     border-top: 1px solid rgba(244,244,245,0.06);
     border-bottom: 1px solid rgba(244,244,245,0.06);
     padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem);
@@ -80,10 +87,15 @@
   .kga-values-inner { max-width: 1200px; margin: 0 auto; }
   .kga-label { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: #0066ff; margin-bottom: 0.75rem; }
   .kga-heading { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; color: #ffffff; margin: 0 0 3rem; line-height: 1.1; }
+  
   .kga-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  
+  /* Value Cards Locked to 100% Solid Opaque Matrix Layout Frames */
   .kga-card {
-    background: rgba(9,9,11,0.55); backdrop-filter: blur(12px);
-    border: 1px solid rgba(244,244,245,0.08); border-radius: 10px; padding: 2rem 1.75rem;
+    background: var(--kg-panel-bg) !important;
+    border: 1px solid rgba(244,244,245,0.08); 
+    border-radius: 10px; 
+    padding: 2rem 1.75rem;
     transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   }
   .kga-card:hover { border-color: rgba(0,102,255,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
@@ -100,9 +112,9 @@
   .kga-stat-num { font-family: 'JetBrains Mono', monospace; font-size: clamp(2.4rem, 4vw, 3.5rem); font-weight: 800; color: #0066ff; line-height: 1; margin-bottom: 0.5rem; }
   .kga-stat-label { font-size: 0.88rem; color: rgba(244,244,245,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
 
-  /* CTA */
+  /* CTA CONTAINER GRID EXPOSURE RESET */
   .kga-cta {
-    background: linear-gradient(135deg, #05070d 0%, #0a1220 100%);
+    background: transparent !important;
     border-top: 1px solid rgba(244,244,245,0.06);
     padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem);
     text-align: center;
@@ -114,15 +126,15 @@
     display: inline-flex; align-items: center; justify-content: center;
     font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.1em;
-    padding: 1rem 2.25rem; border-radius: 8px; text-decoration: none;
+    padding: 1rem 2rem; border-radius: 8px; text-decoration: none;
     transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
   }
   .kga-btn--primary { background: #0066ff; color: #ffffff; border: 1px solid transparent; }
   .kga-btn--primary:hover { background: #ffffff; color: #09090b; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,102,255,0.3); }
-  .kga-btn--secondary { background: rgba(9,9,11,0.55); backdrop-filter: blur(10px); color: #ffffff; border: 1px solid rgba(244,244,245,0.14); }
+  .kga-btn--secondary { background: var(--kg-panel-bg) !important; color: #ffffff; border: 1px solid rgba(244,244,245,0.14); }
   .kga-btn--secondary:hover { border-color: #ffffff; transform: translateY(-2px); }
 
-  /* RESPONSIVE */
+  /* RESPONSIVE MEDIA QUERIES */
   @media screen and (max-width: 989px) {
     .kga-story { grid-template-columns: 1fr; }
     .kga-grid { grid-template-columns: 1fr 1fr; }
@@ -147,12 +159,16 @@
   <div class="kga-story">
     <div class="kga-story-text">
       <h2>Who <span>We Are</span></h2>
-      <p>The Doggie Oreo started as a love for gaming culture and a drive to make something real -- physical products that players and collectors actually want on their desks, shelves, and setups.</p>
-      <p>From custom trophies and awards to unique gaming gear and seasonal collectibles, every product is designed with care and shipped with pride. We are not a big-box retailer -- we are a small team obsessed with quality and detail.</p>
-      <p>Whether you are celebrating a tournament win, gifting something unique, or upgrading your setup, you have found the right place. Every order matters to us because every order is personal.</p>
+      <p>Kinetic Grid 3D started as a love for gaming culture and a drive to make something real -- physical products that players and collectors actually want on their desks, shelves, and setups.</p>
+      <p>From custom trophies and awards to unique gaming gear and promotional items, every product is designed with care and fabricated with pride. We are not a big-box retailer -- we are an independent workshop obsessed with high quality and detail.</p>
+      <p>Whether you are celebrating an esports tournament win, gifting something personalized, or upgrading your desktop rig, you have found the right place. Every project matters to us because every order is personal.</p>
     </div>
     <div class="kga-story-image">
-      <span class="kga-img-placeholder">Add store image in theme editor</span>
+      {%- if section.settings.story_image != blank -%}
+        {{ section.settings.story_image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+      {%- else -%}
+        <span class="kga-img-placeholder">Add your workshop or product photo inside the theme layout editor</span>
+      {%- endif -%}
     </div>
   </div>
 
@@ -164,32 +180,32 @@
         <div class="kga-card">
           <span class="kga-card-icon">&#127942;</span>
           <p class="kga-card-title">Quality First</p>
-          <p class="kga-card-text">Every item is reviewed before it ships. We do not cut corners -- if it is not good enough for us, it is not good enough for you.</p>
+          <p class="kga-card-text">Every item is systematically reviewed before it ships. We do not cut corners -- if it is not clean enough for our setup, it is not good enough for yours.</p>
         </div>
         <div class="kga-card">
           <span class="kga-card-icon">&#127918;</span>
           <p class="kga-card-title">Made for Players</p>
-          <p class="kga-card-text">We are gamers ourselves. Our products are designed by people who understand gaming culture, setups, and what makes something worth displaying.</p>
+          <p class="kga-card-text">We live and breathe gaming culture. Our products are designed specifically by creators who understand setups and display aesthetics.</p>
         </div>
         <div class="kga-card">
           <span class="kga-card-icon">&#128230;</span>
-          <p class="kga-card-title">Fast and Careful Shipping</p>
-          <p class="kga-card-text">Orders are packed securely and dispatched quickly. We treat every package like it is going to our own home.</p>
+          <p class="kga-card-title">Secure & Fast Shipping</p>
+          <p class="kga-card-text">Orders are packed securely with defensive spacing metrics and dispatched quickly to guarantee a pristine arrival.</p>
         </div>
         <div class="kga-card">
           <span class="kga-card-icon">&#9999;</span>
-          <p class="kga-card-title">Custom Options</p>
-          <p class="kga-card-text">Need something personalised? Trophies, engraving, seasonal designs -- we love working with customers on custom orders.</p>
+          <p class="kga-card-title">Custom Fabrication</p>
+          <p class="kga-card-text">Need something tailored? Personalized trophies, custom keychains, custom sizes -- we love collaborating on specialized projects.</p>
         </div>
         <div class="kga-card">
           <span class="kga-card-icon">&#128172;</span>
-          <p class="kga-card-title">Real Support</p>
-          <p class="kga-card-text">You are talking to a real person. Reach out any time and we will get back to you -- no bots, no automated runaround.</p>
+          <p class="kga-card-title">Direct Support</p>
+          <p class="kga-card-text">You are dealing directly with the owner and maker. Reach out anytime and get real, immediate assistance -- no bots, no automated loops.</p>
         </div>
         <div class="kga-card">
           <span class="kga-card-icon">&#127807;</span>
-          <p class="kga-card-title">Small Business Pride</p>
-          <p class="kga-card-text">Every purchase supports a real small business and keeps independent creators doing what they love. Thank you for being here.</p>
+          <p class="kga-card-title">Independent Pride</p>
+          <p class="kga-card-text">Every single purchase supports an independent creator doing what they love. Thank you for building the grid with us.</p>
         </div>
       </div>
     </div>
@@ -202,7 +218,7 @@
     </div>
     <div>
       <div class="kga-stat-num">100%</div>
-      <div class="kga-stat-label">Custom-Made</div>
+      <div class="kga-stat-label">Inspected Quality</div>
     </div>
     <div>
       <div class="kga-stat-num">4.9&#9733;</div>
@@ -216,7 +232,7 @@
 
   <div class="kga-cta">
     <h2>Ready to Shop?</h2>
-    <p>Browse our full catalog of gaming accessories, collectibles, and custom trophies.</p>
+    <p>Browse our complete vector catalog of gaming accessories, 3D prints, and custom trophies.</p>
     <div class="kga-cta-btns">
       <a href="/collections/all" class="kga-btn kga-btn--primary">Shop Now</a>
       <a href="/pages/how-to-order-a-trophy" class="kga-btn kga-btn--secondary">How to Order a Trophy</a>
@@ -230,7 +246,13 @@
   "name": "About Page",
   "tag": "section",
   "class": "section",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Core Story Showcase Image"
+    }
+  ],
   "presets": [{ "name": "About Page" }]
 }
 {% endschema %}
