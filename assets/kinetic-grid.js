@@ -116,6 +116,18 @@
     initExpiryGuards();
     initParallax();
     initLazyEmbeds();
+    // UI readiness marker to trigger CSS-driven entrance animations
+    try{
+      window.setTimeout(function(){
+        document.documentElement.classList.add('kg-ready');
+        // subtle hero scale on load
+        var hero = document.querySelector('.section-hero-3d');
+        if(hero){
+          hero.classList.add('kg-animate-scale');
+          setTimeout(function(){ hero.classList.remove('kg-animate-scale'); }, 900);
+        }
+      }, 80);
+    }catch(e){/* non-fatal */}
   });
 
   window.KineticGrid = {initCountdown:initCountdown, initParallax:initParallax};

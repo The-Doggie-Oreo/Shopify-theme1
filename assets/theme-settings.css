@@ -137,3 +137,70 @@ img{max-width:100%;height:auto;display:block}
 
 /* Utility: content-lock for hidden campaigns etc. */
 .kg-campaign-expired{padding:var(--kg-space-4);text-align:center;color:var(--kg-muted)}
+
+/* --- Polished UI tokens & micro-interactions --- */
+:root{
+  --kg-ease: cubic-bezier(.2,.9,.2,1);
+  --kg-duration: 420ms;
+  --kg-shadow-soft: 0 6px 18px rgba(11,18,32,0.06);
+  --kg-shadow-deep: 0 20px 40px rgba(11,18,32,0.12);
+  --kg-hero-height: 68vh;
+  --kg-hero-overlay: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.18));
+}
+
+/* Smooth transitions site-wide */
+*{transition:color var(--kg-duration) var(--kg-ease),background var(--kg-duration) var(--kg-ease),border-color var(--kg-duration) var(--kg-ease)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+/* Elevation helpers */
+.kg-elevate{box-shadow:var(--kg-shadow-soft)}
+.kg-elevate--deep{box-shadow:var(--kg-shadow-deep)}
+
+/* Hero — tasteful, high-end look */
+.section-hero-3d{position:relative;overflow:hidden;padding:0}
+.section-hero-3d .kg-container{display:grid;grid-template-columns:1fr 480px;align-items:center;gap:var(--kg-space-5);max-width:1400px}
+.section-hero-3d .hero__media{position:relative;height:var(--kg-hero-height);min-height:420px;border-radius:12px;overflow:hidden}
+.section-hero-3d .hero__media img{width:100%;height:100%;object-fit:cover;filter:contrast(1.02) saturate(1.05)}
+.section-hero-3d .kg-hero__canvas{position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay}
+.section-hero-3d::before{content:"";position:absolute;inset:0;background:var(--kg-hero-overlay);pointer-events:none}
+
+.section-hero-3d .hero__content{padding:var(--kg-space-5) 0;z-index:2}
+.section-hero-3d h1{font-size:clamp(1.6rem, 4vw, 3rem);line-height:1.02;margin:0 0 var(--kg-space-3);letter-spacing:-0.01em}
+.section-hero-3d .subheading{color:var(--kg-muted);font-size:var(--kg-type-m);max-width:44ch}
+.section-hero-3d .hero__actions{margin-top:var(--kg-space-4);display:flex;gap:var(--kg-space-3)}
+
+/* Entrance animations (CSS-driven) */
+.kg-animate-fade-up{opacity:0;transform:translateY(8px);transition:opacity var(--kg-duration) var(--kg-ease),transform var(--kg-duration) var(--kg-ease)}
+.kg-ready .kg-animate-fade-up{opacity:1;transform:translateY(0)}
+/* Stagger helpers for a delicate staged reveal */
+.kg-stagger-1{transition-delay:70ms}
+.kg-stagger-2{transition-delay:160ms}
+.kg-stagger-3{transition-delay:260ms}
+.kg-stagger-4{transition-delay:360ms}
+.kg-animate-scale{transform:scale(.995);opacity:0;transition:transform var(--kg-duration) var(--kg-ease),opacity var(--kg-duration) var(--kg-ease)}
+.kg-ready .kg-animate-scale{transform:scale(1);opacity:1}
+
+/* Subtle mesh/grid background (used on large surfaces) */
+.kg-mesh{background-image:repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0 1px, transparent 1px 64px),repeating-linear-gradient(90deg, rgba(0,0,0,0.02) 0 1px, transparent 1px 64px);background-size:64px 64px;opacity:.6;pointer-events:none}
+
+/* Card polish */
+.kg-card{transition:box-shadow var(--kg-duration) var(--kg-ease),transform var(--kg-duration) var(--kg-ease)}
+.kg-card:hover{box-shadow:var(--kg-shadow-deep);transform:translateY(-6px)}
+
+/* CTA refinement */
+.kg-btn{font-weight:600;letter-spacing:0.01em}
+.kg-btn--solid{padding:12px 18px;border-radius:8px}
+
+/* Focus-visible improvement */
+:focus-visible{outline:2px solid var(--kg-accent);outline-offset:3px}
+
+/* Small utility for glass panel */
+.kg-glass{background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.6);border-radius:10px;padding:var(--kg-space-3)}
+
+/* Composer-friendly responsive tweaks */
+@media (max-width:1024px){.section-hero-3d .kg-container{grid-template-columns:1fr}}
+
+/* Ready state marker for JS-driven embellishments */
+.kg-ready body, body.kg-ready {}
+
+/* End of polished UI styles */

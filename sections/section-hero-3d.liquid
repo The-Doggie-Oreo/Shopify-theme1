@@ -2,25 +2,26 @@
 <section id="section-hero-3d-{{ section.id }}" class="section-hero-3d kg-section">
   <div class="kg-container">
     {% if section.settings.hero_image %}
-      <div class="hero__media">
+      <div class="hero__media" data-kg-parallax data-kg-parallax-speed="0.12">
         <img src="{{ section.settings.hero_image | image_url: '2048x' }}" alt="{{ section.settings.heading }}" loading="lazy" decoding="async">
+        <div class="kg-hero__canvas" aria-hidden="true"></div>
       </div>
     {% endif %}
 
     <div class="hero__content">
       {% if section.settings.badge_text %}
-        <div class="kg-badge">{{ section.settings.badge_text }}</div>
+        <div class="kg-badge kg-animate-fade-up kg-stagger-1">{{ section.settings.badge_text }}</div>
       {% endif %}
 
       {% if section.settings.heading %}
-        <h1>{{ section.settings.heading }}</h1>
+        <h1 class="kg-animate-fade-up kg-stagger-2">{{ section.settings.heading }}</h1>
       {% endif %}
 
       {% if section.settings.subheading %}
-        <div class="subheading">{{ section.settings.subheading }}</div>
+        <div class="subheading kg-animate-fade-up kg-stagger-3">{{ section.settings.subheading }}</div>
       {% endif %}
 
-      <div class="hero__actions">
+      <div class="hero__actions kg-animate-fade-up kg-stagger-4">
         {% if section.settings.cta_label and section.settings.cta_link %}
           <a class="kg-btn kg-btn--solid" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
         {% endif %}
