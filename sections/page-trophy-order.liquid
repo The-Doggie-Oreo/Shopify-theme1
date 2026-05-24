@@ -1,0 +1,671 @@
+{%- comment -%}
+  page-trophy-order.liquid — How to Order a Custom Trophy guide page
+{%- endcomment -%}
+
+{%- style -%}
+  .kg-trophy {
+    color: #f4f4f5;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ── Hero ──────────────────────────────────── */
+  .kg-trophy__hero {
+    position: relative;
+    background: linear-gradient(135deg, #05070d 0%, #0a1220 60%, #04060b 100%);
+    overflow: hidden;
+    padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 6rem);
+    text-align: center;
+  }
+
+  .kg-trophy__hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(244,244,245,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(244,244,245,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .kg-trophy__hero::after {
+    content: '';
+    position: absolute;
+    top: -20%; left: 50%;
+    transform: translateX(-50%);
+    width: 70%; height: 80%;
+    background: radial-gradient(ellipse at center, rgba(0,102,255,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .kg-trophy__hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .kg-trophy__eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    background: rgba(0,102,255,0.1);
+    border: 1px solid {{ section.settings.accent_color }};
+    display: inline-block;
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+  }
+
+  .kg-trophy__hero-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.08;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 1.5rem;
+  }
+
+  .kg-trophy__hero-sub {
+    font-size: clamp(1rem, 1.5vw + 0.4rem, 1.3rem);
+    line-height: 1.65;
+    color: rgba(244,244,245,0.72);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ── Steps section ─────────────────────────── */
+  .kg-trophy__steps-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 6rem);
+  }
+
+  .kg-trophy__section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin-bottom: 0.75rem;
+  }
+
+  .kg-trophy__section-heading {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 3.5rem;
+    line-height: 1.1;
+  }
+
+  .kg-trophy__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  /* Vertical connector line */
+  .kg-trophy__steps::before {
+    content: '';
+    position: absolute;
+    left: 2.2rem;
+    top: 4.5rem;
+    bottom: 4rem;
+    width: 2px;
+    background: linear-gradient(180deg, {{ section.settings.accent_color }}, rgba(0,102,255,0.1));
+    pointer-events: none;
+  }
+
+  .kg-trophy__step {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+    padding: 0 0 3rem 0;
+    position: relative;
+  }
+
+  .kg-trophy__step:last-child {
+    padding-bottom: 0;
+  }
+
+  .kg-trophy__step-num {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: rgba(9,9,11,0.8);
+    border: 2px solid {{ section.settings.accent_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: {{ section.settings.accent_color }};
+    flex-shrink: 0;
+    box-shadow: 0 0 24px rgba(0,102,255,0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .kg-trophy__step-body {
+    background: rgba(9,9,11,0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(244,244,245,0.08);
+    border-radius: 10px;
+    padding: 1.75rem 2rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .kg-trophy__step-body:hover {
+    border-color: rgba(0,102,255,0.35);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+
+  .kg-trophy__step-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+  }
+
+  .kg-trophy__step-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+    line-height: 1.3;
+  }
+
+  .kg-trophy__step-text {
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: rgba(244,244,245,0.72);
+    margin: 0;
+  }
+
+  .kg-trophy__step-text a {
+    color: {{ section.settings.accent_color }};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── Info cards ────────────────────────────── */
+  .kg-trophy__info-section {
+    background: linear-gradient(180deg, rgba(0,102,255,0.04) 0%, transparent 100%);
+    border-top: 1px solid rgba(244,244,245,0.06);
+    padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem);
+  }
+
+  .kg-trophy__info-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .kg-trophy__info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .kg-trophy__info-card {
+    background: rgba(9,9,11,0.55);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(244,244,245,0.08);
+    border-radius: 10px;
+    padding: 1.75rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .kg-trophy__info-card:hover {
+    border-color: rgba(0,102,255,0.35);
+    transform: translateY(-3px);
+  }
+
+  .kg-trophy__info-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.85rem;
+    display: block;
+  }
+
+  .kg-trophy__info-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+  }
+
+  .kg-trophy__info-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(244,244,245,0.68);
+    margin: 0;
+  }
+
+  /* ── FAQ ───────────────────────────────────── */
+  .kg-trophy__faq-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem);
+  }
+
+  .kg-trophy__faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .kg-trophy__faq-item {
+    background: rgba(9,9,11,0.45);
+    border: 1px solid rgba(244,244,245,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .kg-trophy__faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  .kg-trophy__faq-q:hover {
+    color: {{ section.settings.accent_color }};
+  }
+
+  .kg-trophy__faq-icon {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: {{ section.settings.accent_color }};
+    transition: transform 0.2s ease;
+  }
+
+  .kg-trophy__faq-item.open .kg-trophy__faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .kg-trophy__faq-a {
+    display: none;
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: rgba(244,244,245,0.7);
+  }
+
+  .kg-trophy__faq-item.open .kg-trophy__faq-a {
+    display: block;
+  }
+
+  /* ── CTA ───────────────────────────────────── */
+  .kg-trophy__cta {
+    background: linear-gradient(135deg, #05070d 0%, #0a1220 100%);
+    border-top: 1px solid rgba(244,244,245,0.06);
+    padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 5vw, 6rem);
+    text-align: center;
+  }
+
+  .kg-trophy__cta h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 1rem;
+  }
+
+  .kg-trophy__cta p {
+    font-size: 1.05rem;
+    color: rgba(244,244,245,0.7);
+    margin: 0 0 2.5rem;
+  }
+
+  .kg-trophy__cta-btns {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .kg-trophy__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 2.25rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .kg-trophy__btn--primary {
+    background: {{ section.settings.accent_color }};
+    color: #ffffff;
+    border: 1px solid transparent;
+  }
+
+  .kg-trophy__btn--primary:hover {
+    background: #ffffff;
+    color: #09090b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,102,255,0.3);
+  }
+
+  .kg-trophy__btn--secondary {
+    background: rgba(9,9,11,0.55);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    border: 1px solid rgba(244,244,245,0.14);
+  }
+
+  .kg-trophy__btn--secondary:hover {
+    border-color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Responsive ────────────────────────────── */
+  @media screen and (max-width: 989px) {
+    .kg-trophy__info-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .kg-trophy__steps::before {
+      display: none;
+    }
+    .kg-trophy__step {
+      grid-template-columns: 1fr;
+    }
+    .kg-trophy__step-num {
+      width: 3.5rem;
+      height: 3.5rem;
+      font-size: 1.1rem;
+    }
+    .kg-trophy__info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+<div class="kg-trophy">
+
+  <!-- Hero -->
+  <div class="kg-trophy__hero">
+    <div class="kg-trophy__hero-inner">
+      <span class="kg-trophy__eyebrow">Custom Orders</span>
+      <h1 class="kg-trophy__hero-heading">How to Order<br>a Custom Trophy</h1>
+      <p class="kg-trophy__hero-sub">Ordering a personalised trophy or award is simple. Follow the steps below and we will handle everything else.</p>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="kg-trophy__steps-section">
+    <p class="kg-trophy__section-label">Step-by-Step Guide</p>
+    <h2 class="kg-trophy__section-heading">The Order Process</h2>
+
+    <div class="kg-trophy__steps">
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">01</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 1</p>
+          <h3 class="kg-trophy__step-heading">Choose Your Trophy Style</h3>
+          <p class="kg-trophy__step-text">Browse our <a href="/collections/all">trophy collection</a> and pick the style, size, and design that fits your event or recipient. Not sure? Check the product descriptions for guidance on what each trophy is best for.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">02</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 2</p>
+          <h3 class="kg-trophy__step-heading">Add to Cart & Select Options</h3>
+          <p class="kg-trophy__step-text">On the product page, select any available options (size, colour, finish). If there is a personalisation field, enter the text you want engraved or printed — for example: winner's name, event name, date, or a short message.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">03</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 3</p>
+          <h3 class="kg-trophy__step-heading">Leave Personalisation Details</h3>
+          <p class="kg-trophy__step-text">In the order notes at checkout, include any special instructions: custom text, specific fonts, logo requests, or anything else you need. The more detail you give us, the better we can match your vision. You can also <a href="/pages/contact">contact us first</a> if you have questions before ordering.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">04</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 4</p>
+          <h3 class="kg-trophy__step-heading">Complete Your Purchase</h3>
+          <p class="kg-trophy__step-text">Proceed to checkout and complete your payment securely. We accept all major credit and debit cards, PayPal, and more. You will receive an order confirmation email straight away.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">05</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 5</p>
+          <h3 class="kg-trophy__step-heading">We Review & Confirm Your Design</h3>
+          <p class="kg-trophy__step-text">Once we receive your order, we will review your personalisation details. If anything needs clarifying, we will reach out via email within 1 business day before we start production. No surprises.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">06</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 6</p>
+          <h3 class="kg-trophy__step-heading">Production & Quality Check</h3>
+          <p class="kg-trophy__step-text">Your trophy is made to order. Production typically takes 3–5 business days. Every item goes through a quality inspection before it is packed — we do not ship anything we would not be proud to display ourselves.</p>
+        </div>
+      </div>
+
+      <div class="kg-trophy__step">
+        <div class="kg-trophy__step-num">07</div>
+        <div class="kg-trophy__step-body">
+          <p class="kg-trophy__step-title">Step 7</p>
+          <h3 class="kg-trophy__step-heading">Shipped to Your Door</h3>
+          <p class="kg-trophy__step-text">Your order is carefully packaged and dispatched with tracking. You will receive a shipping confirmation email with your tracking number. Standard delivery is 3–7 business days after dispatch, depending on your location.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Info cards -->
+  <div class="kg-trophy__info-section">
+    <div class="kg-trophy__info-inner">
+      <p class="kg-trophy__section-label">Good to Know</p>
+      <h2 class="kg-trophy__section-heading">Important Info</h2>
+      <div class="kg-trophy__info-grid">
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">⏱️</span>
+          <p class="kg-trophy__info-title">Production Time</p>
+          <p class="kg-trophy__info-text">Custom orders take 3–5 business days to produce after design confirmation, plus shipping time. Plan ahead for events.</p>
+        </div>
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">🔄</span>
+          <p class="kg-trophy__info-title">Changes & Cancellations</p>
+          <p class="kg-trophy__info-text">You can modify or cancel your order within 24 hours of placing it, before production begins. Contact us as soon as possible.</p>
+        </div>
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">📏</span>
+          <p class="kg-trophy__info-title">Bulk / Team Orders</p>
+          <p class="kg-trophy__info-text">Need 5 or more trophies for a tournament or team? Contact us for bulk pricing and we will put together a custom quote.</p>
+        </div>
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">🖼️</span>
+          <p class="kg-trophy__info-title">Logo & Image Requests</p>
+          <p class="kg-trophy__info-text">Want your team logo or custom image on the trophy? Send us the file (PNG or SVG preferred) via the order notes or email us directly.</p>
+        </div>
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">✅</span>
+          <p class="kg-trophy__info-title">Quality Guarantee</p>
+          <p class="kg-trophy__info-text">If your trophy arrives damaged or does not match what was agreed, we will replace it at no cost. Just contact us with a photo within 7 days.</p>
+        </div>
+        <div class="kg-trophy__info-card">
+          <span class="kg-trophy__info-icon">💬</span>
+          <p class="kg-trophy__info-title">Have Questions?</p>
+          <p class="kg-trophy__info-text">Not sure about something? Reach out before ordering — we respond within 24 hours and are happy to help you design the perfect trophy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="kg-trophy__faq-section">
+    <p class="kg-trophy__section-label">FAQ</p>
+    <h2 class="kg-trophy__section-heading">Common Questions</h2>
+    <div class="kg-trophy__faq-list">
+
+      <div class="kg-trophy__faq-item">
+        <button class="kg-trophy__faq-q" aria-expanded="false">
+          Can I see a preview before it is made?
+          <span class="kg-trophy__faq-icon">+</span>
+        </button>
+        <div class="kg-trophy__faq-a">For complex custom designs (logos, multiple lines of text), we will send you a digital proof via email before production begins. Simple text engravings are produced directly from your order notes.</div>
+      </div>
+
+      <div class="kg-trophy__faq-item">
+        <button class="kg-trophy__faq-q" aria-expanded="false">
+          What if I make a typo in the personalisation?
+          <span class="kg-trophy__faq-icon">+</span>
+        </button>
+        <div class="kg-trophy__faq-a">If you spot a mistake before we confirm the design, just contact us and we will fix it. We always double-check personalisation details before starting production, so you will have a chance to catch errors.</div>
+      </div>
+
+      <div class="kg-trophy__faq-item">
+        <button class="kg-trophy__faq-q" aria-expanded="false">
+          Do you ship internationally?
+          <span class="kg-trophy__faq-icon">+</span>
+        </button>
+        <div class="kg-trophy__faq-a">Yes, we ship worldwide. International delivery times vary by destination. Customs fees and import duties (if applicable) are the responsibility of the buyer.</div>
+      </div>
+
+      <div class="kg-trophy__faq-item">
+        <button class="kg-trophy__faq-q" aria-expanded="false">
+          How far in advance should I order for an event?
+          <span class="kg-trophy__faq-icon">+</span>
+        </button>
+        <div class="kg-trophy__faq-a">We recommend ordering at least 2 weeks before your event to allow time for production (3–5 days) and shipping (3–7 days). For bulk orders or complex designs, give yourself 3 weeks to be safe.</div>
+      </div>
+
+      <div class="kg-trophy__faq-item">
+        <button class="kg-trophy__faq-q" aria-expanded="false">
+          What materials are the trophies made from?
+          <span class="kg-trophy__faq-icon">+</span>
+        </button>
+        <div class="kg-trophy__faq-a">Materials vary by product — check the individual product pages for specific details. Most of our trophies are made from high-quality resin, acrylic, or PLA/PETG with a durable finish.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="kg-trophy__cta">
+    <h2>Ready to Order?</h2>
+    <p>Browse our trophy range or get in touch if you need help designing something custom.</p>
+    <div class="kg-trophy__cta-btns">
+      <a href="{{ section.settings.cta_shop_link | default: '/collections/all' }}" class="kg-trophy__btn kg-trophy__btn--primary">
+        {{ section.settings.cta_shop_label | default: 'Shop Trophies' }}
+      </a>
+      <a href="{{ section.settings.cta_contact_link | default: '/pages/contact' }}" class="kg-trophy__btn kg-trophy__btn--secondary">
+        {{ section.settings.cta_contact_label | default: 'Contact Us' }}
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.kg-trophy__faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var item = btn.closest('.kg-trophy__faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.kg-trophy__faq-item').forEach(function(i) { i.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+      btn.setAttribute('aria-expanded', !isOpen);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Trophy Order Guide",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "CTA Buttons"
+    },
+    {
+      "type": "text",
+      "id": "cta_shop_label",
+      "label": "Shop Button Label",
+      "default": "Shop Trophies"
+    },
+    {
+      "type": "url",
+      "id": "cta_shop_link",
+      "label": "Shop Button Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_contact_label",
+      "label": "Contact Button Label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "cta_contact_link",
+      "label": "Contact Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#0066ff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trophy Order Guide"
+    }
+  ]
+}
+{% endschema %}
