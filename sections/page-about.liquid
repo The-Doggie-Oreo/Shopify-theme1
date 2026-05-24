@@ -1,5 +1,5 @@
-{%- comment -%}
-  page-about.liquid — About page for The Doggie Oreo / KG3D store
+﻿{%- comment -%}
+  page-about.liquid â€” About page for The Doggie Oreo / KG3D store
 {%- endcomment -%}
 
 {%- style -%}
@@ -8,7 +8,7 @@
     font-family: 'Space Grotesk', sans-serif;
   }
 
-  /* ── Hero banner ───────────────────────────── */
+  /* â”€â”€ Hero banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .kg-about__hero {
     position: relative;
     background: linear-gradient(135deg, #05070d 0%, #0a1220 60%, #04060b 100%);
@@ -50,9 +50,9 @@
     font-size: 0.875rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    color: #0066ff;
     background: rgba(0,102,255,0.1);
-    border: 1px solid {{ section.settings.accent_color }};
+    border: 1px solid #0066ff;
     display: inline-block;
     padding: 0.45rem 1.1rem;
     border-radius: 4px;
@@ -78,7 +78,7 @@
     margin: 0 auto;
   }
 
-  /* ── Story section ─────────────────────────── */
+  /* â”€â”€ Story section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .kg-about__story {
     max-width: 1200px;
     margin: 0 auto;
@@ -100,7 +100,7 @@
   }
 
   .kg-about__story-text h2 span {
-    color: {{ section.settings.accent_color }};
+    color: #0066ff;
   }
 
   .kg-about__story-text p {
@@ -140,7 +140,7 @@
     min-height: 280px;
   }
 
-  /* ── Values cards ──────────────────────────── */
+  /* â”€â”€ Values cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .kg-about__values {
     background: linear-gradient(180deg, rgba(0,102,255,0.04) 0%, transparent 100%);
     border-top: 1px solid rgba(244,244,245,0.06);
@@ -158,7 +158,7 @@
     font-size: 0.8rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    color: #0066ff;
     margin-bottom: 1rem;
   }
 
@@ -204,7 +204,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: {{ section.settings.accent_color }};
+    color: #0066ff;
     margin: 0 0 0.6rem;
     font-weight: 700;
   }
@@ -216,7 +216,7 @@
     margin: 0;
   }
 
-  /* ── Stats row ─────────────────────────────── */
+  /* â”€â”€ Stats row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .kg-about__stats {
     max-width: 1200px;
     margin: 0 auto;
@@ -231,7 +231,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: clamp(2.4rem, 4vw, 3.5rem);
     font-weight: 800;
-    color: {{ section.settings.accent_color }};
+    color: #0066ff;
     line-height: 1;
     margin-bottom: 0.5rem;
   }
@@ -243,7 +243,7 @@
     letter-spacing: 0.1em;
   }
 
-  /* ── CTA ───────────────────────────────────── */
+  /* â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .kg-about__cta {
     background: linear-gradient(135deg, #05070d 0%, #0a1220 100%);
     border-top: 1px solid rgba(244,244,245,0.06);
@@ -289,7 +289,7 @@
   }
 
   .kg-about__btn--primary {
-    background: {{ section.settings.accent_color }};
+    background: #0066ff;
     color: #ffffff;
     border: 1px solid transparent;
   }
@@ -313,7 +313,7 @@
     transform: translateY(-2px);
   }
 
-  /* ── Responsive ────────────────────────────── */
+  /* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   @media screen and (max-width: 989px) {
     .kg-about__story {
       grid-template-columns: 1fr;
@@ -342,26 +342,22 @@
   <!-- Hero -->
   <div class="kg-about__hero">
     <div class="kg-about__hero-inner">
-      <span class="kg-about__eyebrow">{{ section.settings.eyebrow | default: 'Our Story' }}</span>
-      <h1 class="kg-about__hero-heading">{{ section.settings.hero_heading | default: 'Built for Collectors. Crafted for Players.' }}</h1>
-      <p class="kg-about__hero-sub">{{ section.settings.hero_sub | default: 'We are a passionate small business making custom gaming accessories, collectibles, and unique gifts — one order at a time.' }}</p>
+      <span class="kg-about__eyebrow">Our Story</span>
+      <h1 class="kg-about__hero-heading">Built for Collectors. Crafted for Players.</h1>
+      <p class="kg-about__hero-sub">We are a passionate small business making custom gaming accessories, collectibles, and unique gifts — one order at a time.</p>
     </div>
   </div>
 
   <!-- Story -->
   <div class="kg-about__story">
     <div class="kg-about__story-text">
-      <h2>{{ section.settings.story_heading | default: 'Who <span>We Are</span>' }}</h2>
-      <p>{{ section.settings.story_p1 | default: "The Doggie Oreo started as a love for gaming culture and a drive to make something real — physical products that players and collectors actually want on their desks, shelves, and setups." }}</p>
-      <p>{{ section.settings.story_p2 | default: "From custom trophies and awards to unique gaming gear and seasonal collectibles, every product is designed with care and shipped with pride. We are not a big-box retailer — we are a small team obsessed with quality and detail." }}</p>
-      <p>{{ section.settings.story_p3 | default: "Whether you are celebrating a tournament win, gifting something unique, or upgrading your setup, you are in the right place." }}</p>
+      <h2>Who <span>We Are</span></h2>
+      <p>The Doggie Oreo started as a love for gaming culture and a drive to make something real — physical products that players and collectors actually want on their desks, shelves, and setups.</p>
+      <p>From custom trophies and awards to unique gaming gear and seasonal collectibles, every product is designed with care and shipped with pride. We are not a big-box retailer — we are a small team obsessed with quality and detail.</p>
+      <p>Whether you are celebrating a tournament win, gifting something unique, or upgrading your setup, you are in the right place.</p>
     </div>
     <div class="kg-about__story-image">
-      {%- if section.settings.story_image != blank -%}
-        {{ section.settings.story_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '450, 750, 900' }}
-      {%- else -%}
-        <div class="kg-about__story-image-placeholder">[ Add store image ]</div>
-      {%- endif -%}
+        <div class="kg-about__story-image-placeholder">[ Add store image in theme editor ]</div>
     </div>
   </div>
 
@@ -372,32 +368,32 @@
       <h2 class="kg-about__values-heading">Our Values</h2>
       <div class="kg-about__values-grid">
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">🏆</span>
+          <span class="kg-about__value-icon">ðŸ†</span>
           <p class="kg-about__value-title">Quality First</p>
-          <p class="kg-about__value-text">Every item is reviewed before it ships. We do not cut corners — if it is not good enough for us, it is not good enough for you.</p>
+          <p class="kg-about__value-text">Every item is reviewed before it ships. We do not cut corners â€” if it is not good enough for us, it is not good enough for you.</p>
         </div>
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">🎮</span>
+          <span class="kg-about__value-icon">ðŸŽ®</span>
           <p class="kg-about__value-title">Made for Players</p>
           <p class="kg-about__value-text">We are gamers ourselves. Our products are designed by people who understand gaming culture, setups, and what makes something worth displaying.</p>
         </div>
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">📦</span>
+          <span class="kg-about__value-icon">ðŸ“¦</span>
           <p class="kg-about__value-title">Fast & Careful Shipping</p>
           <p class="kg-about__value-text">Orders are packed securely and dispatched quickly. We treat every package like it is going to our own home.</p>
         </div>
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">✏️</span>
+          <span class="kg-about__value-icon">âœï¸</span>
           <p class="kg-about__value-title">Custom Options</p>
-          <p class="kg-about__value-text">Need something personalised? Trophies, engraving, seasonal designs — we love working with customers on custom orders.</p>
+          <p class="kg-about__value-text">Need something personalised? Trophies, engraving, seasonal designs â€” we love working with customers on custom orders.</p>
         </div>
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">💬</span>
+          <span class="kg-about__value-icon">ðŸ’¬</span>
           <p class="kg-about__value-title">Real Support</p>
-          <p class="kg-about__value-text">You are talking to a real person. Reach out any time and we will get back to you — no bots, no automated runaround.</p>
+          <p class="kg-about__value-text">You are talking to a real person. Reach out any time and we will get back to you â€” no bots, no automated runaround.</p>
         </div>
         <div class="kg-about__value-card">
-          <span class="kg-about__value-icon">🌱</span>
+          <span class="kg-about__value-icon">ðŸŒ±</span>
           <p class="kg-about__value-title">Small Biz Pride</p>
           <p class="kg-about__value-text">Every purchase supports a real small business and keeps independent creators doing what they love.</p>
         </div>
@@ -416,7 +412,7 @@
       <div class="kg-about__stat-label">Custom-Made</div>
     </div>
     <div>
-      <div class="kg-about__stat-number">4.9★</div>
+      <div class="kg-about__stat-number">4.9â˜…</div>
       <div class="kg-about__stat-label">Average Rating</div>
     </div>
     <div>
@@ -430,11 +426,11 @@
     <h2>Ready to Shop?</h2>
     <p>Browse our full catalog of gaming accessories, collectibles, and custom trophies.</p>
     <div class="kg-about__cta-btns">
-      <a href="{{ section.settings.cta_primary_link | default: '/collections/all' }}" class="kg-about__btn kg-about__btn--primary">
-        {{ section.settings.cta_primary_label | default: 'Shop Now' }}
+      <a href="/collections/all" class="kg-about__btn kg-about__btn--primary">
+        Shop Now
       </a>
-      <a href="{{ section.settings.cta_secondary_link | default: '/pages/trophy-order' }}" class="kg-about__btn kg-about__btn--secondary">
-        {{ section.settings.cta_secondary_label | default: 'How to Order a Trophy' }}
+      <a href="/pages/how-to-order-a-trophy" class="kg-about__btn kg-about__btn--secondary">
+        How to Order a Trophy
       </a>
     </div>
   </div>
@@ -467,7 +463,7 @@
       "type": "textarea",
       "id": "hero_sub",
       "label": "Hero Subheading",
-      "default": "We are a passionate small business making custom gaming accessories, collectibles, and unique gifts — one order at a time."
+      "default": "We are a passionate small business making custom gaming accessories, collectibles, and unique gifts â€” one order at a time."
     },
     {
       "type": "header",
@@ -483,7 +479,7 @@
       "type": "textarea",
       "id": "story_p1",
       "label": "Story Paragraph 1",
-      "default": "The Doggie Oreo started as a love for gaming culture and a drive to make something real — physical products that players and collectors actually want on their desks, shelves, and setups."
+      "default": "The Doggie Oreo started as a love for gaming culture and a drive to make something real â€” physical products that players and collectors actually want on their desks, shelves, and setups."
     },
     {
       "type": "textarea",
