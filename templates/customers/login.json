@@ -3,9 +3,9 @@
     "main": {
       "type": "main-login",
       "settings": {
-        "show_signup_form": true,
-        "show_guest_checkout": true,
-        "show_social_login": false
+        "enable_shop_login_button": true,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },

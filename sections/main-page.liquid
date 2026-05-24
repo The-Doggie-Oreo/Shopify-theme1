@@ -1,12 +1,58 @@
-<section class="section kg3d-page" id="page-{{ section.id }}">
-  <div class="container kg3d-page__content kg3d-page__content--{{ section.settings.page_width }}">
-    {% if section.settings.show_page_title %}
-      <header class="kg3d-page__header"><p class="kg3d-eyebrow">Information Layer</p><h1>{{ page.title }}</h1></header>
-    {% endif %}
-    <div class="kg3d-richtext">{{ page.content }}</div>
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {{ page.title | escape }}
+  </h1>
+  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {{ page.content }}
   </div>
-</section>
-<style>.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-line:rgba(151,195,255,.18);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-page__content{background:linear-gradient(145deg,var(--kg-panel),rgba(13,22,36,.72));border:1px solid var(--kg-line);border-radius:24px;padding:clamp(1.5rem,4vw,3rem);box-shadow:0 24px 80px rgba(0,0,0,.32)}.kg3d-page__content--narrow{max-width:760px}.kg3d-page__content--medium{max-width:980px}.kg3d-page__content--wide{max-width:1200px}.kg3d-page__header{text-align:center;margin-bottom:2rem}.kg3d-page__header h1{color:#f6fbff;letter-spacing:-.04em}.kg3d-eyebrow{letter-spacing:.16em;text-transform:uppercase;color:#7fe7ff;font-weight:800}.kg3d-richtext{color:rgba(229,241,255,.76)}.kg3d-richtext a{color:#7fe7ff}</style>
+</div>
+
 {% schema %}
-{"name":"Main Page","settings":[{"type":"checkbox","id":"show_page_title","label":"Show page title","default":true},{"type":"select","id":"page_width","label":"Page width","options":[{"value":"narrow","label":"Narrow"},{"value":"medium","label":"Medium"},{"value":"wide","label":"Wide"}],"default":"medium"}]}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
 {% endschema %}

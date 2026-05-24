@@ -1,19 +1,713 @@
 <!doctype html>
-<html lang="{{ request.locale | default: 'en' }}">
+<html class="js" lang="{{ request.locale.iso_code }}">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    {{ content_for_header }}
-    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+    <meta name="theme-color" content="#09090b">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.animations_reveal_on_scroll -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    {% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      {% for scheme in settings.color_schemes -%}
+        {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
+        {% if forloop.index == 1 -%}
+          :root,
+        {%- endif %}
+        .color-{{ scheme.id }} {
+          --color-background: 9,9,11;
+          --gradient-background: #09090b;
+          --color-foreground: 244,244,245;
+          --color-background-contrast: 20,20,27;
+          --color-shadow: 0,0,0;
+          --color-button: 0,102,255;
+          --color-button-text: 255,255,255;
+          --color-secondary-button: 20,20,27;
+          --color-secondary-button-text: 244,244,245;
+          --color-link: 0,102,255;
+          --color-badge-foreground: 244,244,245;
+          --color-badge-background: 20,20,27;
+          --color-badge-border: 39,39,42;
+          --payment-terms-background-color: rgb(9,9,11);
+        }
+      {% endfor %}
+
+      /* ==========================================================================
+         KINETIC GRID 3D - MASTER RESPONSIVE LAYOUT ENGINE
+         ========================================================================== */
+      :root {
+        --font-body-family: 'Space Grotesk', sans-serif !important;
+        --font-heading-family: 'Space Grotesk', sans-serif !important;
+        --font-mono: 'JetBrains Mono', 'Roboto Mono', Menlo, Monaco, Consolas, monospace !important;
+        
+        --kg-neon-blue: #0066ff;
+        --kg-matrix-dark: #09090b;
+        --kg-panel-bg: #14141b;
+        --kg-border-line: rgba(244, 244, 245, 0.12);
+        
+        --buttons-radius: 8px !important;
+        --inputs-radius: 8px !important;
+        --product-card-corner-radius: 8px !important;
+        --collection-card-corner-radius: 8px !important;
+        --blog-card-corner-radius: 8px !important;
+        --badge-corner-radius: 4px !important;
+        --popup-corner-radius: 8px !important;
+        --media-border-width: 1px !important;
+        --media-radius: 8px !important;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-size: 62.5% !important;
+        background-color: var(--kg-matrix-dark) !important;
+      }
+
+      body {
+        background-color: var(--kg-matrix-dark) !important;
+        color: #f4f4f5 !important;
+        font-family: var(--font-body-family) !important;
+        overflow-x: hidden !important;
+        font-size: clamp(1.4rem, 1.2vw + 1rem, 1.6rem) !important;
+        line-height: 1.5 !important;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* High-Contrast Technical Grid Backdrop Canvas */
+      body::before {
+        content: '' !important;
+        position: fixed !important;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: 
+          linear-gradient(var(--kg-border-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--kg-border-line) 1px, transparent 1px) !important;
+        background-size: clamp(25px, 4vw, 45px) clamp(25px, 4vw, 45px) !important;
+        z-index: -10 !important;
+        pointer-events: none !important;
+        opacity: 0.75;
+      }
+
+      h1, h2, h3, h4, h5, h6, .h0, .h1, .h2, .h3, .h4 {
+        font-family: var(--font-heading-family) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.02em !important;
+        text-transform: uppercase !important;
+        color: #ffffff !important;
+      }
+
+      /* ==========================================================================
+         GLOBAL SECTION TRANSPARENCY OVERRIDES
+         ========================================================================== */
+      .shopify-section,
+      .shopify-section .gradient,
+      .shopify-section [class*="color-scheme-"],
+      .shopify-section [class*="color-"],
+      .section-id-wrapper,
+      .gradient,
+      main#MainContent,
+      .content-for-layout {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+      }
+
+      sticky-header,
+      .header-wrapper,
+      .footer {
+        background-color: rgba(9, 9, 11, 0.85) !important;
+        backdrop-filter: blur(12px) !important;
+      }
+
+      /* ==========================================================================
+         HEADER NAVIGATION LINK DECORATION RESET
+         ========================================================================== */
+      .header__inline-menu a,
+      .header__inline-menu li,
+      .header__inline-menu summary,
+      .header__inline-menu .list-menu__item,
+      .header__inline-menu .list-menu__item--active,
+      .header__inline-menu .list-menu__item--link,
+      .header__inline-menu [class*="link"],
+      .header__inline-menu .link,
+      .header__inline-menu .list-menu__item:hover,
+      .header__inline-menu .list-menu__item:focus {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        border-bottom: 0 !important;
+        border-bottom-width: 0px !important;
+        box-shadow: none !important;
+        outline: none !important;
+      }
+
+      .header__inline-menu ul,
+      .header__inline-menu .list-menu--inline {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        list-style: none !important;
+        list-style-type: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 2.5rem !important;
+      }
+
+      .header__inline-menu li {
+        list-style: none !important;
+        list-style-type: none !important;
+        display: inline-flex !important;
+      }
+
+      .header__inline-menu .list-menu__item {
+        font-family: var(--font-mono) !important;
+        font-size: 1.4rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        font-weight: 600 !important;
+        color: rgba(var(--color-foreground), 0.75) !important;
+        padding: 0.4rem 0 !important;
+        position: relative !important;
+        background: transparent !important;
+        transition: color 0.2s ease !important;
+      }
+
+      @media screen and (min-width: 990px) {
+        .header__inline-menu .list-menu__item::after {
+          content: '' !important;
+          position: absolute !important;
+          bottom: -1px !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 2px !important;
+          background-color: var(--kg-neon-blue) !important;
+          transform: scaleX(0) !important;
+          transform-origin: left !important;
+          transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .header__inline-menu .list-menu__item:hover::after {
+          transform: scaleX(1) !important;
+        }
+
+        .header__inline-menu .list-menu__item:hover {
+          color: rgba(var(--color-foreground), 1) !important;
+        }
+      }
+
+      /* ==========================================================================
+         PAGE LAYOUT SPACING & RESPONSIVE COLUMNS
+         ========================================================================== */
+      .section-header,
+      main#MainContent,
+      .page-width,
+      [class*="__inner"] {
+        padding-left: clamp(2rem, 5vw, 6rem) !important;
+        padding-right: clamp(2rem, 5vw, 6rem) !important;
+        max-width: 1440px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .grid, .product-grid, ul[class*="grid"] {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: clamp(2.5rem, 3vw, 4rem) !important; 
+        align-items: stretch !important; 
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+      }
+
+      /* THE ULTIMATE CARD SHIELD CORE CONTROLLER: 
+         This locks an absolute 100% opaque slate block onto the grid item itself, 
+         completely protecting everything inside from ever turning transparent! */
+      .grid__item, li[class*="grid__item"] {
+        flex: 1 1 calc(33.333% - clamp(2.5rem, 3vw, 4rem)) !important;
+        min-width: 320px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: var(--kg-panel-bg) !important;
+        background-color: var(--kg-panel-bg) !important;
+        border: 1px solid var(--kg-border-line) !important;
+        border-radius: 8px !important;
+        padding: 1.5rem !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      @media screen and (max-width: 1199px) and (min-width: 750px) {
+        .grid__item, li[class*="grid__item"] {
+          flex: 1 1 calc(50% - clamp(2.5rem, 3vw, 4rem)) !important;
+        }
+      }
+
+      @media screen and (max-width: 749px) {
+        .grid, .product-grid, ul[class*="grid"] { gap: 2rem !important; }
+        .grid__item, li[class*="grid__item"] { flex: 1 1 100% !important; min-width: 100% !important; padding: 1.5rem !important; }
+      }
+
+      /* ==========================================================================
+         PRODUCT CARD INNER ELEMENTS CLEANDOWN
+         ========================================================================== */
+      .card-wrapper, 
+      .product-card-wrapper,
+      .card {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .card__inner {
+        border: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        display: block !important;
+      }
+
+      .card__media, .card__inner .media, .card .media, .ratio, .card__inner a {
+        display: block !important;
+        position: relative !important;
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important; 
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        background-color: rgba(255, 255, 255, 0.02) !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        overflow: hidden !important;
+        border-radius: 6px !important;
+        margin: 0 0 1.5rem 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+      }
+
+      .card__inner .ratio::before, .ratio::before {
+        display: none !important;
+        content: none !important;
+      }
+
+      /* ==========================================================================
+         IMAGE LAYER STACKING CORRECTIONS
+         ========================================================================== */
+      .card__media img, .media img, .card .media img, .card__inner img {
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important; left: 0 !important;
+        width: 100% !important; height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 6px !important;
+        margin: 0 !important;
+        z-index: 1 !important; 
+      }
+
+      .card__media img + img, 
+      .media img + img,
+      .card__inner img + img,
+      .product-card-wrapper img.motion-reduce + img {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.2s ease-in-out !important;
+        z-index: 3 !important;
+      }
+
+      .product-card-wrapper:hover .card__media img + img,
+      .product-card-wrapper:hover .media img + img,
+      .card-wrapper:hover .card__inner img + img {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      .kg-hover-video {
+        position: absolute !important;
+        top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover !important;
+        z-index: 4 !important; 
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border-radius: 6px !important;
+      }
+
+      .product-card-wrapper:hover .kg-hover-video,
+      .card-wrapper:hover .kg-hover-video {
+        opacity: 1 !important;
+      }
+
+      .card--text .card__inner {
+        display: block !important;
+        aspect-ratio: 1 / 1 !important;
+        background-color: rgba(255,255,255,0.02) !important;
+        width: 100% !important;
+        margin: 0 0 1.5rem 0 !important;
+        border-radius: 6px !important;
+      }
+
+      /* ==========================================================================
+         TYPOGRAPHY CLAMPING & BASELINE CONTROLS
+         ========================================================================== */
+      .card__content, .card-information, .product-card-wrapper .card__content, .card .card__content {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important; 
+        box-sizing: border-box !important;
+        width: 100% !important;
+      }
+
+      .card__information, .card__content .card-information, [class*="card-information"] {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important;
+      }
+
+      .card__heading, .card__heading a, [class*="card__heading"] {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important; 
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: normal !important;
+        font-size: 1.5rem !important;
+        line-height: 1.3 !important;
+        font-family: var(--font-body-family) !important;
+        text-transform: uppercase !important;
+        letter-spacing: -0.01em !important;
+        margin-bottom: 1.2rem !important;
+        min-height: 3.9rem !important; 
+        text-align: left !important;
+      }
+
+      .card__heading, .card__information > *, .card-information > * {
+        text-align: left !important;
+      }
+
+      .price, .card__content .price {
+        font-family: var(--font-mono) !important;
+        font-size: 1.4rem !important;
+        color: var(--kg-neon-blue) !important;
+        font-weight: 600 !important;
+        margin-top: auto !important; 
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        text-align: left !important;
+      }
+
+      /* ==========================================================================
+         CUSTOM INTERFACE FIXES: HIGH-VISIBILITY SORT DROPDOWNS
+         ========================================================================== */
+      
+      /* Fully style sorting selects, dropdown elements, and filtering lists */
+      facet-filters-form select,
+      .facet-filters__sort,
+      .select select,
+      .customer select,
+      .localization-form__select {
+        background-color: var(--kg-panel-bg) !important;
+        color: #ffffff !important;
+        border: 1px solid var(--kg-border-line) !important;
+        border-radius: 6px !important;
+        font-family: var(--font-mono) !important;
+        font-size: 1.2rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        padding: 0.8rem 3.5rem 0.8rem 1.5rem !important;
+      }
+
+      /* Target native browser drop down container option nodes directly */
+      facet-filters-form select option,
+      .select select option,
+      select option,
+      .facet-filters__sort option {
+        background-color: #14141b !important; /* Force deep solid contrast fill */
+        color: #ffffff !important;            /* High visibility crisp white text */
+        font-family: var(--font-mono) !important;
+        padding: 1.2rem !important;
+      }
+
+      /* Fix focus flags on filter widgets */
+      .select select:focus,
+      .facet-filters__sort:focus {
+        border-color: var(--kg-neon-blue) !important;
+        box-shadow: 0 0 0 1px var(--kg-neon-blue) !important;
+      }
+
+      /* ==========================================================================
+         BUTTONS, BADGES, AND SCROLLBARS
+         ========================================================================== */
+      .button, .shopify-challenge__button, button:not(.quantity__button), .btn {
+        font-family: var(--font-mono) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.08em !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: 1px solid transparent !important;
+        background-color: var(--kg-neon-blue) !important;
+        color: #ffffff !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+
+      .button:hover, button:not(.quantity__button):hover {
+        background-color: #ffffff !important;
+        color: var(--kg-matrix-dark) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 0 15px rgba(0, 102, 255, 0.3) !important;
+      }
+
+      .button--secondary {
+        background-color: var(--kg-panel-bg) !important;
+        border: 1px solid rgba(254,254,254,0.1) !important;
+        color: #f4f4f5 !important;
+      }
+
+      .badge {
+        font-family: var(--font-mono) !important;
+        font-size: 0.9rem !important;
+        text-transform: uppercase !important;
+        border-radius: 4px !important;
+        background: rgba(0, 102, 255, 0.1) !important;
+        border: 1px solid var(--kg-neon-blue) !important;
+        color: #ffffff !important;
+      }
+
+      .announcement-bar {
+        border-bottom: 1px solid var(--kg-border-line) !important;
+        font-family: var(--font-mono);
+        font-size: 1.1rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .header-wrapper {
+        border-bottom: 1px solid var(--kg-border-line) !important;
+      }
+
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: var(--kg-matrix-dark); }
+      ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--kg-neon-blue); }
+    {% endstyle %}
+
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+      {{ 'component-price.css' | asset_url | stylesheet_tag }}
+      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- unless settings.type_body_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+      {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
+      <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- endif -%}
+
+    <script>
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+    </script>
   </head>
-  <body data-seasonal-auto>
-    {% section 'header' %}
-    {% section 'seasonal-campaign-director' %}
-    {{ content_for_layout }}
-    {% section 'footer' %}
-    <script src="{{ 'theme.js' | asset_url }}" defer></script>
-  </body>
+
+  <body class="gradient">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ 'accessibility.skip_to_text' | t }}
+    </a>
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+    </ul>
+
+    <script>
+      window.shopUrl = '{{ request.origin }}';
+      window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        cart_url: '{{ routes.cart_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}',
+      };
+
+      window.cartStrings = {
+        error: `{{ 'sections.cart.cart_error' | t }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+      };
+
+      window.variantStrings = {
+        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+        soldOut: `{{ 'products.product.sold_out' | t }}`,
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
+        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+      };
+
+      window.quickOrderListStrings = {
+        itemsAdded: `{{ 'sections.quick_order_list.items_added.other' | t: quantity: '[quantity]' }}`,
+        itemAdded: `{{ 'sections.quick_order_list.items_added.one' | t: quantity: '[quantity]' }}`,
+        itemsRemoved: `{{ 'sections.quick_order_list.items_removed.other' | t: quantity: '[quantity]' }}`,
+        itemRemoved: `{{ 'sections.quick_order_list.items_removed.one' | t: quantity: '[quantity]' }}`,
+        viewCart: `{{- 'sections.quick_order_list.view_cart' | t -}}`,
+        each: `{{- 'sections.quick_order_list.each' | t: money: '[money]' }}`,
+        min_error: `{{- 'sections.quick_order_list.min_error' | t: min: '[min]' }}`,
+        max_error: `{{- 'sections.quick_order_list.max_error' | t: max: '[max]' }}`,
+        step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`,
+      };
+
+      window.accessibilityStrings = {
+        imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
+        shareSuccess: `{{ 'general.share.success_message' | t }}`,
+        pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
+        playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
+        recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
+        recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
+        countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
+      };
+    </script>
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.cart_type == 'drawer' -%}
+      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- comment -%}
+      ==========================================================================
+      KINETIC GRID 3D - AUTOMATED HOVER LIVE-VIDEO HOOK ENGINE
+      ==========================================================================
+    {%- endcomment -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const initHoverVideos = () => {
+          const cards = document.querySelectorAll('.product-card-wrapper, .card-wrapper, .card');
+          cards.forEach(card => {
+            if (card.dataset.hoverVideoInitialized) return;
+            const mediaContainer = card.querySelector('.card__media, .media, [class*="media"]');
+            if (!mediaContainer) return;
+            const productLink = card.querySelector('a[href*="/products/"]');
+            if (!productLink) return;
+            const productHandle = productLink.getAttribute('href').split('/products/')[1]?.split('?')[0];
+            if (!productHandle) return;
+
+            fetch(`${window.shopUrl}/products/${productHandle}.js`)
+              .then(response => response.json())
+              .then(productData => {
+                if (!productData.media || productData.media.length === 0) return;
+                const videoMedia = productData.media.find(m => m.media_type === 'video');
+                if (!videoMedia || !videoMedia.sources) return;
+                const mp4Source = videoMedia.sources.find(s => s.format === 'mp4')?.url;
+                if (!mp4Source) return;
+
+                const videoEl = document.createElement('video');
+                videoEl.className = 'kg-hover-video';
+                videoEl.src = mp4Source;
+                videoEl.muted = true;
+                videoEl.loop = true;
+                videoEl.playsInline = true;
+                videoEl.setAttribute('preload', 'metadata');
+                mediaContainer.appendChild(videoEl);
+
+                card.addEventListener('mouseenter', () => {
+                  videoEl.currentTime = 0; 
+                  const playPromise = videoEl.play();
+                  if (playPromise !== undefined) { playPromise.catch(() => {}); }
+                });
+                card.addEventListener('mouseleave', () => { videoEl.pause(); });
+              })
+              .catch(() => {});
+            card.dataset.hoverVideoInitialized = "true";
+          });
+        };
+        initHoverVideos();
+        const layoutObserver = new MutationObserver(initHoverVideos);
+        layoutObserver.observe(document.body, { childList: true, subtree: true });
+      });
+    </script>
+  </head>
 </html>

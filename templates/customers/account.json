@@ -3,9 +3,8 @@
     "main": {
       "type": "main-account",
       "settings": {
-        "show_order_history": true,
-        "show_addresses": true,
-        "show_wishlist": false
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },

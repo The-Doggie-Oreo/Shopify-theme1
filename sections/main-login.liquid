@@ -1,37 +1,208 @@
-<section class="section kg3d-page kg3d-login" id="login-{{ section.id }}">
-  <div class="container">
-    <header class="kg3d-page__header"><p class="kg3d-eyebrow">Secure Access</p><h1>Customer Login</h1><p>Access order history, saved addresses, and project details.</p></header>
-    <div class="kg3d-auth-grid">
-      <div class="kg3d-auth-card">
-        {% form 'customer_login' %}
-          <h2>Log in</h2>
-          {{ form.errors | default_errors }}
-          <label for="CustomerEmail">Email</label><input id="CustomerEmail" type="email" name="customer[email]" autocomplete="email" required>
-          <label for="CustomerPassword">Password</label><input id="CustomerPassword" type="password" name="customer[password]" autocomplete="current-password" required>
-          <button type="submit" class="btn btn-primary">Log In</button>
-          <a href="#recover" class="kg3d-link">Forgot password?</a>
-        {% endform %}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.settings.enable_shop_login_button == false -%}
+  {%- assign hide_shop_login_button = true -%}
+{%- endif -%}
+
+<div class="customer login section-{{ section.id }}-padding">
+  <h1 id="recover" tabindex="-1">
+    {{ 'customer.recover_password.title' | t }}
+  </h1>
+  <div>
+    <p>
+      {{ 'customer.recover_password.subtext' | t }}
+    </p>
+
+    {%- form 'recover_customer_password' -%}
+      {% assign recover_success = form.posted_successfully? %}
+      <div class="field">
+        <input
+          type="email"
+          value=""
+          name="email"
+          id="RecoverEmail"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          {% if form.errors %}
+            aria-invalid="true"
+            aria-describedby="RecoverEmail-email-error"
+            autofocus
+          {% endif %}
+          placeholder="{{ 'customer.login_page.email' | t }}"
+        >
+        <label for="RecoverEmail">
+          {{ 'customer.login_page.email' | t }}
+        </label>
       </div>
-      {% if section.settings.show_signup_form %}
-      <div class="kg3d-auth-card">
-        {% form 'create_customer' %}
-          <h2>Create account</h2>
-          {{ form.errors | default_errors }}
-          <label for="RegisterFirstName">First name</label><input id="RegisterFirstName" type="text" name="customer[first_name]">
-          <label for="RegisterLastName">Last name</label><input id="RegisterLastName" type="text" name="customer[last_name]">
-          <label for="RegisterEmail">Email</label><input id="RegisterEmail" type="email" name="customer[email]" required>
-          <label for="RegisterPassword">Password</label><input id="RegisterPassword" type="password" name="customer[password]" required>
-          <button type="submit" class="btn btn-outline">Create Account</button>
-        {% endform %}
-      </div>
-      {% endif %}
-    </div>
-    <div id="recover" class="kg3d-auth-card kg3d-recover">
-      {% form 'recover_customer_password' %}<h2>Reset password</h2>{{ form.errors | default_errors }}<label for="RecoverEmail">Email</label><input id="RecoverEmail" type="email" name="email" required><button type="submit" class="btn btn-primary">Send reset link</button>{% endform %}
-    </div>
+      {%- if form.errors -%}
+        <small id="RecoverEmail-email-error" class="form__message">
+          <span class="svg-wrapper">
+            {{- 'icon-error.svg' | inline_asset_content -}}
+          </span>
+          {{ form.errors.messages.form }}
+        </small>
+      {%- endif -%}
+
+      <button>
+        {{ 'customer.login_page.submit' | t }}
+      </button>
+
+      <a href="#login">
+        {{ 'customer.login_page.cancel' | t }}
+      </a>
+    {%- endform -%}
   </div>
-</section>
-<style>.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-soft:rgba(13,22,36,.72);--kg-line:rgba(151,195,255,.18);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-page__header{text-align:center;max-width:760px;margin:0 auto 3rem}.kg3d-page__header h1,.kg3d-auth-card h2{color:#f6fbff}.kg3d-page__header p{color:rgba(229,241,255,.68)}.kg3d-eyebrow{letter-spacing:.16em;text-transform:uppercase;color:#7fe7ff;font-weight:800}.kg3d-auth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}.kg3d-auth-card{background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;padding:1.5rem;box-shadow:0 24px 80px rgba(0,0,0,.32)}.kg3d-auth-card form{display:grid;gap:.9rem}.kg3d-auth-card input{background:rgba(255,255,255,.05);border:1px solid var(--kg-line);border-radius:12px;color:#fff;padding:.8rem}.kg3d-link{color:#7fe7ff}.kg3d-recover{margin-top:1.5rem}@media(max-width:800px){.kg3d-auth-grid{grid-template-columns:1fr}}</style>
+
+  <h1 id="login" tabindex="-1">
+    {{ 'customer.login_page.title' | t }}
+  </h1>
+  <div>
+    {%- if recover_success == true -%}
+      <h3 class="form__message" tabindex="-1" autofocus>
+        <span class="svg-wrapper">
+          {{- 'icon-success.svg' | inline_asset_content -}}
+        </span>
+        {{ 'customer.recover_password.success' | t }}
+      </h3>
+    {%- endif -%}
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <h2 class="form__message" tabindex="-1" autofocus>
+          <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
+          <span class="svg-wrapper">
+            {{- 'icon-error.svg' | inline_asset_content -}}
+          </span>
+          {{ 'templates.contact.form.error_heading' | t }}
+        </h2>
+        {{ form.errors | default_errors }}
+      {%- endif -%}
+
+      {%- if shop.features.login_with_shop_classic_customer_accounts? -%}
+        <section name="sign-in-with-shop-provider">
+          {{ shop | login_button: hide_button: hide_shop_login_button }}
+
+          {%- unless hide_shop_login_button -%}
+            <p>
+              {{ 'customer.login_page.alternate_provider_separator' | t }}
+            </p>
+          {%- endunless -%}
+        </section>
+      {%- endif -%}
+
+      <div class="field">
+        <input
+          type="email"
+          name="customer[email]"
+          id="CustomerEmail"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          {% if form.errors contains 'form' %}
+            aria-invalid="true"
+          {% endif %}
+          placeholder="{{ 'customer.login_page.email' | t }}"
+        >
+        <label for="CustomerEmail">
+          {{ 'customer.login_page.email' | t }}
+        </label>
+      </div>
+
+      {%- if form.password_needed -%}
+        <div class="field">
+          <input
+            type="password"
+            value=""
+            name="customer[password]"
+            id="CustomerPassword"
+            autocomplete="current-password"
+            {% if form.errors contains 'form' %}
+              aria-invalid="true"
+            {% endif %}
+            placeholder="{{ 'customer.login_page.password' | t }}"
+          >
+          <label for="CustomerPassword">
+            {{ 'customer.login_page.password' | t }}
+          </label>
+        </div>
+
+        <a href="#recover">
+          {{ 'customer.login_page.forgot_password' | t }}
+        </a>
+      {%- endif -%}
+
+      <button>
+        {{ 'customer.login_page.sign_in' | t }}
+      </button>
+
+      <a href="{{ routes.account_register_url }}">
+        {{ 'customer.login_page.create_account' | t }}
+      </a>
+    {%- endform -%}
+  </div>
+
+  {%- if shop.checkout.guest_login -%}
+    <div>
+      <hr>
+      <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
+
+      {%- form 'guest_login' -%}
+        <button>
+          {{ 'customer.login_page.guest_continue' | t }}
+        </button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</div>
+
 {% schema %}
-{"name":"Main Login","settings":[{"type":"checkbox","id":"show_signup_form","label":"Show signup form","default":true},{"type":"checkbox","id":"show_guest_checkout","label":"Show guest checkout","default":true},{"type":"checkbox","id":"show_social_login","label":"Show social login","default":false}]}
+{
+  "name": "t:sections.main-login.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_shop_login_button",
+      "label": "t:sections.main-login.shop_login_button.enable",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
 {% endschema %}

@@ -1,0 +1,379 @@
+{%- comment -%}
+  Kinetic Grid 3D - High-Contrast Precision Hero Section
+  Location: sections/kinetic-hero.liquid
+{%- endcomment -%}
+
+{%- style -%}
+  #kg-hero-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    position: relative;
+    width: 100%;
+    min-height: {{ section.settings.desktop_height }}px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 6rem 0;
+    box-sizing: border-box;
+  }
+
+  /* Structural 3D Printing Bed Mesh Overlay */
+  #kg-hero-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+      linear-gradient(rgba(244, 244, 245, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(244, 244, 245, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .kg-hero-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 clamp(2rem, 5vw, 6rem);
+    width: 100%;
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .kg-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .kg-hero-badge {
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: {{ section.settings.accent_color }};
+    background: rgba(0, 102, 255, 0.1);
+    border: 1px solid {{ section.settings.accent_color }};
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+    display: inline-block;
+  }
+
+  .kg-hero-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3.2rem, 5vw + 1rem, 5.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 2rem 0;
+  }
+
+  .kg-hero-subheading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 1.5vw + 1rem, 2rem);
+    line-height: 1.5;
+    color: rgba(244, 244, 245, 0.75);
+    margin: 0 0 3.5rem 0;
+    max-width: 620px;
+  }
+
+  /* Interactive File Interface Search Bar */
+  .kg-hero-search-wrapper {
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 3rem;
+  }
+
+  .kg-hero-search-form {
+    display: flex;
+    position: relative;
+    background: #14141b;
+    border: 1px solid rgba(244, 244, 245, 0.08);
+    border-radius: 8px;
+    padding: 0.6rem;
+  }
+
+  .kg-hero-search-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    padding: 1rem 1.5rem;
+    width: 100%;
+  }
+
+  .kg-hero-search-input::placeholder {
+    color: rgba(244, 244, 245, 0.4);
+  }
+
+  .kg-hero-search-btn {
+    background: {{ section.settings.accent_color }};
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .kg-hero-search-btn:hover {
+    background: #ffffff;
+    color: #09090b;
+  }
+
+  /* Button Action Cluster */
+  .kg-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .kg-hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 1.6rem 3rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+  }
+
+  .kg-hero-btn--primary {
+    background: {{ section.settings.accent_color }};
+    color: #ffffff;
+    border: 1px solid transparent;
+  }
+
+  .kg-hero-btn--primary:hover {
+    background: #ffffff;
+    color: #09090b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+  }
+
+  .kg-hero-btn--secondary {
+    background: #14141b;
+    color: #ffffff;
+    border: 1px solid rgba(244, 244, 245, 0.08);
+  }
+
+  .kg-hero-btn--secondary:hover {
+    border-color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* Decorative Visual Panel Frame */
+  .kg-hero-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(244, 244, 245, 0.06);
+    background: #14141b;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+
+  .kg-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Responsive Mobile Breakpoint Conversions */
+  @media screen and (max-width: 989px) {
+    #kg-hero-{{ section.id }} {
+      min-height: auto;
+      padding: 4rem 0;
+    }
+    .kg-hero-container {
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+    .kg-hero-visual {
+      max-width: 450px;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .kg-hero-actions {
+      width: 100%;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .kg-hero-btn {
+      width: 100%;
+    }
+    .kg-hero-search-wrapper {
+      max-width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<div id="kg-hero-{{ section.id }}">
+  <div class="kg-hero-container">
+    
+    <div class="kg-hero-content">
+      {%- if section.settings.badge != blank -%}
+        <span class="kg-hero-badge">{{ section.settings.badge | escape }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.heading != blank -%}
+        <h1 class="kg-hero-heading">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+      
+      {%- if section.settings.subheading != blank -%}
+        <p class="kg-hero-subheading">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.show_search -%}
+        <div class="kg-hero-search-wrapper">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="kg-hero-search-form">
+            <input 
+              type="search" 
+              name="q" 
+              class="kg-hero-search-input" 
+              placeholder="Search catalog, materials, gaming or knitting gear..."
+              aria-label="Search items"
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="submit" class="kg-hero-search-btn" aria-label="Submit Search">Search</button>
+          </form>
+        </div>
+      {%- endif -%}
+
+      <div class="kg-hero-actions">
+        {%- if section.settings.btn_1_label != blank -%}
+          <a href="{{ section.settings.btn_1_link }}" class="kg-hero-btn kg-hero-btn--primary">{{ section.settings.btn_1_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.btn_2_label != blank -%}
+          <a href="{{ section.settings.btn_2_link }}" class="kg-hero-btn kg-hero-btn--secondary">{{ section.settings.btn_2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="kg-hero-visual-frame">
+      <div class="kg-hero-visual">
+        {%- if section.settings.hero_image != blank -%}
+          {{ section.settings.hero_image | image_url: width: 1200 | image_tag: class: 'kg-hero-img', loading: 'eager', widths: '450, 750, 1000, 1200' }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kinetic Technical Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Master Hero Focal Graphic"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Status Badge Tracking String",
+      "default": "NOW ACCEPTING PRODUCTION RUNS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Headline Core Matrix Copy",
+      "default": "PRECISION 3D PRINTING."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Descriptor Text Block",
+      "default": "From concept vectors to physical prototypes. Industrial manufacturing pipelines optimized for trophies, gaming setups, crafting components, and seasonal drops."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Inject Global Interface Search Field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_1_label",
+      "label": "Primary Button Text Label",
+      "default": "Upload STL File"
+    },
+    {
+      "type": "url",
+      "id": "btn_1_link",
+      "label": "Primary Button Hyperlink Destination"
+    },
+    {
+      "type": "text",
+      "id": "btn_2_label",
+      "label": "Secondary Button Text Label",
+      "default": "Browse Catalog"
+    },
+    {
+      "type": "url",
+      "id": "btn_2_link",
+      "label": "Secondary Button Hyperlink Destination"
+    },
+    {
+      "type": "header",
+      "content": "Section Layout Variables"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Canvas Background Solid Tint",
+      "default": "#09090b"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "System Accent Tracking High-Voltage Tint",
+      "default": "#0066ff"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 500,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop Minimum Frame Height Constraints",
+      "default": 650
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kinetic Technical Hero"
+    }
+  ]
+}
+{% endschema %}
