@@ -1,0 +1,37 @@
+{% comment %} kg3d-editorial-callout.liquid
+   Editorial/text callout renderer. Expects `block` local.
+{% endcomment %}
+
+{% assign bg_style = '' %}
+{% if block.settings.background_type == 'color' and block.settings.background_color != blank %}
+  {% assign bg_style = 'background: ' | append: block.settings.background_color | append: ';' %}
+{% elsif block.settings.background_type == 'gradient' and block.settings.gradient_start != blank and block.settings.gradient_end != blank %}
+  {% assign bg_style = 'background: linear-gradient(' | append: block.settings.gradient_angle | append: 'deg, ' | append: block.settings.gradient_start | append: ', ' | append: block.settings.gradient_end | append: ');' %}
+{% elsif block.settings.background_type == 'image' and block.settings.background_image != blank %}
+  {% assign bg_img = block.settings.background_image | image_url: 1200 %}
+  {% assign bg_style = 'background-image: url(' | append: bg_img | append: '); background-size:cover; background-position:center;' %}
+{% endif %}
+
+<div class="kg-editorial" style="{{ bg_style }} padding: var(--kg-space-{{ block.settings.padding | default: '3' }}); color: var(--kg-block-text-color);">
+  {% if block.settings.icon %}
+    <div class="kg-editorial__icon">
+      <img src="{{ block.settings.icon | image_url: 80 }}" alt="" loading="lazy" decoding="async" />
+    </div>
+  {% endif %}
+
+  <div class="kg-editorial__content">
+    {% if block.settings.rich_text != blank %}
+      {{ block.settings.rich_text }}
+    {% endif %}
+
+    <div class="kg-editorial__actions">
+      {% if block.settings.primary_action_label != blank and block.settings.primary_action_url != blank %}
+        <a href="{{ block.settings.primary_action_url }}" class="kg-btn {% if block.settings.primary_action_style == 'outline' %}kg-btn--outline{% elsif block.settings.primary_action_style == 'text' %}kg-btn--text{% else %}kg-btn--solid{% endif %}">{{ block.settings.primary_action_label }}</a>
+      {% endif %}
+
+      {% if block.settings.secondary_action_label != blank and block.settings.secondary_action_url != blank %}
+        <a href="{{ block.settings.secondary_action_url }}" class="kg-btn kg-btn--text">{{ block.settings.secondary_action_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>

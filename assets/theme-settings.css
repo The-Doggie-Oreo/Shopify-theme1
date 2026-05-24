@@ -1,0 +1,139 @@
+/* Kinetic Grid 3D — Design tokens & utilities (tokens-only, themeable)
+   Place this file at assets/theme-settings.css and reference it in theme.liquid
+*/
+:root{
+  /* Spacing scale */
+  --kg-space-1: 4px;
+  --kg-space-2: 8px;
+  --kg-space-3: 16px;
+  --kg-space-4: 24px;
+  --kg-space-5: 32px;
+
+  /* Radii */
+  --kg-radius-tight: 4px;
+  --kg-radius-soft: 8px;
+
+  /* Grid / layout */
+  --kg-grid-columns-desktop: 4;
+  --kg-grid-columns-tablet: 2;
+  --kg-grid-columns-mobile: 1;
+  --kg-grid-gap: var(--kg-space-3);
+  --kg-grid-line-color: rgba(15,23,42,0.04);
+  --kg-grid-max-width: 1200px;
+
+  /* Color system (semantic) */
+  --kg-bg: #ffffff;
+  --kg-surface: #f8fafb;
+  --kg-text: #0b1220;
+  --kg-muted: #6b7280;
+  --kg-accent: #0070f3;
+  --kg-border: rgba(15,23,42,0.06);
+
+  /* Component tokens */
+  --kg-card-padding: var(--kg-space-3);
+  --kg-card-radius: var(--kg-radius-soft);
+  --kg-badge-bg: var(--kg-accent);
+  --kg-badge-color: #ffffff;
+
+  /* Typography (rem) */
+  --kg-type-xxs: .6875rem; /* 11px */
+  --kg-type-xs: .75rem;    /* 12px */
+  --kg-type-s: .875rem;    /* 14px */
+  --kg-type-m: 1rem;       /* 16px */
+  --kg-type-l: 1.125rem;   /* 18px */
+  --kg-type-xl: 1.5rem;    /* 24px */
+
+  /* Focus / accessibility */
+  --kg-focus-ring-color: rgba(0,112,243,0.18);
+  --kg-focus-ring: 3px;
+
+  /* Overlay */
+  --kg-overlay-color: rgba(0,0,0,0.6);
+  --kg-overlay-opacity: 0.4;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"]{
+  --kg-bg: #071026;
+  --kg-surface: #0b1020;
+  --kg-text: #f8fafc;
+  --kg-muted: #9aa7bf;
+  --kg-accent: #60a5fa;
+  --kg-border: rgba(255,255,255,0.06);
+  --kg-grid-line-color: rgba(255,255,255,0.03);
+  --kg-badge-color: #071026;
+}
+
+/* Base utilities */
+html,body{height:100%;}
+body{background:var(--kg-bg);color:var(--kg-text);font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;line-height:1.35;margin:0}
+
+.kg-container{max-width:var(--kg-grid-max-width);margin-left:auto;margin-right:auto;padding-left:var(--kg-space-3);padding-right:var(--kg-space-3)}
+.kg--full-width .kg-container{max-width:none;padding-left:var(--kg-space-3);padding-right:var(--kg-space-3)}
+
+/* Responsive grid wrapper — Sections set the CSS variables to control columns/gap */
+.kg-grid{display:grid;grid-template-columns:repeat(var(--kg-grid-columns-desktop),minmax(0,1fr));gap:var(--kg-grid-gap);align-items:start}
+@media (max-width:1024px){.kg-grid{grid-template-columns:repeat(var(--kg-grid-columns-tablet),minmax(0,1fr));}}
+@media (max-width:640px){.kg-grid{grid-template-columns:repeat(var(--kg-grid-columns-mobile),minmax(0,1fr));}}
+
+/* Optional subtle grid lines */
+.kg-grid--lines{background-image:linear-gradient(var(--kg-grid-line-color) 1px, transparent 1px);background-size:100% calc(var(--kg-grid-gap) + 1px);}
+
+/* Card / Item */
+.kg-card{background:var(--kg-block-bg,var(--kg-surface));border:1px solid var(--kg-border);border-radius:var(--kg-card-radius);padding:var(--kg-card-padding);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.kg-card__media{position:relative;overflow:hidden;border-radius:calc(var(--kg-card-radius) - 2px)}
+.kg-card__media img{width:100%;height:100%;display:block;object-fit:cover}
+.kg-card__body{padding-top:var(--kg-space-3);flex:1;display:flex;flex-direction:column}
+.kg-card__title{font-size:var(--kg-type-m);margin:0 0 var(--kg-space-2) 0}
+.kg-card__meta{color:var(--kg-muted);font-size:var(--kg-type-s);margin-top:auto}
+
+/* Overlay and badge */
+.kg-card__overlay{position:absolute;inset:0;background:var(--kg-overlay-color);opacity:var(--kg-overlay-opacity);transition:opacity .25s}
+.kg-badge{position:absolute;top:var(--kg-space-2);left:var(--kg-space-2);background:var(--kg-badge-bg);color:var(--kg-badge-color);padding:4px 8px;border-radius:var(--kg-radius-tight);font-size:var(--kg-type-xxs);font-weight:700;letter-spacing:.01em}
+
+/* Hover effects */
+.kg-card--hover-zoom-slight .kg-card__media img{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.kg-card--hover-zoom-slight:hover .kg-card__media img{transform:scale(1.06)}
+.kg-card--hover-zoom-strong .kg-card__media img{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.kg-card--hover-zoom-strong:hover .kg-card__media img{transform:scale(1.12)}
+.kg-card--hover-tilt{transform-origin:center;transition:transform .3s}
+.kg-card--hover-tilt:hover{transform:rotateX(1deg) rotateY(-1deg) translateY(-3px)}
+
+/* Button / Link focus */
+.kg-focus:focus{outline:none;box-shadow:0 0 0 var(--kg-focus-ring) var(--kg-focus-ring-color);border-radius:calc(var(--kg-card-radius) + 2px)}
+
+/* Countdown */
+.kg-countdown{display:flex;gap:var(--kg-space-2);align-items:center;justify-content:center}
+.kg-countdown__unit{display:flex;flex-direction:column;align-items:center;padding:var(--kg-space-2);background:var(--kg-surface);border-radius:var(--kg-radius-tight);min-width:56px}
+.kg-countdown__value{font-weight:700;font-size:var(--kg-type-l)}
+.kg-countdown__label{font-size:var(--kg-type-xs);color:var(--kg-muted)}
+
+/* Parallax helper */
+.kg-parallax{will-change:transform;transform:translateZ(0)}
+
+/* Accessibility */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Utility text alignment */
+.kg-text--center{text-align:center}
+.kg-text--left{text-align:left}
+.kg-text--right{text-align:right}
+
+/* Small helpers for badges/CTAs */
+.kg-btn{display:inline-block;padding:8px 14px;border-radius:6px;text-decoration:none}
+.kg-btn--solid{background:var(--kg-accent);color:#fff}
+.kg-btn--outline{background:transparent;border:1px solid var(--kg-border);color:var(--kg-text)}
+.kg-btn--text{background:transparent;color:var(--kg-accent)}
+
+/* Read inline block CSS variables with sensible fallbacks */
+.kg-card, .kg-grid__item{background:var(--kg-block-bg, var(--kg-surface));color:var(--kg-block-text-color, var(--kg-text));padding:var(--kg-block-padding, var(--kg-card-padding))}
+
+/* Ensure images are responsive and performant by default */
+img{max-width:100%;height:auto;display:block}
+
+/* Minimal reset for sections */
+.kg-section{padding:var(--kg-space-4) 0}
+.kg-section--compact{padding:var(--kg-space-3) 0}
+
+/* Utility: content-lock for hidden campaigns etc. */
+.kg-campaign-expired{padding:var(--kg-space-4);text-align:center;color:var(--kg-muted)}

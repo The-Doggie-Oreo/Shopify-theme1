@@ -1,0 +1,69 @@
+{% comment %} kg3d-product-card.liquid
+   Expects: local `block` and optional `section` variables passed from the section template.
+   Renders a product (or collection-first-product) card using explicit srcset and sizes.
+{% endcomment %}
+
+{% assign source = block.settings.content_source | default: 'product' %}
+{% assign product_obj = nil %}
+{% if source == 'product' and block.settings.product != blank %}
+  {% assign product_obj = all_products[block.settings.product] %}
+{% elsif source == 'collection' and block.settings.collection != blank %}
+  {% assign coll = collections[block.settings.collection] %}
+  {% if coll and coll.products_count > 0 %}
+    {% assign product_obj = coll.products.first %}
+  {% endif %}
+{% endif %}
+
+{% if product_obj != nil %}
+  {% assign img = product_obj.featured_image %}
+  {% assign widths = '360,540,720,900,1080,1440' | split: ',' %}
+  {% assign srcset = '' %}
+  {% for w in widths %}
+    {% assign url = img | image_url: w %}
+    {% assign srcset = srcset | append: url | append: ' ' | append: w | append: 'w' %}
+    {% unless forloop.last %}{% assign srcset = srcset | append: ', ' %}{% endunless %}
+  {% endfor %}
+
+  {% assign sizes = "(max-width:640px) 100vw, (max-width:1024px) calc(100vw / " | append: section.settings.columns_tablet | append: "), calc(100vw / " | append: section.settings.columns_desktop | append: ")" %}
+
+  <article class="kg-product-card" aria-labelledby="kg-product-title-{{ block.id }}">
+    <a href="{{ product_obj.url }}" class="kg-card__link kg-focus" aria-describedby="kg-product-meta-{{ block.id }}">
+      <div class="kg-card__media" style="--kg-aspect-ratio: {{ block.settings.image_aspect_ratio | default: '1/1' }};">
+        {% if img %}
+          <img src="{{ img | image_url: 720 }}" srcset="{{ srcset }}" sizes="{{ sizes }}" alt="{{ product_obj.title }}" loading="lazy" decoding="async">
+        {% endif %}
+
+        {% if block.settings.badge_text != blank and block.settings.badge_visibility != 'hide' %}
+          <span class="kg-badge" style="background: {{ block.settings.badge_bg }}; color: {{ block.settings.badge_color }};">{{ block.settings.badge_text }}</span>
+        {% endif %}
+
+        {% if block.settings.overlay_opacity and block.settings.overlay_opacity > 0 %}
+          <div class="kg-card__overlay" style="opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+        {% endif %}
+      </div>
+
+      <div class="kg-card__body">
+        <h3 id="kg-product-title-{{ block.id }}" class="kg-card__title" style="text-align: {{ block.settings.text_align | default: 'left' }};">{{ product_obj.title }}</h3>
+
+        <div id="kg-product-meta-{{ block.id }}" class="kg-card__meta">
+          {% if block.settings.show_vendor and product_obj.vendor != blank %}
+            <div class="kg-product-vendor">{{ product_obj.vendor }}</div>
+          {% endif %}
+
+          {% if block.settings.show_price and product_obj.price != blank %}
+            <div class="kg-product-price">{{ product_obj.price | money }}</div>
+          {% endif %}
+        </div>
+
+        {% if block.settings.quick_add and product_obj.variants != blank and product_obj.variants.size > 0 %}
+          <form method="post" action="/cart/add" class="kg-quick-add">
+            <input type="hidden" name="id" value="{{ product_obj.variants.first.id }}">
+            <button type="submit" class="kg-btn kg-btn--solid">{{ 'products.product.add_to_cart' | t }}</button>
+          </form>
+        {% endif %}
+      </div>
+    </a>
+  </article>
+{% else %}
+  <div class="kg-card">{{ 'sections.ultimate_grid_orchestrator.missing_source' | t }}</div>
+{% endif %}

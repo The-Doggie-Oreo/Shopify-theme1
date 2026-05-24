@@ -1,0 +1,116 @@
+<section id="kg-orchestrator-{{ section.id }}" class="kg-section kg-orchestrator {% if section.settings.full_width %}kg--full-width{% endif %}" style="{% if section.settings.show_outer_border %}--kg-outer-border-color: {{ section.settings.outer_border_color | default: '#e6e9ef' }};{% endif %} --kg-grid-columns-desktop: {{ section.settings.columns_desktop | default: 4 }}; --kg-grid-columns-tablet: {{ section.settings.columns_tablet | default: 2 }}; --kg-grid-columns-mobile: {{ section.settings.columns_mobile | default: 1 }}; --kg-grid-gap: var(--kg-space-{{ section.settings.gap_size | default: '3' }});">
+  <div class="kg-container">
+    <div class="kg-grid {% if section.settings.show_grid_lines %}kg-grid--lines{% endif %}" role="list">
+
+      {% for block in section.blocks %}
+        {% assign inline = '' %}
+        {% if block.settings.background_color != blank %}
+          {% assign inline = inline | append: '--kg-block-bg: ' | append: block.settings.background_color | append: '; ' %}
+        {% endif %}
+        {% if block.settings.text_color != blank %}
+          {% assign inline = inline | append: '--kg-block-text-color: ' | append: block.settings.text_color | append: '; ' %}
+        {% endif %}
+        {% if block.settings.padding != blank %}
+          {% assign inline = inline | append: '--kg-block-padding: var(--kg-space-' | append: block.settings.padding | append: '); ' %}
+        {% endif %}
+        {% if block.settings.overlay_opacity != blank %}
+          {% assign opacity = block.settings.overlay_opacity | divided_by: 100.0 %}
+          {% assign inline = inline | append: '--kg-overlay-opacity: ' | append: opacity | append: '; ' %}
+        {% endif %}
+
+        <div id="kg-block-{{ block.id }}" class="kg-grid__item kg-card {% if block.type == 'product_card' and block.settings.hover_effect != 'none' %}kg-card--hover-{{ block.settings.hover_effect }}{% endif %}" style="{{ inline }}" role="listitem">
+          {% case block.type %}
+            {% when 'product_card' %}
+              {% render 'kg3d-product-card', block: block, section: section %}
+            {% when 'editorial_callout' %}
+              {% render 'kg3d-editorial-callout', block: block, section: section %}
+            {% when 'raw_embed' %}
+              {% render 'kg3d-raw-embed', block: block, section: section %}
+          {% endcase %}
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ultimate Grid Orchestrator",
+  "settings": [
+    { "type": "number", "id": "columns_desktop", "label": "Columns (desktop)", "default": 4, "min": 1, "max": 6 },
+    { "type": "number", "id": "columns_tablet", "label": "Columns (tablet)", "default": 2, "min": 1, "max": 4 },
+    { "type": "number", "id": "columns_mobile", "label": "Columns (mobile)", "default": 1, "min": 1, "max": 2 },
+    { "type": "select", "id": "gap_size", "label": "Gap size", "options": [
+      {"value":"1","label":"4px - XS"},
+      {"value":"2","label":"8px - S"},
+      {"value":"3","label":"16px - M"},
+      {"value":"4","label":"24px - L"},
+      {"value":"5","label":"32px - XL"}
+    ], "default": "3" },
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "checkbox", "id": "show_grid_lines", "label": "Show subtle grid lines", "default": false },
+    { "type": "checkbox", "id": "show_outer_border", "label": "Show outer border (thin)", "default": false },
+    { "type": "color", "id": "outer_border_color", "label": "Outer border color", "default": "#e6e9ef" }
+  ],
+
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Standard Product/Collection Card",
+      "settings": [
+        { "type": "select", "id": "content_source", "label": "Content source", "options": [{"value":"product","label":"Product"},{"value":"collection","label":"Collection"}], "default": "product" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "select", "id": "image_aspect_ratio", "label": "Image aspect ratio", "options": [{"value":"1/1","label":"1:1"},{"value":"4/3","label":"4:3"},{"value":"16/9","label":"16:9"},{"value":"2/3","label":"2:3"}], "default": "1/1" },
+        { "type": "select", "id": "hover_effect", "label": "Hover effect", "options": [{"value":"none","label":"None"},{"value":"zoom-slight","label":"Zoom slight"},{"value":"zoom-strong","label":"Zoom strong"},{"value":"tilt","label":"Tilt"}], "default":"zoom-slight" },
+        { "type": "text", "id": "badge_text", "label": "Badge text", "default": "" },
+        { "type": "select", "id": "badge_visibility", "label": "Badge visibility", "options": [{"value":"always","label":"Always"},{"value":"hover","label":"On hover"},{"value":"hide","label":"Hide"}], "default": "hide" },
+        { "type": "color", "id": "badge_bg", "label": "Badge background", "default": "#0070f3" },
+        { "type": "color", "id": "badge_color", "label": "Badge text color", "default": "#ffffff" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 100, "step": 5, "default": 40 },
+        { "type": "select", "id": "text_align", "label": "Text alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+        { "type": "select", "id": "title_size", "label": "Title size", "options": [{"value":"xs","label":"XS"},{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}], "default": "m" },
+        { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
+        { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+        { "type": "checkbox", "id": "quick_add", "label": "Quick add (inline)", "default": false },
+        { "type": "select", "id": "padding", "label": "Card padding", "options": [{"value":"1","label":"4px"},{"value":"2","label":"8px"},{"value":"3","label":"16px"},{"value":"4","label":"24px"},{"value":"5","label":"32px"}], "default":"3" }
+      ]
+    },
+
+    {
+      "type": "editorial_callout",
+      "name": "Editorial / Text Callout",
+      "settings": [
+        { "type": "select", "id": "background_type", "label": "Background type", "options": [{"value":"color","label":"Color"},{"value":"gradient","label":"Gradient"},{"value":"image","label":"Image"}], "default":"color" },
+        { "type": "color", "id": "background_color", "label": "Background color", "default": "" },
+        { "type": "color", "id": "gradient_start", "label": "Gradient start" },
+        { "type": "color", "id": "gradient_end", "label": "Gradient end" },
+        { "type": "range", "id": "gradient_angle", "label": "Gradient angle (deg)", "min": 0, "max": 360, "step": 5, "default": 135 },
+        { "type": "image_picker", "id": "background_image", "label": "Background image" },
+        { "type": "image_picker", "id": "icon", "label": "Icon or symbol" },
+        { "type": "richtext", "id": "rich_text", "label": "Rich text" },
+        { "type": "text", "id": "primary_action_label", "label": "Primary action label" },
+        { "type": "url", "id": "primary_action_url", "label": "Primary action URL" },
+        { "type": "select", "id": "primary_action_style", "label": "Primary action style", "options": [{"value":"solid","label":"Solid"},{"value":"outline","label":"Outline"},{"value":"text","label":"Text"}], "default":"solid" },
+        { "type": "text", "id": "secondary_action_label", "label": "Secondary action label" },
+        { "type": "url", "id": "secondary_action_url", "label": "Secondary action URL" },
+        { "type": "color", "id": "border_highlight_color", "label": "Border highlight color" },
+        { "type": "select", "id": "padding", "label": "Block padding", "options": [{"value":"1","label":"4px"},{"value":"2","label":"8px"},{"value":"3","label":"16px"},{"value":"4","label":"24px"},{"value":"5","label":"32px"}], "default":"3" }
+      ]
+    },
+
+    {
+      "type": "raw_embed",
+      "name": "Custom Raw HTML / Liquid",
+      "settings": [
+        { "type": "textarea", "id": "raw_html", "label": "Raw HTML / embed code", "default": "" },
+        { "type": "checkbox", "id": "allow_liquid_evaluation", "label": "Evaluate Liquid (developer only)", "default": false },
+        { "type": "checkbox", "id": "developer_only", "label": "Developer-only (hide from non-admins)", "default": true }
+      ]
+    }
+  ],
+
+  "presets": [{ "name": "Ultimate Grid" }]
+}
+{% endschema %}

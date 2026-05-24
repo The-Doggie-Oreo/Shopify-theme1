@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "ultimate_grid_orchestrator": { "name": "Ultimate Grid Orchestrator" },
+    "seasonal_campaign_director": { "name": "Seasonal Campaign Director" }
+  },
+  "kinetic_grid": {
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "campaign_ended": "This campaign has ended",
+    "missing_source": "No product or collection selected"
+  }
+}

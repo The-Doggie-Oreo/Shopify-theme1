@@ -1,0 +1,167 @@
+{% comment %} Seasonal Campaign Director — toggleable campaign landing slice {% endcomment %}
+
+{% assign show_campaign = section.settings.enable_campaign %}
+{% if section.settings.expiry_date != blank %}
+  {% assign expiry_ts = section.settings.expiry_date | date: '%s' %}
+  {% assign now_ts = 'now' | date: '%s' %}
+  {% if expiry_ts <= now_ts %}
+    {% assign show_campaign = false %}
+  {% endif %}
+{% endif %}
+
+{% if show_campaign %}
+<section id="kg-campaign-{{ section.id }}" class="kg-section kg-campaign" data-kg-expiry="{{ section.settings.expiry_date }}" data-kg-expiry-action="{% if section.settings.hide_on_expiry %}hide{% else %}message{% endif %}" style="min-height:{{ section.settings.min_height | default: '50vh' }}; {% if section.settings.background_choice == 'color' and section.settings.background_color != blank %}background: {{ section.settings.background_color }};{% endif %}
+  {% if section.settings.background_choice == 'gradient' and section.settings.gradient_start != blank and section.settings.gradient_end != blank %}background: linear-gradient({{ section.settings.gradient_angle | default: 135 }}deg, {{ section.settings.gradient_start }}, {{ section.settings.gradient_end }});{% endif %}
+  {% if section.settings.background_choice == 'parallax' and section.settings.parallax_image != blank %}background-image:url({{ section.settings.parallax_image | image_url }});background-size:cover;background-position:center;{% endif %}
+  {% if section.settings.background_choice == 'video' and section.settings.background_video_url != blank %}/* video background handled via markup */{% endif %}">
+
+  <div class="kg-container">
+    {% if section.settings.background_choice == 'video' and section.settings.background_video_url != blank %}
+      <div class="kg-campaign__video-bg" aria-hidden="true">
+        <video autoplay muted loop playsinline style="width:100%;height:auto;object-fit:cover;min-height:{{ section.settings.min_height | default: '50vh' }};">
+          <source src="{{ section.settings.background_video_url }}" type="video/mp4">
+        </video>
+      </div>
+    {% endif %}
+
+    <div class="kg-campaign__inner">
+      {% for block in section.blocks %}
+        {% assign inline = '' %}
+        {% if block.settings.bg_color != blank %}
+          {% assign inline = inline | append: '--kg-block-bg: ' | append: block.settings.bg_color | append: '; ' %}
+        {% endif %}
+        {% if block.settings.text_color != blank %}
+          {% assign inline = inline | append: '--kg-block-text-color: ' | append: block.settings.text_color | append: '; ' %}
+        {% endif %}
+
+        <div id="kg-campaign-block-{{ block.id }}" class="kg-campaign__block" style="{{ inline }}">
+          {% case block.type %}
+            {% when 'heading_block' %}
+              <div class="kg-campaign__heading kg-text--{{ block.settings.alignment | default: 'center' }}">
+                <h2 style="font-weight: {{ block.settings.font_weight | default: 700 }};font-size: {% if block.settings.scale == 'xl' %}var(--kg-type-xl){% elsif block.settings.scale == 'l' %}var(--kg-type-l){% elsif block.settings.scale == 's' %}var(--kg-type-s){% else %}var(--kg-type-m){% endif %};letter-spacing: {{ block.settings.tracking | default: '0px' }};">{{ block.settings.heading_text }}</h2>
+                {% if block.settings.subheading != blank %}
+                  <div class="kg-campaign__sub">{{ block.settings.subheading }}</div>
+                {% endif %}
+              </div>
+
+            {% when 'countdown_block' %}
+              <div class="kg-countdown" data-kg-countdown data-kg-target="{{ block.settings.target_date }}">
+                {% if block.settings.show_days %}
+                  <div class="kg-countdown__unit"><div class="kg-countdown__value" data-kg-unit="days">00</div><div class="kg-countdown__label">{{ 'Days' }}</div></div>
+                {% endif %}
+                {% if block.settings.show_hours %}
+                  <div class="kg-countdown__unit"><div class="kg-countdown__value" data-kg-unit="hours">00</div><div class="kg-countdown__label">{{ 'Hours' }}</div></div>
+                {% endif %}
+                {% if block.settings.show_minutes %}
+                  <div class="kg-countdown__unit"><div class="kg-countdown__value" data-kg-unit="minutes">00</div><div class="kg-countdown__label">{{ 'Minutes' }}</div></div>
+                {% endif %}
+                {% if block.settings.show_seconds %}
+                  <div class="kg-countdown__unit"><div class="kg-countdown__value" data-kg-unit="seconds">00</div><div class="kg-countdown__label">{{ 'Seconds' }}</div></div>
+                {% endif %}
+              </div>
+
+            {% when 'buttons_block' %}
+              <div class="kg-action-bar">
+                {% for i in (1..3) %}
+                  {% assign label = block.settings['button_' | append: i | append: '_label'] %}
+                  {% assign url = block.settings['button_' | append: i | append: '_url'] %}
+                  {% assign style = block.settings['button_' | append: i | append: '_style'] %}
+                  {% if label != blank and url != blank %}
+                    <a class="kg-btn {% if style == 'solid' %}kg-btn--solid{% elsif style == 'outline' %}kg-btn--outline{% else %}kg-btn--text{% endif %}" href="{{ url }}">{{ label }}</a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            {% when 'product_spotlight' %}
+              {% render 'kg3d-product-card', block: block, section: section %}
+
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+  <!-- Campaign disabled or expired -->
+{% endif %}
+
+{% schema %}
+{
+  "name": "Seasonal Campaign Director",
+  "settings": [
+    { "type": "checkbox", "id": "enable_campaign", "label": "Enable campaign", "default": true },
+    { "type": "text", "id": "campaign_handle", "label": "Campaign handle (internal)", "default": "" },
+    { "type": "text", "id": "expiry_date", "label": "Expiry date (ISO 8601)", "default": "" },
+    { "type": "select", "id": "background_choice", "label": "Background type", "options": [{"value":"color","label":"Color"},{"value":"gradient","label":"Gradient"},{"value":"parallax","label":"Parallax image"},{"value":"video","label":"Background video"}], "default":"color" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#f5f7fb" },
+    { "type": "color", "id": "gradient_start", "label": "Gradient start" },
+    { "type": "color", "id": "gradient_end", "label": "Gradient end" },
+    { "type": "number", "id": "gradient_angle", "label": "Gradient angle", "default": 135 },
+    { "type": "image_picker", "id": "parallax_image", "label": "Parallax background image" },
+    { "type": "url", "id": "background_video_url", "label": "Background video URL" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "rgba(0,0,0,0.35)" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 100, "step": 5, "default": 35 },
+    { "type": "text", "id": "min_height", "label": "Min height (e.g. 50vh or 600px)", "default": "50vh" },
+    { "type": "checkbox", "id": "hide_on_expiry", "label": "Hide section on expiry (otherwise show message)", "default": true }
+  ],
+
+  "blocks": [
+    {
+      "type": "heading_block",
+      "name": "Heading & Subheading",
+      "settings": [
+        { "type": "text", "id": "heading_text", "label": "Heading" },
+        { "type": "richtext", "id": "subheading", "label": "Subheading" },
+        { "type": "select", "id": "font_weight", "label": "Font weight", "options": [{"value":"400","label":"400"},{"value":"600","label":"600"},{"value":"700","label":"700"},{"value":"800","label":"800"}], "default":"700" },
+        { "type": "select", "id": "scale", "label": "Scale", "options": [{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}], "default":"l" },
+        { "type": "text", "id": "tracking", "label": "Letter spacing (e.g. 0px)", "default": "0px" },
+        { "type": "select", "id": "alignment", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default":"center" }
+      ]
+    },
+
+    {
+      "type": "countdown_block",
+      "name": "Countdown Timer",
+      "settings": [
+        { "type": "text", "id": "target_date", "label": "Target date (ISO 8601)", "default": "" },
+        { "type": "checkbox", "id": "show_days", "label": "Show days", "default": true },
+        { "type": "checkbox", "id": "show_hours", "label": "Show hours", "default": true },
+        { "type": "checkbox", "id": "show_minutes", "label": "Show minutes", "default": true },
+        { "type": "checkbox", "id": "show_seconds", "label": "Show seconds", "default": true }
+      ]
+    },
+
+    {
+      "type": "buttons_block",
+      "name": "Multi-Button Action Bar",
+      "settings": [
+        { "type": "text", "id": "button_1_label", "label": "Button 1 label" },
+        { "type": "url", "id": "button_1_url", "label": "Button 1 URL" },
+        { "type": "select", "id": "button_1_style", "label": "Button 1 style", "options": [{"value":"solid","label":"Solid"},{"value":"outline","label":"Outline"},{"value":"text","label":"Text"}], "default":"solid" },
+
+        { "type": "text", "id": "button_2_label", "label": "Button 2 label" },
+        { "type": "url", "id": "button_2_url", "label": "Button 2 URL" },
+        { "type": "select", "id": "button_2_style", "label": "Button 2 style", "options": [{"value":"solid","label":"Solid"},{"value":"outline","label":"Outline"},{"value":"text","label":"Text"}], "default":"outline" },
+
+        { "type": "text", "id": "button_3_label", "label": "Button 3 label" },
+        { "type": "url", "id": "button_3_url", "label": "Button 3 URL" },
+        { "type": "select", "id": "button_3_style", "label": "Button 3 style", "options": [{"value":"solid","label":"Solid"},{"value":"outline","label":"Outline"},{"value":"text","label":"Text"}], "default":"text" }
+      ]
+    },
+
+    {
+      "type": "product_spotlight",
+      "name": "Featured Product Spotlight",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "select", "id": "image_aspect_ratio", "label": "Image aspect ratio", "options": [{"value":"1/1","label":"1:1"},{"value":"4/3","label":"4:3"},{"value":"16/9","label":"16:9"}], "default":"1/1" },
+        { "type": "checkbox", "id": "variant_selector", "label": "Show variant selector", "default": false },
+        { "type": "checkbox", "id": "quick_buy", "label": "Quick buy", "default": true },
+        { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true }
+      ]
+    }
+  ],
+
+  "presets": [ { "name": "Seasonal Campaign" } ]
+}
+{% endschema %}

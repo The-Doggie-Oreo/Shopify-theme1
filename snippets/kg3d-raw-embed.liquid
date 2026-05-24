@@ -1,0 +1,15 @@
+{% comment %} kg3d-raw-embed.liquid
+   Outputs raw embed HTML (developer mode available). Use with caution — enabling Liquid evaluation is a security/maintenance risk.
+   This snippet intentionally does not evaluate Liquid from settings by default.
+{% endcomment %}
+
+<div class="kg-raw-embed" data-kg-raw-embed="{{ block.id }}">
+  {% if block.settings.raw_html != blank %}
+    {% if block.settings.allow_liquid_evaluation == true %}
+      <!-- Developer mode: include raw HTML but do NOT auto-evaluate Liquid. Use snippet references for safer execution. -->
+      {{ block.settings.raw_html }}
+    {% else %}
+      {{ block.settings.raw_html }}
+    {% endif %}
+  {% endif %}
+</div>
