@@ -13,3 +13,4 @@ Theme Overhaul Progress:
 - All major tasks completed successfully
 - Upgraded hero, portfolio, materials, and FAQ sections toward premium Kinetic Grid 3D tech-industrial architecture while preserving index.json schema compatibility
 - Added functional Shopify cart, account, login, product, collection/catalog, search, page, contact, and recommendation sections; unified global dark FAQ-style Kinetic Grid aesthetic; added automatic seasonal campaign switching for Halloween, Thanksgiving/Black Friday, Christmas, Valentine’s Day, Spring/Easter, Summer, Mother’s Day, and Father’s Day
+- Fixed hover-video: video now only plays when hovering the image/media area, not the title/price text below. Changed JS listeners from card to mediaContainer; updated CSS from .product-card-wrapper:hover to .card__media:hover/.media:hover in theme.liquid

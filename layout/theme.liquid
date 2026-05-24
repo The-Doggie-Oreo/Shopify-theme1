@@ -382,8 +382,9 @@
         border-radius: 6px !important;
       }
 
-      .product-card-wrapper:hover .kg-hover-video,
-      .card-wrapper:hover .kg-hover-video {
+      .card__media:hover .kg-hover-video,
+      .card__inner:hover .kg-hover-video,
+      .media:hover .kg-hover-video {
         opacity: 1 !important;
       }
 
@@ -693,12 +694,12 @@
                 videoEl.setAttribute('preload', 'metadata');
                 mediaContainer.appendChild(videoEl);
 
-                card.addEventListener('mouseenter', () => {
-                  videoEl.currentTime = 0; 
+                mediaContainer.addEventListener('mouseenter', () => {
+                  videoEl.currentTime = 0;
                   const playPromise = videoEl.play();
                   if (playPromise !== undefined) { playPromise.catch(() => {}); }
                 });
-                card.addEventListener('mouseleave', () => { videoEl.pause(); });
+                mediaContainer.addEventListener('mouseleave', () => { videoEl.pause(); });
               })
               .catch(() => {});
             card.dataset.hoverVideoInitialized = "true";
