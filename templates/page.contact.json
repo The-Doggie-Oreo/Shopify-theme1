@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "section-contact",
+      "settings": {
+        "heading": "Get in Touch",
+        "subheading": "Tell us about your project, quote request, or production deadline.",
+        "show_file_upload": true,
+        "show_map": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

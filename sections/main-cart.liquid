@@ -1,0 +1,68 @@
+<section class="section kg3d-page kg3d-cart" id="cart-{{ section.id }}">
+  <div class="container">
+    <header class="kg3d-page__header">
+      <p class="kg3d-eyebrow">Order Bay</p>
+      <h1>Your Cart</h1>
+      <p>Review parts, quantities, project notes, and checkout when everything is ready.</p>
+    </header>
+
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post" novalidate class="kg3d-cart__layout">
+        <div class="kg3d-cart__items">
+          {% for item in cart.items %}
+            <article class="kg3d-cart-item">
+              <a href="{{ item.url }}" class="kg3d-cart-item__media">
+                {% if item.image %}
+                  {{ item.image | image_url: width: 360 | image_tag: loading: 'lazy', widths: '160, 240, 360', sizes: '140px', alt: item.product.title }}
+                {% endif %}
+              </a>
+              <div class="kg3d-cart-item__body">
+                <div>
+                  <a href="{{ item.url }}" class="kg3d-cart-item__title">{{ item.product.title }}</a>
+                  {% if section.settings.show_vendor and item.product.vendor != blank %}<p class="kg3d-muted">{{ item.product.vendor }}</p>{% endif %}
+                  {% unless item.product.has_only_default_variant %}<p class="kg3d-muted">{{ item.variant.title }}</p>{% endunless %}
+                  {% for property in item.properties %}
+                    {% unless property.last == blank %}<p class="kg3d-muted">{{ property.first }}: {{ property.last }}</p>{% endunless %}
+                  {% endfor %}
+                </div>
+                <div class="kg3d-cart-item__controls">
+                  <label for="updates_{{ item.key }}">Qty</label>
+                  <input id="updates_{{ item.key }}" name="updates[]" value="{{ item.quantity }}" type="number" min="0">
+                  <a href="{{ item.url_to_remove }}" class="kg3d-link">Remove</a>
+                </div>
+                <div class="kg3d-cart-item__price">{{ item.final_line_price | money }}</div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        <aside class="kg3d-cart__summary">
+          <h2>Manufacturing Summary</h2>
+          <div class="kg3d-summary-row"><span>Items</span><strong>{{ cart.item_count }}</strong></div>
+          <div class="kg3d-summary-row"><span>Subtotal</span><strong class="cart-total">{{ cart.total_price | money }}</strong></div>
+          {% if section.settings.show_cart_note %}
+            <label for="Cart-note">Project Notes</label>
+            <textarea id="Cart-note" name="note" placeholder="Tolerance, color, finish, deadline...">{{ cart.note }}</textarea>
+          {% endif %}
+          <button type="submit" name="update" class="btn btn-outline">Update Cart</button>
+          <button type="submit" name="checkout" class="btn btn-primary">Checkout Securely</button>
+          {% if section.settings.show_payment_button %}{{ content_for_additional_checkout_buttons }}{% endif %}
+        </aside>
+      </form>
+    {% else %}
+      <div class="kg3d-empty-state">
+        <h2>Your cart is empty</h2>
+        <p>Start with a material, a product, or a custom upload request.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Browse Catalog</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-soft:rgba(13,22,36,.72);--kg-line:rgba(151,195,255,.18);--kg-hot:rgba(0,194,255,.55);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-page__header{text-align:center;max-width:760px;margin:0 auto 3rem}.kg3d-page__header h1{color:#f6fbff;letter-spacing:-.05em}.kg3d-page__header p,.kg3d-muted{color:rgba(229,241,255,.68)}.kg3d-eyebrow{letter-spacing:.16em;text-transform:uppercase;color:#7fe7ff;font-weight:800}.kg3d-cart__layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:2rem}.kg3d-cart__items,.kg3d-cart__summary,.kg3d-empty-state{background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.32)}.kg3d-cart__items{overflow:hidden}.kg3d-cart-item{display:grid;grid-template-columns:140px 1fr;gap:1.25rem;padding:1.25rem;border-bottom:1px solid var(--kg-line)}.kg3d-cart-item:last-child{border-bottom:0}.kg3d-cart-item__media{background:rgba(255,255,255,.04);border-radius:16px;overflow:hidden}.kg3d-cart-item__media img{width:100%;height:100%;object-fit:cover}.kg3d-cart-item__body{display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:center}.kg3d-cart-item__title{color:#f6fbff;font-weight:800}.kg3d-cart-item__controls{display:grid;gap:.4rem}.kg3d-cart-item__controls input{width:76px;background:rgba(255,255,255,.05);border:1px solid var(--kg-line);border-radius:10px;color:#fff;padding:.55rem}.kg3d-link{color:#7fe7ff}.kg3d-cart-item__price{font-weight:900;color:#7fe7ff}.kg3d-cart__summary{padding:1.5rem;position:sticky;top:90px;align-self:start}.kg3d-cart__summary h2{color:#f6fbff}.kg3d-summary-row{display:flex;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--kg-line)}.kg3d-cart__summary textarea{width:100%;min-height:120px;margin:1rem 0;background:rgba(255,255,255,.05);border:1px solid var(--kg-line);border-radius:14px;color:#fff;padding:1rem}.kg3d-cart__summary .btn{width:100%;justify-content:center;margin-top:.75rem}.kg3d-empty-state{text-align:center;padding:3rem}@media(max-width:900px){.kg3d-cart__layout{grid-template-columns:1fr}.kg3d-cart__summary{position:static}.kg3d-cart-item,.kg3d-cart-item__body{grid-template-columns:1fr}.kg3d-cart-item__media{max-width:180px}}
+</style>
+
+{% schema %}
+{"name":"Main Cart","settings":[{"type":"checkbox","id":"show_vendor","label":"Show vendor","default":false},{"type":"checkbox","id":"show_payment_button","label":"Show accelerated checkout","default":true},{"type":"checkbox","id":"show_cart_note","label":"Show cart note","default":true},{"type":"checkbox","id":"show_shipping_calculator","label":"Show shipping calculator","default":true},{"type":"checkbox","id":"show_gift_card_recipient","label":"Show gift card recipient","default":true}]}
+{% endschema %}

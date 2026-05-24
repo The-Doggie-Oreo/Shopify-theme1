@@ -139,10 +139,11 @@
   {% if section.settings.show_search %}
   <div class="search-dropdown" style="display: none;">
     <div class="container">
-      <div class="search-form">
-        <input type="search" class="search-input" placeholder="Search for products, materials, or help..." autocomplete="off">
+      <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+        <input type="search" class="search-input" name="q" placeholder="Search for products, materials, or help..." autocomplete="off">
+        <input type="hidden" name="type" value="product,page,article">
         <button type="submit" class="btn btn-primary">Search</button>
-      </div>
+      </form>
       <div class="search-results"></div>
     </div>
   </div>

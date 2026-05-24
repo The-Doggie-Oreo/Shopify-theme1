@@ -9,6 +9,16 @@
   {% endif %}
 {% endif %}
 
+<aside class="kg-seasonal-auto-message" hidden>
+  <div class="kg-container">
+    <div class="kg-seasonal-auto-message__inner">
+      <span data-season-label>Precision 3D Printing</span>
+      <p data-season-message>Custom prototypes, functional parts, and production-ready fabrication.</p>
+      <a href="{{ routes.search_url }}?q=seasonal&type=product" class="kg-btn kg-btn--solid" data-season-link>Shop Seasonal Picks</a>
+    </div>
+  </div>
+</aside>
+
 {% if show_campaign %}
 <section id="kg-campaign-{{ section.id }}" class="kg-section kg-campaign" data-kg-expiry="{{ section.settings.expiry_date }}" data-kg-expiry-action="{% if section.settings.hide_on_expiry %}hide{% else %}message{% endif %}" style="min-height:{{ section.settings.min_height | default: '50vh' }}; {% if section.settings.background_choice == 'color' and section.settings.background_color != blank %}background: {{ section.settings.background_color }};{% endif %}
   {% if section.settings.background_choice == 'gradient' and section.settings.gradient_start != blank and section.settings.gradient_end != blank %}background: linear-gradient({{ section.settings.gradient_angle | default: 135 }}deg, {{ section.settings.gradient_start }}, {{ section.settings.gradient_end }});{% endif %}
@@ -84,6 +94,10 @@
 {% else %}
   <!-- Campaign disabled or expired -->
 {% endif %}
+
+<style>
+.kg-seasonal-auto-message{background:#05070d;color:#f6fbff;border-bottom:1px solid rgba(151,195,255,.18)}.kg-seasonal-auto-message__inner{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.85rem 1rem;background:linear-gradient(90deg,rgba(0,194,255,.08),rgba(0,102,255,.06));border:1px solid rgba(151,195,255,.14);border-radius:0 0 18px 18px}.kg-seasonal-auto-message span{color:#7fe7ff;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.kg-seasonal-auto-message p{margin:0;color:rgba(229,241,255,.75)}body[data-season=\"black-friday\"] .kg-seasonal-auto-message__inner{background:linear-gradient(90deg,rgba(255,107,53,.16),rgba(0,194,255,.08))}body[data-season=\"christmas\"] .kg-seasonal-auto-message__inner{background:linear-gradient(90deg,rgba(16,185,129,.16),rgba(239,68,68,.12))}body[data-season=\"valentines\"] .kg-seasonal-auto-message__inner{background:linear-gradient(90deg,rgba(236,72,153,.16),rgba(0,194,255,.08))}@media(max-width:760px){.kg-seasonal-auto-message__inner{flex-direction:column;text-align:center}}
+</style>
 
 {% schema %}
 {

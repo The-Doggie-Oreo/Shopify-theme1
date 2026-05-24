@@ -316,5 +316,66 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialize everything
+    initSeasonalAutoSwitching();
     updateCartUI();
+
+    function initSeasonalAutoSwitching() {
+        const root = document.querySelector('[data-seasonal-auto]');
+        if (!root) return;
+
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        let season = 'evergreen';
+        let label = 'Precision 3D Printing';
+        let message = 'Custom prototypes, functional parts, and production-ready fabrication.';
+
+        if (month === 10) {
+            season = 'halloween';
+            label = 'Halloween Builds';
+            message = 'Props, cosplay parts, themed decor, and spooky fabrication requests.';
+        } else if (month === 11 && day >= 1 && day <= 30) {
+            season = day >= 20 ? 'black-friday' : 'thanksgiving';
+            label = day >= 20 ? 'Black Friday Fabrication Deals' : 'Thanksgiving Production Window';
+            message = day >= 20 ? 'Limited-time deals for prototypes, gifts, and production runs.' : 'Seasonal gifts, table decor, and maker projects before the holiday rush.';
+        } else if (month === 12) {
+            season = 'christmas';
+            label = 'Christmas Custom Prints';
+            message = 'Personalized gifts, ornaments, display pieces, and holiday production slots.';
+        } else if (month === 2 && day <= 14) {
+            season = 'valentines';
+            label = 'Valentine Custom Gifts';
+            message = 'Personalized keepsakes, miniatures, and custom-designed gifts.';
+        } else if (month === 3 || month === 4) {
+            season = 'spring-easter';
+            label = 'Spring & Easter Prints';
+            message = 'Fresh seasonal decor, prototypes, garden parts, and family gifts.';
+        } else if (month >= 6 && month <= 8) {
+            season = 'summer';
+            label = 'Summer Maker Season';
+            message = 'Outdoor parts, cosplay builds, event displays, and durable PETG projects.';
+        } else if (month === 5 && day >= 1 && day <= 14) {
+            season = 'mothers-day';
+            label = 'Mother’s Day Custom Gifts';
+            message = 'Personalized keepsakes and thoughtful 3D printed gifts.';
+        } else if (month === 6 && day >= 1 && day <= 21) {
+            season = 'fathers-day';
+            label = 'Father’s Day Functional Gifts';
+            message = 'Desk tools, garage upgrades, display models, and custom accessories.';
+        }
+
+        document.body.dataset.season = season;
+        document.documentElement.style.setProperty('--seasonal-label', `"${label}"`);
+
+        const campaign = document.querySelector('.kg-seasonal-auto-message');
+        if (campaign) {
+            campaign.querySelector('[data-season-label]').textContent = label;
+            campaign.querySelector('[data-season-message]').textContent = message;
+            const link = campaign.querySelector('[data-season-link]');
+            if (link) {
+                link.href = `/search?q=${encodeURIComponent(season)}&type=product`;
+            }
+            campaign.hidden = false;
+        }
+    }
 });

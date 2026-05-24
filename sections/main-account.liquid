@@ -1,0 +1,72 @@
+<section class="section kg3d-page kg3d-account" id="account-{{ section.id }}">
+  <div class="container">
+    <header class="kg3d-page__header">
+      <p class="kg3d-eyebrow">Client Console</p>
+      <h1>Account</h1>
+      <p>Track orders, manage addresses, and review your fabrication history.</p>
+    </header>
+
+    {% if customer %}
+      <div class="kg3d-account__grid">
+        <aside class="kg3d-account-card">
+          <h2>{{ customer.name | default: customer.email }}</h2>
+          <p class="kg3d-muted">{{ customer.email }}</p>
+          <a href="{{ routes.account_logout_url }}" class="btn btn-outline">Log out</a>
+        </aside>
+
+        {% if section.settings.show_order_history %}
+        <div class="kg3d-account-card kg3d-account-card--wide">
+          <h2>Order History</h2>
+          {% if customer.orders.size > 0 %}
+            <div class="kg3d-table-wrap">
+              <table>
+                <thead><tr><th>Order</th><th>Date</th><th>Payment</th><th>Fulfillment</th><th>Total</th></tr></thead>
+                <tbody>
+                  {% for order in customer.orders %}
+                    <tr>
+                      <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                      <td>{{ order.created_at | date: format: 'abbreviated_date' }}</td>
+                      <td>{{ order.financial_status_label }}</td>
+                      <td>{{ order.fulfillment_status_label }}</td>
+                      <td>{{ order.total_price | money }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="kg3d-muted">No orders yet. When you place an order, it will appear here.</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Browse Catalog</a>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_addresses %}
+        <div class="kg3d-account-card">
+          <h2>Default Address</h2>
+          {% if customer.default_address %}
+            {{ customer.default_address | format_address }}
+          {% else %}
+            <p class="kg3d-muted">No default address saved.</p>
+          {% endif %}
+          <a href="{{ routes.account_addresses_url }}" class="btn btn-outline">Manage Addresses</a>
+        </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="kg3d-empty-state">
+        <h2>Sign in required</h2>
+        <p>Please log in to view your fabrication dashboard.</p>
+        <a href="{{ routes.account_login_url }}" class="btn btn-primary">Log In</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-soft:rgba(13,22,36,.72);--kg-line:rgba(151,195,255,.18);--kg-hot:rgba(0,194,255,.55);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-page__header{text-align:center;max-width:760px;margin:0 auto 3rem}.kg3d-page__header h1,.kg3d-account-card h2{color:#f6fbff;letter-spacing:-.04em}.kg3d-page__header p,.kg3d-muted,.kg3d-account-card{color:rgba(229,241,255,.7)}.kg3d-eyebrow{letter-spacing:.16em;text-transform:uppercase;color:#7fe7ff;font-weight:800}.kg3d-account__grid{display:grid;grid-template-columns:360px 1fr;gap:1.5rem}.kg3d-account-card{background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.32);padding:1.5rem}.kg3d-account-card--wide{grid-row:span 2}.kg3d-table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:1rem;border-bottom:1px solid var(--kg-line);text-align:left}th{color:#f6fbff}td a{color:#7fe7ff}.kg3d-empty-state{text-align:center;background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;padding:3rem}@media(max-width:900px){.kg3d-account__grid{grid-template-columns:1fr}}
+</style>
+
+{% schema %}
+{"name":"Main Account","settings":[{"type":"checkbox","id":"show_order_history","label":"Show order history","default":true},{"type":"checkbox","id":"show_addresses","label":"Show addresses","default":true},{"type":"checkbox","id":"show_wishlist","label":"Show wishlist","default":false}]}
+{% endschema %}

@@ -1,0 +1,43 @@
+<section class="section kg3d-page kg3d-search" id="search-{{ section.id }}">
+  <div class="container">
+    <header class="kg3d-page__header">
+      <p class="kg3d-eyebrow">Search Matrix</p>
+      <h1>Search</h1>
+      <p>Find products, materials, project references, and support pages.</p>
+    </header>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="kg3d-search-form">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search catalog..." autocomplete="off">
+      <input type="hidden" name="type" value="product,page,article">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if search.performed %}
+      <div class="kg3d-muted kg3d-search-count">{{ search.results_count }} results for “{{ search.terms }}”</div>
+      {% paginate search.results by section.settings.results_per_page %}
+        <div class="kg3d-results-grid">
+          {% for item in search.results %}
+            <article class="kg3d-result-card">
+              <a href="{{ item.url }}" class="kg3d-result-card__media">
+                {% if item.featured_image %}{{ item.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 600', sizes: '(min-width: 900px) 25vw, 100vw', alt: item.title }}{% endif %}
+              </a>
+              <div class="kg3d-result-card__body">
+                <p class="kg3d-eyebrow">{{ item.object_type }}</p>
+                <a href="{{ item.url }}"><h2>{{ item.title }}</h2></a>
+                {% if item.price %}<p class="kg3d-price">{{ item.price | money }}</p>{% endif %}
+                <p class="kg3d-muted">{{ item.content | strip_html | truncate: 140 }}</p>
+              </div>
+            </article>
+          {% else %}
+            <div class="kg3d-empty-state"><h2>No results found</h2><p>Try a material, product type, or service term.</p></div>
+          {% endfor %}
+        </div>
+        {% if paginate.pages > 1 %}<nav class="kg3d-pagination">{{ paginate | default_pagination }}</nav>{% endif %}
+      {% endpaginate %}
+    {% endif %}
+  </div>
+</section>
+<style>.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-soft:rgba(13,22,36,.72);--kg-line:rgba(151,195,255,.18);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-page__header{text-align:center;max-width:760px;margin:0 auto 3rem}.kg3d-page__header h1,.kg3d-result-card h2{color:#f6fbff}.kg3d-page__header p,.kg3d-muted{color:rgba(229,241,255,.7)}.kg3d-eyebrow{letter-spacing:.16em;text-transform:uppercase;color:#7fe7ff;font-weight:800}.kg3d-search-form{display:flex;gap:.75rem;max-width:780px;margin:0 auto 2rem;background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:18px;padding:.75rem}.kg3d-search-form input{flex:1;background:transparent;border:0;color:#fff;padding:.75rem;outline:0}.kg3d-results-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}.kg3d-result-card,.kg3d-empty-state{background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.32)}.kg3d-result-card__media{display:block;aspect-ratio:1/1;background:rgba(255,255,255,.04)}.kg3d-result-card__media img{width:100%;height:100%;object-fit:cover}.kg3d-result-card__body,.kg3d-empty-state{padding:1.25rem}.kg3d-price{color:#7fe7ff;font-weight:900}.kg3d-search-count{margin-bottom:1rem}.kg3d-pagination{text-align:center;margin-top:2rem}@media(max-width:900px){.kg3d-results-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.kg3d-results-grid{grid-template-columns:1fr}.kg3d-search-form{flex-direction:column}}</style>
+{% schema %}
+{"name":"Main Search","settings":[{"type":"range","id":"results_per_page","label":"Results per page","min":6,"max":36,"step":6,"default":18}]}
+{% endschema %}

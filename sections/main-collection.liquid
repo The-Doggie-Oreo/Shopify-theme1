@@ -1,0 +1,23 @@
+<section class="section kg3d-page kg3d-catalog" id="collection-{{ section.id }}">
+  <div class="container">
+    <form method="get" class="kg3d-catalog-toolbar">
+      <div class="kg3d-muted">{{ collection.products_count }} products</div>
+      <label>Sort <select name="sort_by" onchange="this.form.submit()">{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}{% for option in collection.sort_options %}<option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>{% endfor %}</select></label>
+    </form>
+    {% paginate collection.products by section.settings.products_per_page %}
+      <div class="kg3d-product-grid" style="--cols:{{ section.settings.columns_desktop }}">
+        {% for product in collection.products %}
+          <article class="kg3d-product-card">
+            <a href="{{ product.url }}" class="kg3d-product-card__media">{% if product.featured_image %}{{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '320, 520, 800', sizes: '(min-width: 990px) 25vw, 50vw', alt: product.title }}{% endif %}</a>
+            <div class="kg3d-product-card__body"><a href="{{ product.url }}"><h2>{{ product.title }}</h2></a><p>{{ product.price | money }}</p>{% if product.available %}<form method="post" action="/cart/add"><input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"><button class="btn btn-primary" type="submit">Add to Cart</button></form>{% else %}<span class="kg3d-muted">Sold out</span>{% endif %}</div>
+          </article>
+        {% else %}<div class="kg3d-empty-state"><h2>No products found</h2></div>{% endfor %}
+      </div>
+      {% if paginate.pages > 1 %}<nav class="kg3d-pagination">{{ paginate | default_pagination }}</nav>{% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+<style>.kg3d-page{--kg-bg:#05070d;--kg-panel:rgba(9,14,24,.92);--kg-soft:rgba(13,22,36,.72);--kg-line:rgba(151,195,255,.18);background:radial-gradient(circle at 15% 12%,rgba(0,194,255,.13),transparent 30rem),linear-gradient(rgba(151,195,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(151,195,255,.035) 1px,transparent 1px),var(--kg-bg);background-size:auto,52px 52px,52px 52px,auto;color:#f6fbff}.kg3d-catalog-toolbar{display:flex;justify-content:space-between;gap:1rem;margin-bottom:2rem;background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:18px;padding:1rem}.kg3d-catalog-toolbar select{background:rgba(255,255,255,.05);border:1px solid var(--kg-line);color:#fff;border-radius:10px;padding:.5rem}.kg3d-muted{color:rgba(229,241,255,.7)}.kg3d-product-grid{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:1.25rem}.kg3d-product-card{background:linear-gradient(145deg,var(--kg-panel),var(--kg-soft));border:1px solid var(--kg-line);border-radius:24px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.32)}.kg3d-product-card__media{display:block;aspect-ratio:1/1;background:rgba(255,255,255,.04)}.kg3d-product-card__media img{width:100%;height:100%;object-fit:cover}.kg3d-product-card__body{padding:1rem}.kg3d-product-card h2{color:#f6fbff;font-size:1.05rem}.kg3d-product-card p{color:#7fe7ff;font-weight:800}.kg3d-product-card .btn{width:100%;justify-content:center}.kg3d-pagination{text-align:center;margin-top:2rem}@media(max-width:990px){.kg3d-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.kg3d-product-grid{grid-template-columns:1fr}.kg3d-catalog-toolbar{flex-direction:column}}</style>
+{% schema %}
+{"name":"Main Collection","blocks":[{"type":"filter","name":"Filter","settings":[{"type":"select","id":"filter_type","label":"Filter type","options":[{"value":"tag","label":"Tag"},{"value":"vendor","label":"Vendor"}],"default":"tag"},{"type":"text","id":"title","label":"Title","default":"Filter"}]},{"type":"sort","name":"Sort","settings":[{"type":"text","id":"title","label":"Title","default":"Sort by"}]}],"settings":[{"type":"range","id":"products_per_page","label":"Products per page","min":8,"max":48,"step":4,"default":24},{"type":"range","id":"columns_desktop","label":"Desktop columns","min":2,"max":5,"step":1,"default":4},{"type":"select","id":"image_ratio","label":"Image ratio","options":[{"value":"square","label":"Square"},{"value":"portrait","label":"Portrait"}],"default":"square"}]}
+{% endschema %}

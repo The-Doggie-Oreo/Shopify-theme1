@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body data-seasonal-auto>
     {% section 'header' %}
+    {% section 'seasonal-campaign-director' %}
     {{ content_for_layout }}
     {% section 'footer' %}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
