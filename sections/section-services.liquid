@@ -1,0 +1,706 @@
+<section class="section section-services" id="services-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      {% for block in section.blocks %}
+      <article class="service-card" data-service-id="{{ block.id }}">
+        <div class="service-icon">
+          {% if block.settings.icon %}
+            <div class="custom-icon">{{ block.settings.icon }}</div>
+          {% else %}
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+            </svg>
+          {% endif %}
+        </div>
+
+        <div class="service-content">
+          <h3 class="service-title">{{ block.settings.title }}</h3>
+          <p class="service-description">{{ block.settings.description }}</p>
+          
+          {% if block.settings.features %}
+          <ul class="service-features">
+            {% assign features = block.settings.features | split: ',' %}
+            {% for feature in features %}
+            <li>{{ feature | strip }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if block.settings.price %}
+          <div class="service-price">
+            <span class="price-label">Starting at</span>
+            <span class="price-value">{{ block.settings.price }}</span>
+          </div>
+          {% endif %}
+
+          <div class="service-actions">
+            {% if block.settings.cta_text and block.settings.cta_link %}
+            <a href="{{ block.settings.cta_link }}" class="btn btn-primary">
+              {{ block.settings.cta_text }}
+            </a>
+            {% endif %}
+            <button class="btn btn-outline learn-more-btn" data-service="{{ block.id }}">
+              Learn More
+            </button>
+          </div>
+        </div>
+
+        {% if block.settings.popular %}
+        <div class="service-badge">
+          <span>Popular</span>
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Process Overview -->
+    {% if section.settings.show_process %}
+    <div class="process-overview mt-12">
+      <div class="section-header text-center mb-8">
+        <h3 class="section-title">How It Works</h3>
+        <p class="section-subtitle">From idea to reality in four simple steps</p>
+      </div>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Upload Your Design</h4>
+            <p>Share your 3D model in any format. We'll review it and provide an instant quote.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Choose Your Options</h4>
+            <p>Select materials, colors, and finishing options that suit your needs.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>We Print & Quality Check</h4>
+            <p>Our experts print your model with precision and perform thorough quality checks.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Fast Delivery</h4>
+            <p>Receive your finished parts via secure shipping or local pickup.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.section-services {
+  background-color: var(--bg-secondary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.service-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-color);
+}
+
+.service-card.popular {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 102, 255, 0.05) 100%);
+}
+
+/* Service Icon */
+.service-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: white;
+  font-size: 2rem;
+}
+
+.custom-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Service Content */
+.service-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.service-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Service Features */
+.service-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.service-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.service-features li::before {
+  content: "✓";
+  color: var(--success-color);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Service Price */
+.service-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.price-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.price-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Service Actions */
+.service-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.service-actions .btn {
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+}
+
+/* Service Badge */
+.service-badge {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Process Overview */
+.process-overview {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.step-content h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Process connection lines */
+.process-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .service-card {
+    padding: 1.5rem;
+  }
+  
+  .service-actions {
+    flex-direction: column;
+  }
+  
+  .service-actions .btn {
+    width: 100%;
+  }
+  
+  .process-overview {
+    padding: 2rem 1rem;
+  }
+  
+  .process-steps {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .process-step:not(:last-child)::after {
+    display: none;
+  }
+  
+  .process-step {
+    position: relative;
+    padding-bottom: 2rem;
+  }
+  
+  .process-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 2rem;
+    background: linear-gradient(180deg, var(--primary-color), transparent);
+  }
+}
+
+/* Animations */
+.service-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+
+.process-step {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.process-step:nth-child(1) { animation-delay: 0.1s; }
+.process-step:nth-child(2) { animation-delay: 0.2s; }
+.process-step:nth-child(3) { animation-delay: 0.3s; }
+.process-step:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Learn more buttons
+  document.querySelectorAll('.learn-more-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const serviceId = this.getAttribute('data-service');
+      const serviceCard = document.querySelector(`[data-service-id="${serviceId}"]`);
+      const serviceTitle = serviceCard.querySelector('.service-title').textContent;
+      
+      // Create modal or navigate to service details
+      showServiceModal(serviceId, serviceTitle);
+    });
+  });
+  
+  // Service modal function
+  function showServiceModal(serviceId, serviceTitle) {
+    // Remove existing modal if any
+    const existingModal = document.querySelector('.service-modal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'service-modal';
+    modal.innerHTML = `
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>${serviceTitle}</h3>
+          <button class="modal-close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Learn more about our ${serviceTitle.toLowerCase()} service. Contact us for detailed information and custom quotes.</p>
+          <div class="modal-actions">
+            <button class="btn btn-primary" onclick="window.location.href='/pages/contact'">Contact Us</button>
+            <button class="btn btn-outline modal-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Add modal styles if not present
+    if (!document.querySelector('#modal-styles')) {
+      const style = document.createElement('style');
+      style.id = 'modal-styles';
+      style.textContent = `
+        .service-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        }
+        
+        .modal-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+          background: var(--bg-primary);
+          border-radius: var(--radius-xl);
+          padding: 2rem;
+          max-width: 500px;
+          width: 100%;
+          position: relative;
+          box-shadow: var(--shadow-2xl);
+          animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h3 {
+          margin: 0;
+          color: var(--text-primary);
+        }
+        
+        .modal-close {
+          background: none;
+          border: none;
+          color: var(--text-secondary);
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: var(--radius-sm);
+          transition: all var(--transition-base);
+        }
+        
+        .modal-close:hover {
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+        }
+        
+        .modal-body p {
+          color: var(--text-secondary);
+          line-height: 1.6;
+          margin-bottom: 2rem;
+        }
+        
+        .modal-actions {
+          display: flex;
+          gap: 1rem;
+          justify-content: flex-end;
+        }
+        
+        @keyframes modalSlideIn {
+          from {
+            transform: translateY(-50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(modal);
+    
+    // Close modal handlers
+    const closeHandlers = [
+      modal.querySelector('.modal-close'),
+      modal.querySelector('.modal-close-btn'),
+      modal.querySelector('.modal-overlay')
+    ];
+    
+    closeHandlers.forEach(handler => {
+      handler?.addEventListener('click', () => {
+        modal.remove();
+      });
+    });
+    
+    // Close on escape key
+    const escapeHandler = (e) => {
+      if (e.key === 'Escape') {
+        modal.remove();
+        document.removeEventListener('keydown', escapeHandler);
+      }
+    };
+    document.addEventListener('keydown', escapeHandler);
+  }
+  
+  // Intersection Observer for process steps animation
+  const processSteps = document.querySelectorAll('.process-step');
+  if (processSteps.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = `${Array.from(processSteps).indexOf(entry.target) * 0.1}s`;
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    processSteps.forEach(step => observer.observe(step));
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Services Section",
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Service Title",
+          "default": "Professional 3D Printing"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Service Description",
+          "default": "High-quality 3D printing services with fast turnaround times and competitive pricing."
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (HTML/SVG)",
+          "info": "Optional: Add custom HTML or SVG icon code"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features",
+          "info": "Separate multiple features with commas",
+          "default": "Fast turnaround, High precision, Multiple materials"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Starting Price",
+          "default": "$15"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Button Text",
+          "default": "Get Quote"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "popular",
+          "label": "Mark as Popular",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Our Services"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Comprehensive 3D printing solutions tailored to your needs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_process",
+      "label": "Show Process Overview",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Services",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "service",
+          "settings": {
+            "title": "Rapid Prototyping",
+            "description": "Fast and accurate prototyping services to bring your ideas to life quickly.",
+            "features": "24-48hr turnaround, Multiple resolutions, Design verification",
+            "price": "$25",
+            "cta_text": "Start Prototyping",
+            "popular": true
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "title": "Production Parts",
+            "description": "End-use parts manufacturing with industrial-grade materials and quality.",
+            "features": "Bulk pricing, Quality assurance, Material certification",
+            "price": "$50",
+            "cta_text": "Get Quote"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "title": "Custom Projects",
+            "description": "Specialized 3D printing solutions for unique and complex requirements.",
+            "features": "Expert consultation, Custom solutions, Technical support",
+            "price": "$100",
+            "cta_text": "Discuss Project"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

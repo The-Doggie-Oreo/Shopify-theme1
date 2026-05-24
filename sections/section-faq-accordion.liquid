@@ -1,37 +1,948 @@
-{% comment %} Minimal stub: section-faq-accordion.liquid {% endcomment %}
-<section id="section-faq-accordion-{{ section.id }}" class="section-faq-accordion kg-section">
-  <div class="kg-container">
-    {% if section.settings.heading %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading %}<p>{{ section.settings.subheading }}</p>{% endif %}
+<section class="section section-faq" id="faq-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
 
-    <div class="faq-list">
+    <!-- FAQ Search -->
+    <div class="faq-search mb-6">
+      <div class="search-container">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="search" 
+               id="faq-search" 
+               class="faq-search-input" 
+               placeholder="Search for answers..."
+               autocomplete="off">
+        <button class="btn btn-outline clear-search-btn" id="clear-search" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ Categories -->
+    <div class="faq-categories mb-6">
+      <button class="category-btn active" data-category="all">All Categories</button>
+      <button class="category-btn" data-category="general">General</button>
+      <button class="category-btn" data-category="materials">Materials</button>
+      <button class="category-btn" data-category="pricing">Pricing</button>
+      <button class="category-btn" data-category="shipping">Shipping</button>
+      <button class="category-btn" data-category="technical">Technical</button>
+    </div>
+
+    <!-- FAQ Items -->
+    <div class="faq-container">
       {% for block in section.blocks %}
-        <details class="faq-item">
-          <summary>{{ block.settings.question }}</summary>
-          <div class="faq-answer">{{ block.settings.answer }}</div>
-        </details>
+      <article class="faq-item" data-category="{{ block.settings.category | default: 'general' }}" data-faq-id="{{ block.id }}">
+        <button class="faq-question">
+          <div class="question-content">
+            <span class="question-text">{{ block.settings.question }}</span>
+            <span class="question-category">{{ block.settings.category | default: 'General' }}</span>
+          </div>
+          <div class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        
+        <div class="faq-answer">
+          <div class="answer-content">
+            {{ block.settings.answer }}
+            
+            {% if block.settings.additional_info %}
+            <div class="additional-info">
+              <h4>Additional Information</h4>
+              <p>{{ block.settings.additional_info }}</p>
+            </div>
+            {% endif %}
+            
+            {% if block.settings.related_links %}
+            <div class="related-links">
+              <h4>Related Links</h4>
+              <ul>
+                {% assign links = block.settings.related_links | split: ',' %}
+                {% for link in links %}
+                <li><a href="#">{{ link | strip }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+          
+          <div class="answer-actions">
+            <button class="btn btn-outline btn-sm helpful-btn" data-faq="{{ block.id }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+              </svg>
+              Helpful
+            </button>
+            <button class="btn btn-outline btn-sm not-helpful-btn" data-faq="{{ block.id }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 15V4a3 3 0 0 0-3-3H3v18h6a2 2 0 0 0 2-2z"></path>
+                <path d="M17 5l-3 3 3 3"></path>
+                <path d="M14 8h7"></path>
+              </svg>
+              Not Helpful
+            </button>
+            <button class="btn btn-outline btn-sm share-btn" data-faq="{{ block.id }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              Share
+            </button>
+          </div>
+        </div>
+      </article>
       {% endfor %}
+    </div>
+
+    <!-- No Results Message -->
+    <div class="no-results" id="no-results" style="display: none;">
+      <div class="no-results-content">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <h3>No results found</h3>
+        <p>Try searching with different keywords or browse all categories.</p>
+        <button class="btn btn-primary clear-search-and-show-all">Show All FAQs</button>
+      </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="contact-support mt-8">
+      <div class="support-card">
+        <div class="support-content">
+          <h3>Still have questions?</h3>
+          <p>Can't find the answer you're looking for? Our support team is here to help!</p>
+        </div>
+        <div class="support-actions">
+          <button class="btn btn-primary contact-support-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Contact Support
+          </button>
+          <button class="btn btn-outline live-chat-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Live Chat
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<style>
+.section-faq {
+  background-color: var(--bg-secondary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* FAQ Search */
+.faq-search {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1rem;
+  transition: all var(--transition-base);
+}
+
+.search-container:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.search-icon {
+  color: var(--text-light);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.faq-search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.faq-search-input::placeholder {
+  color: var(--text-light);
+}
+
+.clear-search-btn {
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  min-width: auto;
+}
+
+/* FAQ Categories */
+.faq-categories {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.category-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 0.875rem;
+}
+
+.category-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.category-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-inverse);
+}
+
+/* FAQ Container */
+.faq-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.faq-item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.faq-item.active {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+}
+
+/* FAQ Question */
+.faq-question {
+  width: 100%;
+  padding: 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--transition-base);
+  gap: 1rem;
+}
+
+.faq-question:hover {
+  background-color: var(--bg-secondary);
+}
+
+.question-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.question-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.question-category {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  background-color: var(--bg-tertiary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  width: fit-content;
+  text-transform: capitalize;
+}
+
+.faq-icon {
+  color: var(--primary-color);
+  transition: transform var(--transition-base);
+  flex-shrink: 0;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+
+/* FAQ Answer */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base);
+  border-top: 1px solid var(--border-light);
+}
+
+.faq-item.active .faq-answer {
+  max-height: 800px;
+}
+
+.answer-content {
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.answer-content p {
+  margin-bottom: 1rem;
+}
+
+.answer-content p:last-child {
+  margin-bottom: 0;
+}
+
+.additional-info {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.additional-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.related-links {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.related-links h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.related-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.related-links li {
+  margin-bottom: 0.5rem;
+}
+
+.related-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.related-links a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Answer Actions */
+.answer-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
+}
+
+.answer-actions .btn {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  gap: 0.375rem;
+}
+
+.helpful-btn.voted {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  color: var(--text-inverse);
+}
+
+.not-helpful-btn.voted {
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+  color: var(--text-inverse);
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.no-results-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.no-results-content svg {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.no-results-content h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.no-results-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Contact Support */
+.contact-support {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.support-card {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: var(--text-inverse);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.support-content h3 {
+  color: var(--text-inverse);
+  margin-bottom: 0.5rem;
+}
+
+.support-content p {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0;
+}
+
+.support-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.support-actions .btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.support-actions .btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faq-categories {
+    gap: 0.25rem;
+  }
+  
+  .category-btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .faq-question {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .question-text {
+    font-size: 1rem;
+  }
+  
+  .answer-content {
+    padding: 1rem;
+  }
+  
+  .answer-actions {
+    padding: 1rem;
+  }
+  
+  .answer-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .support-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .support-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .support-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Animations */
+.faq-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.2s; }
+.faq-item:nth-child(3) { animation-delay: 0.3s; }
+.faq-item:nth-child(4) { animation-delay: 0.4s; }
+.faq-item:nth-child(5) { animation-delay: 0.5s; }
+.faq-item:nth-child(6) { animation-delay: 0.6s; }
+
+.faq-item.hidden {
+  display: none;
+}
+
+/* Highlight search results */
+.search-highlight {
+  background-color: rgba(255, 235, 59, 0.3);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const faqItems = document.querySelectorAll('.faq-item');
+  const categoryButtons = document.querySelectorAll('.category-btn');
+  const searchInput = document.getElementById('faq-search');
+  const clearSearchBtn = document.getElementById('clear-search');
+  const noResults = document.getElementById('no-results');
+  const faqContainer = document.querySelector('.faq-container');
+  
+  let currentCategory = 'all';
+  let currentSearch = '';
+  
+  // FAQ Accordion functionality
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    
+    question.addEventListener('click', function() {
+      const isActive = item.classList.contains('active');
+      
+      // Close all other FAQ items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+        }
+      });
+      
+      // Toggle current item
+      item.classList.toggle('active');
+    });
+  });
+  
+  // Category filtering
+  categoryButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      currentCategory = category;
+      
+      // Update active button
+      categoryButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      filterFAQs();
+    });
+  });
+  
+  // Search functionality
+  let searchTimeout;
+  searchInput?.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const query = this.value.trim();
+    currentSearch = query;
+    
+    if (query.length > 0) {
+      clearSearchBtn.style.display = 'block';
+      searchTimeout = setTimeout(() => {
+        filterFAQs();
+      }, 300);
+    } else {
+      clearSearchBtn.style.display = 'none';
+      filterFAQs();
+    }
+  });
+  
+  // Clear search
+  clearSearchBtn?.addEventListener('click', function() {
+    searchInput.value = '';
+    currentSearch = '';
+    this.style.display = 'none';
+    filterFAQs();
+  });
+  
+  // Filter FAQs
+  function filterFAQs() {
+    let visibleCount = 0;
+    
+    faqItems.forEach(item => {
+      const category = item.getAttribute('data-category');
+      const questionText = item.querySelector('.question-text').textContent.toLowerCase();
+      const answerText = item.querySelector('.answer-content').textContent.toLowerCase();
+      const searchTerm = currentSearch.toLowerCase();
+      
+      const matchesCategory = currentCategory === 'all' || category === currentCategory;
+      const matchesSearch = searchTerm === '' || 
+                           questionText.includes(searchTerm) || 
+                           answerText.includes(searchTerm);
+      
+      if (matchesCategory && matchesSearch) {
+        item.classList.remove('hidden');
+        item.style.display = 'block';
+        visibleCount++;
+        
+        // Highlight search terms
+        if (searchTerm && searchTerm.length > 2) {
+          highlightSearchTerms(item, searchTerm);
+        } else {
+          removeHighlight(item);
+        }
+      } else {
+        item.classList.add('hidden');
+        item.style.display = 'none';
+      }
+    });
+    
+    // Show/hide no results message
+    if (visibleCount === 0) {
+      noResults.style.display = 'block';
+      faqContainer.style.display = 'none';
+    } else {
+      noResults.style.display = 'none';
+      faqContainer.style.display = 'block';
+    }
+  }
+  
+  // Highlight search terms
+  function highlightSearchTerms(element, searchTerm) {
+    const questionText = element.querySelector('.question-text');
+    const originalText = questionText.textContent;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    
+    if (originalText.toLowerCase().includes(searchTerm)) {
+      questionText.innerHTML = originalText.replace(regex, '<span class="search-highlight">$1</span>');
+    }
+  }
+  
+  // Remove highlight
+  function removeHighlight(element) {
+    const questionText = element.querySelector('.question-text');
+    questionText.innerHTML = questionText.textContent;
+  }
+  
+  // Clear search and show all
+  document.querySelector('.clear-search-and-show-all')?.addEventListener('click', function() {
+    searchInput.value = '';
+    currentSearch = '';
+    clearSearchBtn.style.display = 'none';
+    
+    // Reset to all categories
+    currentCategory = 'all';
+    categoryButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('[data-category="all"]').classList.add('active');
+    
+    filterFAQs();
+  });
+  
+  // Helpful/Not helpful buttons
+  document.querySelectorAll('.helpful-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const faqId = this.getAttribute('data-faq');
+      const notHelpfulBtn = document.querySelector(`.not-helpful-btn[data-faq="${faqId}"]`);
+      
+      if (this.classList.contains('voted')) {
+        this.classList.remove('voted');
+      } else {
+        this.classList.add('voted');
+        notHelpfulBtn.classList.remove('voted');
+        showNotification('Thanks for your feedback!', 'success');
+      }
+    });
+  });
+  
+  document.querySelectorAll('.not-helpful-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const faqId = this.getAttribute('data-faq');
+      const helpfulBtn = document.querySelector(`.helpful-btn[data-faq="${faqId}"]`);
+      
+      if (this.classList.contains('voted')) {
+        this.classList.remove('voted');
+      } else {
+        this.classList.add('voted');
+        helpfulBtn.classList.remove('voted');
+        showNotification('We\'ll work on improving this answer!', 'info');
+      }
+    });
+  });
+  
+  // Share functionality
+  document.querySelectorAll('.share-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const faqId = this.getAttribute('data-faq');
+      const faqItem = document.querySelector(`[data-faq-id="${faqId}"]`);
+      const question = faqItem.querySelector('.question-text').textContent;
+      const url = window.location.href + '#faq-' + faqId;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'FAQ: ' + question,
+          text: question,
+          url: url
+        });
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+          showNotification('Link copied to clipboard!', 'success');
+        });
+      }
+    });
+  });
+  
+  // Contact support button
+  document.querySelector('.contact-support-btn')?.addEventListener('click', function() {
+    // Open contact form or navigate to contact page
+    window.location.href = '/pages/contact';
+  });
+  
+  // Live chat button
+  document.querySelector('.live-chat-btn')?.addEventListener('click', function() {
+    // Open live chat widget
+    showNotification('Live chat coming soon!', 'info');
+  });
+  
+  // Utility function to show notifications
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    // Add styles if not already present
+    if (!document.querySelector('#notification-styles')) {
+      const style = document.createElement('style');
+      style.id = 'notification-styles';
+      style.textContent = `
+        .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: var(--bg-primary);
+          color: var(--text-primary);
+          padding: 1rem 1.5rem;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-lg);
+          z-index: 10000;
+          transform: translateX(400px);
+          transition: transform var(--transition-base);
+          border-left: 4px solid var(--primary-color);
+        }
+        .notification-success {
+          border-left-color: var(--success-color);
+        }
+        .notification-error {
+          border-left-color: var(--error-color);
+        }
+        .notification.show {
+          transform: translateX(0);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => notification.classList.add('show'), 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
+  
+  // Initialize
+  filterFAQs();
+});
+</script>
+
 {% schema %}
 {
-  "name": "FAQ Accordion (stub)",
+  "name": "Enhanced FAQ Section",
   "blocks": [
     {
       "type": "faq",
-      "name": "FAQ",
+      "name": "FAQ Item",
       "settings": [
-        { "type": "text", "id": "question", "label": "Question" },
-        { "type": "textarea", "id": "answer", "label": "Answer" }
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What file formats do you accept?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We accept STL, OBJ, STEP, STP, 3MF, and most common 3D file formats. If you have a different format, just send it over and we'll convert it for you.</p>"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            {"value": "general", "label": "General"},
+            {"value": "materials", "label": "Materials"},
+            {"value": "pricing", "label": "Pricing"},
+            {"value": "shipping", "label": "Shipping"},
+            {"value": "technical", "label": "Technical"}
+          ],
+          "default": "general"
+        },
+        {
+          "type": "textarea",
+          "id": "additional_info",
+          "label": "Additional Information"
+        },
+        {
+          "type": "text",
+          "id": "related_links",
+          "label": "Related Links",
+          "info": "Separate multiple links with commas"
+        }
       ]
     }
   ],
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading" },
-    { "type": "text", "id": "subheading", "label": "Subheading" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Everything you need to know about our 3D printing services."
+    }
   ],
-  "presets": [ { "name": "FAQ Accordion" } ]
+  "presets": [
+    {
+      "name": "Enhanced FAQ",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What file formats do you accept?",
+            "answer": "<p>We accept STL, OBJ, STEP, STP, 3MF, and most common 3D file formats. If you have a different format, just send it over and we'll convert it for you.</p>",
+            "category": "general"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How much does 3D printing cost?",
+            "answer": "<p>Pricing depends on material, size, and complexity. Upload your file for an instant quote, or contact us for custom project pricing. Most small parts start around $15.</p>",
+            "category": "pricing"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What materials do you offer?",
+            "answer": "<p>We stock PLA, PETG, ABS, Nylon, TPU, and multiple SLA resins. Visit our Materials page for a full breakdown of properties and use cases.</p>",
+            "category": "materials"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Standard orders ship within 5-7 business days. Rush orders (2-3 days) and same-day service are available for an additional fee. We ship worldwide.</p>",
+            "category": "shipping"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can you paint or finish my print?",
+            "answer": "<p>Yes! We offer sanding, priming, and full paint services. Select your preferred finish level during checkout or specify details in the Design Notes field.</p>",
+            "category": "technical"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

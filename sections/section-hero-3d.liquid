@@ -1,52 +1,464 @@
-{% comment %} Minimal stub: section-hero-3d.liquid {% endcomment %}
-<section id="section-hero-3d-{{ section.id }}" class="section-hero-3d kg-section">
-  <div class="kg-container">
-    {% if section.settings.hero_image %}
-      <div class="hero__media" data-kg-parallax data-kg-parallax-speed="0.12">
-        <img src="{{ section.settings.hero_image | image_url: '2048x' }}" alt="{{ section.settings.heading }}" loading="lazy" decoding="async">
-        <div class="kg-hero__canvas" aria-hidden="true"></div>
-      </div>
-    {% endif %}
+<section class="hero" id="hero-{{ section.id }}">
+  {% if section.settings.hero_image %}
+  <div class="hero-background">
+    <img src="{{ section.settings.hero_image | image_url: '2048x' }}" alt="{{ section.settings.heading }}" class="hero-image" loading="lazy">
+    <div class="hero-overlay"></div>
+  </div>
+  {% endif %}
+  
+  <div class="hero-particles" aria-hidden="true">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
 
-    <div class="hero__content">
+  <div class="container">
+    <div class="hero-content">
       {% if section.settings.badge_text %}
-        <div class="kg-badge kg-animate-fade-up kg-stagger-1">{{ section.settings.badge_text }}</div>
+      <div class="hero-badge animate-fade-in-up">
+        <span class="badge badge-primary">{{ section.settings.badge_text }}</span>
+      </div>
       {% endif %}
 
       {% if section.settings.heading %}
-        <h1 class="kg-animate-fade-up kg-stagger-2">{{ section.settings.heading }}</h1>
+      <h1 class="hero-title animate-fade-in-up">
+        {{ section.settings.heading }}
+      </h1>
       {% endif %}
 
       {% if section.settings.subheading %}
-        <div class="subheading kg-animate-fade-up kg-stagger-3">{{ section.settings.subheading }}</div>
+      <p class="hero-subtitle animate-fade-in-up">
+        {{ section.settings.subheading }}
+      </p>
       {% endif %}
 
-      <div class="hero__actions kg-animate-fade-up kg-stagger-4">
+      <div class="hero-actions animate-fade-in-up">
         {% if section.settings.cta_label and section.settings.cta_link %}
-          <a class="kg-btn kg-btn--solid" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+        <a href="{{ section.settings.cta_link }}" class="btn btn-primary btn-lg">
+          {{ section.settings.cta_label }}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
         {% endif %}
+        
         {% if section.settings.cta2_label and section.settings.cta2_link %}
-          <a class="kg-btn kg-btn--text" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2_label }}</a>
+        <a href="{{ section.settings.cta2_link }}" class="btn btn-secondary btn-lg">
+          {{ section.settings.cta2_label }}
+        </a>
         {% endif %}
+      </div>
+
+      {% if section.settings.show_search %}
+      <div class="hero-search animate-fade-in-up">
+        <div class="search-container">
+          <input type="search" class="search-input" placeholder="Upload your STL file or search for materials...">
+          <button class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Upload File
+          </button>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <div class="scroll-indicator">
+      <span class="scroll-text">Scroll to explore</span>
+      <div class="scroll-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
       </div>
     </div>
   </div>
 </section>
 
+<style>
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.7) 0%, 
+    rgba(0, 0, 0, 0.5) 50%, 
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.hero-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out;
+}
+
+.particle:nth-child(1) {
+  width: 4px;
+  height: 4px;
+  left: 10%;
+  top: 20%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.particle:nth-child(2) {
+  width: 6px;
+  height: 6px;
+  left: 20%;
+  top: 60%;
+  animation-delay: 2s;
+  animation-duration: 20s;
+}
+
+.particle:nth-child(3) {
+  width: 3px;
+  height: 3px;
+  left: 60%;
+  top: 30%;
+  animation-delay: 4s;
+  animation-duration: 30s;
+}
+
+.particle:nth-child(4) {
+  width: 5px;
+  height: 5px;
+  left: 80%;
+  top: 70%;
+  animation-delay: 1s;
+  animation-duration: 22s;
+}
+
+.particle:nth-child(5) {
+  width: 4px;
+  height: 4px;
+  left: 30%;
+  top: 80%;
+  animation-delay: 3s;
+  animation-duration: 28s;
+}
+
+.particle:nth-child(6) {
+  width: 7px;
+  height: 7px;
+  left: 70%;
+  top: 10%;
+  animation-delay: 5s;
+  animation-duration: 25s;
+}
+
+.particle:nth-child(7) {
+  width: 3px;
+  height: 3px;
+  left: 90%;
+  top: 40%;
+  animation-delay: 2s;
+  animation-duration: 20s;
+}
+
+.particle:nth-child(8) {
+  width: 5px;
+  height: 5px;
+  left: 50%;
+  top: 90%;
+  animation-delay: 4s;
+  animation-duration: 30s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) scale(1.1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px) scale(0.9);
+    opacity: 0.2;
+  }
+  75% {
+    transform: translateY(-20px) translateX(5px) scale(1.05);
+    opacity: 0.4;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  margin-bottom: 2.5rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.hero-search {
+  margin-top: 2rem;
+}
+
+.search-container {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  padding: 0.5rem;
+}
+
+.search-container .search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.search-container .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-container .search-input:focus {
+  outline: none;
+}
+
+.search-container .btn {
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: all var(--transition-base);
+}
+
+.search-container .btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+}
+
+.scroll-arrow {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Staggered animations */
+.hero-badge {
+  animation-delay: 0.1s;
+}
+
+.hero-title {
+  animation-delay: 0.3s;
+}
+
+.hero-subtitle {
+  animation-delay: 0.5s;
+}
+
+.hero-actions {
+  animation-delay: 0.7s;
+}
+
+.hero-search {
+  animation-delay: 0.9s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 2rem 1rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .search-container .btn {
+    width: 100%;
+  }
+  
+  .hero-scroll {
+    bottom: 1rem;
+  }
+}
+</style>
+
 {% schema %}
 {
-  "name": "Hero 3D (stub)",
+  "name": "Enhanced Hero Section",
   "settings": [
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
-    { "type": "text", "id": "badge_text", "label": "Badge text" },
-    { "type": "text", "id": "heading", "label": "Heading" },
-    { "type": "textarea", "id": "subheading", "label": "Subheading" },
-    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": false },
-    { "type": "text", "id": "cta_label", "label": "CTA label" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" },
-    { "type": "text", "id": "cta2_label", "label": "CTA 2 label" },
-    { "type": "url", "id": "cta2_link", "label": "CTA 2 link" }
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Now Accepting Orders"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Precision Prints. Delivered."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "From concept file to finished prototype — industrial-grade 3D printing for creators, engineers, and dreamers."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show File Upload/Search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary CTA Button",
+      "default": "Upload STL"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "cta2_label",
+      "label": "Secondary CTA Button",
+      "default": "Browse Catalog"
+    },
+    {
+      "type": "url",
+      "id": "cta2_link",
+      "label": "Secondary CTA Link"
+    }
   ],
-  "presets": [ { "name": "Hero 3D" } ]
+  "presets": [
+    {
+      "name": "Enhanced Hero",
+      "category": "Hero"
+    }
+  ]
 }
 {% endschema %}

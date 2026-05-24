@@ -1,0 +1,547 @@
+<section class="section section-testimonials" id="testimonials-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Testimonials Grid -->
+    <div class="testimonials-grid">
+      {% for block in section.blocks %}
+      <article class="testimonial-card" data-testimonial-id="{{ block.id }}">
+        <div class="testimonial-content">
+          <div class="testimonial-rating">
+            {% assign rating = block.settings.rating | default: 5 %}
+            {% for i in (1..5) %}
+              {% if i <= rating %}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star filled">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              {% else %}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="star">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <blockquote class="testimonial-text">
+            "{{ block.settings.testimonial }}"
+          </blockquote>
+
+          <div class="testimonial-footer">
+            {% if block.settings.avatar %}
+            <div class="testimonial-avatar">
+              <img src="{{ block.settings.avatar | image_url: '100x100' }}" alt="{{ block.settings.name }}" loading="lazy">
+            </div>
+            {% endif %}
+            
+            <div class="testimonial-author">
+              <div class="author-name">{{ block.settings.name }}</div>
+              <div class="author-title">{{ block.settings.title }}</div>
+              {% if block.settings.company %}
+              <div class="author-company">{{ block.settings.company }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {% if block.settings.project_name %}
+        <div class="testimonial-project">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+          </svg>
+          <span>{{ block.settings.project_name }}</span>
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Testimonial Navigation -->
+    {% if section.blocks.size > 3 %}
+    <div class="testimonials-navigation">
+      <button class="btn btn-outline testimonial-prev" id="testimonials-prev">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Previous
+      </button>
+      <div class="testimonial-dots" id="testimonial-dots">
+        {% for block in section.blocks %}
+        <button class="testimonial-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.index0 }}"></button>
+        {% endfor %}
+      </div>
+      <button class="btn btn-outline testimonial-next" id="testimonials-next">
+        Next
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    {% if section.settings.cta_text %}
+    <div class="testimonials-cta text-center mt-8">
+      <p class="cta-text">{{ section.settings.cta_text }}</p>
+      {% if section.settings.cta_button_text and section.settings.cta_button_link %}
+      <a href="{{ section.settings.cta_button_link }}" class="btn btn-primary">
+        {{ section.settings.cta_button_text }}
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.section-testimonials {
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Testimonials Grid */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.testimonial-card {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Testimonial Content */
+.testimonial-content {
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.star.filled {
+  color: #fbbf24;
+}
+
+.star {
+  color: var(--border-color);
+  transition: color var(--transition-base);
+}
+
+.testimonial-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+  font-style: italic;
+}
+
+.testimonial-footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial-author {
+  flex: 1;
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.author-title {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.author-company {
+  font-size: 0.875rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Testimonial Project */
+.testimonial-project {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Testimonials Navigation */
+.testimonials-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.testimonial-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.testimonial-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-color);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.testimonial-dot:hover {
+  background: var(--primary-light);
+}
+
+.testimonial-dot.active {
+  background: var(--primary-color);
+  width: 24px;
+  border-radius: var(--radius-sm);
+}
+
+/* Testimonials CTA */
+.testimonials-cta {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-text {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .testimonial-card {
+    padding: 1.5rem;
+  }
+  
+  .testimonials-navigation {
+    gap: 1rem;
+  }
+  
+  .testimonial-prev,
+  .testimonial-next {
+    font-size: 0.875rem;
+  }
+}
+
+/* Animations */
+.testimonial-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+.testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+.testimonial-card:nth-child(3) { animation-delay: 0.3s; }
+.testimonial-card:nth-child(4) { animation-delay: 0.4s; }
+.testimonial-card:nth-child(5) { animation-delay: 0.5s; }
+.testimonial-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Carousel functionality for mobile */
+@media (max-width: 768px) {
+  .testimonials-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .testimonial-card {
+    min-width: calc(100% - 2rem);
+    scroll-snap-align: start;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const testimonialsGrid = document.querySelector('.testimonials-grid');
+  const prevBtn = document.getElementById('testimonials-prev');
+  const nextBtn = document.getElementById('testimonials-next');
+  const dots = document.querySelectorAll('.testimonial-dot');
+  
+  if (!testimonialsGrid || !prevBtn || !nextBtn) return;
+  
+  let currentSlide = 0;
+  const totalSlides = dots.length;
+  
+  // Update dots
+  function updateDots() {
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentSlide);
+    });
+  }
+  
+  // Navigate to slide
+  function goToSlide(slideIndex) {
+    currentSlide = Math.max(0, Math.min(slideIndex, totalSlides - 1));
+    updateDots();
+    
+    // On mobile, scroll the carousel
+    if (window.innerWidth <= 768) {
+      const slideWidth = testimonialsGrid.children[0].offsetWidth + 16; // width + gap
+      testimonialsGrid.scrollTo({
+        left: currentSlide * slideWidth,
+        behavior: 'smooth'
+      });
+    }
+  }
+  
+  // Previous slide
+  prevBtn.addEventListener('click', () => {
+    goToSlide(currentSlide - 1);
+  });
+  
+  // Next slide
+  nextBtn.addEventListener('click', () => {
+    goToSlide(currentSlide + 1);
+  });
+  
+  // Dot navigation
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      goToSlide(index);
+    });
+  });
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      goToSlide(currentSlide - 1);
+    } else if (e.key === 'ArrowRight') {
+      goToSlide(currentSlide + 1);
+    }
+  });
+  
+  // Auto-rotate testimonials
+  let autoRotateInterval;
+  
+  function startAutoRotate() {
+    autoRotateInterval = setInterval(() => {
+      goToSlide(currentSlide + 1);
+    }, 5000);
+  }
+  
+  function stopAutoRotate() {
+    clearInterval(autoRotateInterval);
+  }
+  
+  // Start auto-rotate
+  if (totalSlides > 1) {
+    startAutoRotate();
+    
+    // Pause on hover
+    testimonialsGrid.addEventListener('mouseenter', stopAutoRotate);
+    testimonialsGrid.addEventListener('mouseleave', startAutoRotate);
+    
+    // Pause on focus
+    prevBtn.addEventListener('focus', stopAutoRotate);
+    nextBtn.addEventListener('focus', stopAutoRotate);
+    
+    // Resume on blur
+    prevBtn.addEventListener('blur', startAutoRotate);
+    nextBtn.addEventListener('blur', startAutoRotate);
+  }
+  
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (window.innerWidth > 768) {
+        testimonialsGrid.scrollTo({ left: 0 });
+      }
+    }, 250);
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials Section",
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial Text",
+          "default": "The quality and attention to detail exceeded my expectations. The team delivered my prototype ahead of schedule and it was perfect!"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "John Smith"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Customer Title",
+          "default": "Product Designer"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Company",
+          "default": "Tech Innovations Inc."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Customer Avatar"
+        },
+        {
+          "type": "text",
+          "id": "project_name",
+          "label": "Project Name",
+          "default": "Drone Housing Prototype"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "What Our Clients Say"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Real feedback from real customers who trust us with their 3D printing needs."
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Ready to join hundreds of satisfied customers? Let's bring your ideas to life!"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA Button Text",
+      "default": "Start Your Project"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Sarah Johnson",
+            "title": "Engineering Manager",
+            "company": "Aerospace Dynamics",
+            "project_name": "Satellite Component",
+            "rating": 5,
+            "testimonial": "Exceptional precision and quality. The team understood our technical requirements and delivered components that met our exact specifications."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Michael Chen",
+            "title": "Creative Director",
+            "company": "Design Studio Pro",
+            "project_name": "Art Installation",
+            "rating": 5,
+            "testimonial": "The creative possibilities are endless! The team helped us push the boundaries of what's possible with 3D printing."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Emily Rodriguez",
+            "title": "Product Developer",
+            "company": "Medical Devices Co",
+            "project_name": "Surgical Tool Prototype",
+            "rating": 5,
+            "testimonial": "Fast turnaround and medical-grade materials. They've become our go-to partner for rapid prototyping."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "show_vendor": false,
+        "show_payment_button": true,
+        "show_cart_note": true,
+        "show_shipping_calculator": true,
+        "show_gift_card_recipient": true
+      }
+    },
+    "cart-recommendations": {
+      "type": "cart-recommendations",
+      "settings": {
+        "heading": "You might also like"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "cart-recommendations"
+  ]
+}

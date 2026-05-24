@@ -1,0 +1,840 @@
+<section class="section section-process" id="process-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Process Timeline -->
+    <div class="process-timeline">
+      {% for block in section.blocks %}
+      <div class="process-step" data-step="{{ forloop.index }}">
+        <div class="step-marker">
+          <div class="step-number">{{ forloop.index }}</div>
+          {% if block.settings.icon %}
+          <div class="step-icon">{{ block.settings.icon }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="step-content">
+          <div class="step-header">
+            <h3 class="step-title">{{ block.settings.title }}</h3>
+            {% if block.settings.duration %}
+            <span class="step-duration">{{ block.settings.duration }}</span>
+            {% endif %}
+          </div>
+          
+          <p class="step-description">{{ block.settings.description }}</p>
+          
+          {% if block.settings.details %}
+          <div class="step-details">
+            <ul>
+              {% assign details = block.settings.details | split: ',' %}
+              {% for detail in details %}
+              <li>{{ detail | strip }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          
+          {% if block.settings.cta_text and block.settings.cta_link %}
+          <a href="{{ block.settings.cta_link }}" class="btn btn-outline btn-sm step-cta">
+            {{ block.settings.cta_text }}
+          </a>
+          {% endif %}
+        </div>
+        
+        {% if block.settings.image %}
+        <div class="step-image">
+          <img src="{{ block.settings.image | image_url: '600x400' }}" 
+               alt="{{ block.settings.title }}" 
+               loading="lazy">
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Process Stats -->
+    {% if section.settings.show_stats %}
+    <div class="process-stats">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ section.settings.stat1_number }}">{{ section.settings.stat1_number }}</div>
+          <div class="stat-label">{{ section.settings.stat1_label }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ section.settings.stat2_number }}">{{ section.settings.stat2_number }}</div>
+          <div class="stat-label">{{ section.settings.stat2_label }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ section.settings.stat3_number }}">{{ section.settings.stat3_number }}</div>
+          <div class="stat-label">{{ section.settings.stat3_label }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ section.settings.stat4_number }}">{{ section.settings.stat4_number }}</div>
+          <div class="stat-label">{{ section.settings.stat4_label }}</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- CTA Section -->
+    {% if section.settings.cta_text %}
+    <div class="process-cta text-center mt-8">
+      <div class="cta-content">
+        <h3>{{ section.settings.cta_text }}</h3>
+        {% if section.settings.cta_subtext %}
+        <p>{{ section.settings.cta_subtext }}</p>
+        {% endif %}
+      </div>
+      <div class="cta-actions">
+        {% if section.settings.primary_cta_text and section.settings.primary_cta_link %}
+        <a href="{{ section.settings.primary_cta_link }}" class="btn btn-primary btn-lg">
+          {{ section.settings.primary_cta_text }}
+        </a>
+        {% endif %}
+        {% if section.settings.secondary_cta_text and section.settings.secondary_cta_link %}
+        <a href="{{ section.settings.secondary_cta_link }}" class="btn btn-outline btn-lg">
+          {{ section.settings.secondary_cta_text }}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.section-process {
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Process Timeline */
+.process-timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+
+.process-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
+  transform: translateX(-50%);
+}
+
+.process-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.process-step:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.step-marker {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 2rem;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-primary);
+  border: 3px solid var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.step-content {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: relative;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.step-content:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-color);
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.step-duration {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.step-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.step-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.step-details li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.step-details li::before {
+  content: "→";
+  color: var(--primary-color);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.step-cta {
+  margin-top: 1rem;
+}
+
+.step-image {
+  flex: 1;
+  margin: 0 2rem;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-base);
+}
+
+.step-image:hover {
+  transform: scale(1.05);
+}
+
+.step-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Process Stats */
+.process-stats {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+  margin: 4rem 0;
+  color: white;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.stat-label {
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
+/* Process CTA */
+.process-cta {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-content {
+  margin-bottom: 2rem;
+}
+
+.cta-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.cta-content p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .process-timeline::before {
+    left: 30px;
+  }
+  
+  .process-step {
+    flex-direction: column !important;
+    align-items: flex-start;
+    margin-left: 60px;
+  }
+  
+  .step-marker {
+    position: absolute;
+    left: -60px;
+    margin: 0;
+  }
+  
+  .step-content {
+    width: 100%;
+  }
+  
+  .step-image {
+    margin: 1rem 0;
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .process-timeline::before {
+    left: 20px;
+  }
+  
+  .process-step {
+    margin-left: 40px;
+    margin-bottom: 2rem;
+  }
+  
+  .step-marker {
+    left: -40px;
+  }
+  
+  .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .step-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  
+  .step-content {
+    padding: 1.5rem;
+  }
+  
+  .step-title {
+    font-size: 1.25rem;
+  }
+  
+  .step-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .process-stats {
+    padding: 2rem 1rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .cta-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .cta-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Animations */
+.process-step {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.process-step:nth-child(1) { animation-delay: 0.1s; }
+.process-step:nth-child(2) { animation-delay: 0.3s; }
+.process-step:nth-child(3) { animation-delay: 0.5s; }
+.process-step:nth-child(4) { animation-delay: 0.7s; }
+.process-step:nth-child(5) { animation-delay: 0.9s; }
+
+.stat-item {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.1s; }
+.stat-item:nth-child(2) { animation-delay: 0.2s; }
+.stat-item:nth-child(3) { animation-delay: 0.3s; }
+.stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Connection lines for even steps */
+.process-step:nth-child(even) .step-content::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--primary-color);
+}
+
+.process-step:nth-child(odd) .step-content::before {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--primary-color);
+}
+
+@media (max-width: 1024px) {
+  .process-step .step-content::before {
+    left: -20px;
+    right: auto;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Animated counter for stats
+  const statNumbers = document.querySelectorAll('.stat-number');
+  
+  const animateCounter = (element) => {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    
+    const updateCounter = () => {
+      current += step;
+      if (current < target) {
+        element.textContent = Math.floor(current);
+        requestAnimationFrame(updateCounter);
+      } else {
+        element.textContent = target;
+      }
+    };
+    
+    updateCounter();
+  };
+  
+  // Intersection Observer for stats animation
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+        animateCounter(entry.target);
+        entry.target.classList.add('animated');
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  statNumbers.forEach(stat => statsObserver.observe(stat));
+  
+  // Smooth scroll for step CTAs
+  document.querySelectorAll('.step-cta').forEach(button => {
+    button.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+  
+  // Process step hover effects
+  const processSteps = document.querySelectorAll('.process-step');
+  
+  processSteps.forEach(step => {
+    step.addEventListener('mouseenter', function() {
+      const stepNumber = this.querySelector('.step-number');
+      const stepIcon = this.querySelector('.step-icon');
+      
+      if (stepNumber) {
+        stepNumber.style.transform = 'scale(1.1)';
+        stepNumber.style.transition = 'transform 0.3s ease';
+      }
+      
+      if (stepIcon) {
+        stepIcon.style.transform = 'scale(1.1) rotate(10deg)';
+        stepIcon.style.transition = 'transform 0.3s ease';
+      }
+    });
+    
+    step.addEventListener('mouseleave', function() {
+      const stepNumber = this.querySelector('.step-number');
+      const stepIcon = this.querySelector('.step-icon');
+      
+      if (stepNumber) {
+        stepNumber.style.transform = 'scale(1)';
+      }
+      
+      if (stepIcon) {
+        stepIcon.style.transform = 'scale(1) rotate(0deg)';
+      }
+    });
+  });
+  
+  // Timeline progress indicator
+  const updateTimelineProgress = () => {
+    const timeline = document.querySelector('.process-timeline');
+    const timelineRect = timeline.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const timelineTop = timelineRect.top;
+    const timelineBottom = timelineRect.bottom;
+    
+    // Calculate how much of the timeline is visible
+    const visibleTop = Math.max(0, -timelineTop);
+    const visibleHeight = Math.min(timelineRect.height, viewportHeight - timelineTop + visibleTop);
+    const progress = visibleHeight / timelineRect.height;
+    
+    // Update timeline line gradient based on progress
+    const timelineLine = timeline.querySelector('.process-timeline::before');
+    if (timelineLine) {
+      // This would require CSS custom properties for dynamic updates
+      // For now, the static gradient provides a nice visual effect
+    }
+  };
+  
+  // Update timeline progress on scroll
+  let ticking = false;
+  const requestTick = () => {
+    if (!ticking) {
+      requestAnimationFrame(updateTimelineProgress);
+      ticking = true;
+      setTimeout(() => { ticking = false; }, 100);
+    }
+  };
+  
+  window.addEventListener('scroll', requestTick);
+  
+  // Keyboard navigation for timeline
+  let currentStepIndex = 0;
+  const steps = Array.from(document.querySelectorAll('.process-step'));
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' && currentStepIndex < steps.length - 1) {
+      currentStepIndex++;
+      steps[currentStepIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (e.key === 'ArrowUp' && currentStepIndex > 0) {
+      currentStepIndex--;
+      steps[currentStepIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  
+  // Update current step index based on scroll position
+  const stepObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        currentStepIndex = steps.indexOf(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  steps.forEach(step => stepObserver.observe(step));
+});
+</script>
+
+{% schema %}
+{
+  "name": "Process Section",
+  "blocks": [
+    {
+      "type": "process_step",
+      "name": "Process Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title",
+          "default": "Consultation & Design"
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "1-2 Days"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Step Description",
+          "default": "We work with you to understand your requirements and optimize your design for 3D printing."
+        },
+        {
+          "type": "textarea",
+          "id": "details",
+          "label": "Step Details",
+          "info": "Separate multiple details with commas",
+          "default": "Design review, File optimization, Material selection, Cost estimation"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (HTML/SVG)",
+          "info": "Optional: Add custom HTML or SVG icon code"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Button Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Button Link"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Our Process"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "From concept to creation, we guide you through every step of the 3D printing journey"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Statistics",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat1_number",
+      "label": "Stat 1 Number",
+      "default": "500+"
+    },
+    {
+      "type": "text",
+      "id": "stat1_label",
+      "label": "Stat 1 Label",
+      "default": "Projects Completed"
+    },
+    {
+      "type": "text",
+      "id": "stat2_number",
+      "label": "Stat 2 Number",
+      "default": "24hr"
+    },
+    {
+      "type": "text",
+      "id": "stat2_label",
+      "label": "Stat 2 Label",
+      "default": "Average Turnaround"
+    },
+    {
+      "type": "text",
+      "id": "stat3_number",
+      "label": "Stat 3 Number",
+      "default": "99%"
+    },
+    {
+      "type": "text",
+      "id": "stat3_label",
+      "label": "Stat 3 Label",
+      "default": "Customer Satisfaction"
+    },
+    {
+      "type": "text",
+      "id": "stat4_number",
+      "label": "Stat 4 Number",
+      "default": "15+"
+    },
+    {
+      "type": "text",
+      "id": "stat4_label",
+      "label": "Stat 4 Label",
+      "default": "Materials Available"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA Heading",
+      "default": "Ready to Start Your Project?"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_subtext",
+      "label": "CTA Subtext",
+      "default": "Join hundreds of satisfied customers who trust us with their 3D printing needs."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Button",
+      "default": "Get Started"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Button",
+      "default": "View Portfolio"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Process Timeline",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "process_step",
+          "settings": {
+            "title": "Consultation & Design",
+            "duration": "1-2 Days",
+            "description": "We work with you to understand your requirements and optimize your design for 3D printing.",
+            "details": "Design review, File optimization, Material selection, Cost estimation"
+          }
+        },
+        {
+          "type": "process_step",
+          "settings": {
+            "title": "Prototyping & Testing",
+            "duration": "2-3 Days",
+            "description": "We create initial prototypes and conduct thorough testing to ensure quality.",
+            "details": "Sample printing, Quality checks, Performance testing, Iterations"
+          }
+        },
+        {
+          "type": "process_step",
+          "settings": {
+            "title": "Production & Finishing",
+            "duration": "3-5 Days",
+            "description": "Final production runs with professional finishing and quality assurance.",
+            "details": "Batch printing, Post-processing, Quality control, Packaging"
+          }
+        },
+        {
+          "type": "process_step",
+          "settings": {
+            "title": "Delivery & Support",
+            "duration": "1-2 Days",
+            "description": "Secure delivery and ongoing support for your project needs.",
+            "details": "Secure shipping, Delivery tracking, Customer support, Follow-up"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

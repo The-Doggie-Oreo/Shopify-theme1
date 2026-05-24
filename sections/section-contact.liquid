@@ -1,0 +1,970 @@
+<section class="section section-contact" id="contact-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="contact-content">
+      <!-- Contact Form -->
+      <div class="contact-form-container">
+        <div class="form-header">
+          <h3>Send us a message</h3>
+          <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+        </div>
+
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name">Full Name *</label>
+              <input type="text" id="contact-name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email Address *</label>
+              <input type="email" id="contact-email" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-phone">Phone Number</label>
+              <input type="tel" id="contact-phone" name="phone">
+            </div>
+            <div class="form-group">
+              <label for="contact-company">Company</label>
+              <input type="text" id="contact-company" name="company">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject">Subject *</label>
+            <select id="contact-subject" name="subject" required>
+              <option value="">Select a subject</option>
+              <option value="general">General Inquiry</option>
+              <option value="quote">Request a Quote</option>
+              <option value="technical">Technical Support</option>
+              <option value="partnership">Partnership Opportunity</option>
+              <option value="feedback">Feedback</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message">Message *</label>
+            <textarea id="contact-message" name="message" rows="6" required placeholder="Tell us about your project or inquiry..."></textarea>
+          </div>
+
+          {% if section.settings.show_file_upload %}
+          <div class="form-group">
+            <label for="contact-file">Attach Files</label>
+            <div class="file-upload">
+              <input type="file" id="contact-file" name="file" accept=".stl,.obj,.step,.stp,.3mf,.pdf,.doc,.docx" multiple>
+              <div class="file-upload-label">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Drop files here or click to browse</span>
+                <small>STL, OBJ, STEP, 3MF, PDF, DOC (Max 10MB)</small>
+              </div>
+              <div class="file-list" id="file-list"></div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+              Send Message
+            </button>
+            <button type="button" class="btn btn-outline" id="reset-form">
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <div class="info-card">
+          <h3>Get in Touch</h3>
+          <p>Choose your preferred way to reach us. We're here to help!</p>
+
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <div class="method-content">
+                <h4>Email</h4>
+                <a href="mailto:{{ section.settings.email | default: 'info@3dprinting.com' }}">{{ section.settings.email | default: 'info@3dprinting.com' }}</a>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <div class="method-content">
+                <h4>Phone</h4>
+                <a href="tel:{{ section.settings.phone | default: '+15551234567' }}">{{ section.settings.phone | default: '+1 (555) 123-4567' }}</a>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <div class="method-content">
+                <h4>Address</h4>
+                <address>{{ section.settings.address | default: '123 Innovation Drive, Tech City, TC 12345' }}</address>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div class="method-content">
+                <h4>Live Chat</h4>
+                <button class="btn btn-outline btn-sm chat-btn">Start Chat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business Hours -->
+        <div class="info-card">
+          <h3>Business Hours</h3>
+          <div class="hours-list">
+            <div class="hours-item">
+              <span class="day">Monday - Friday</span>
+              <span class="time">9:00 AM - 6:00 PM</span>
+            </div>
+            <div class="hours-item">
+              <span class="day">Saturday</span>
+              <span class="time">10:00 AM - 4:00 PM</span>
+            </div>
+            <div class="hours-item">
+              <span class="day">Sunday</span>
+              <span class="time">Closed</span>
+            </div>
+          </div>
+          <div class="hours-note">
+            <p><strong>Emergency Support:</strong> Available 24/7 for urgent projects</p>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="info-card">
+          <h3>Follow Us</h3>
+          <p>Stay updated with our latest projects and promotions</p>
+          <div class="social-links">
+            {% if section.settings.facebook_url %}
+            <a href="{{ section.settings.facebook_url }}" class="social-link" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            {% endif %}
+            {% if section.settings.twitter_url %}
+            <a href="{{ section.settings.twitter_url }}" class="social-link" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+            {% endif %}
+            {% if section.settings.instagram_url %}
+            <a href="{{ section.settings.instagram_url }}" class="social-link" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            {% endif %}
+            {% if section.settings.linkedin_url %}
+            <a href="{{ section.settings.linkedin_url }}" class="social-link" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Section -->
+    {% if section.settings.show_map %}
+    <div class="contact-map">
+      <div class="map-container">
+        <div class="map-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <h3>Visit Our Workshop</h3>
+          <p>{{ section.settings.address | default: '123 Innovation Drive, Tech City, TC 12345' }}</p>
+          <button class="btn btn-primary" id="get-directions">Get Directions</button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.section-contact {
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Contact Content Layout */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+/* Contact Form */
+.contact-form-container {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all var(--transition-base);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* File Upload */
+.file-upload {
+  position: relative;
+}
+
+.file-upload input[type="file"] {
+  display: none;
+}
+
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.file-upload-label:hover {
+  border-color: var(--primary-color);
+  background: rgba(0, 102, 255, 0.05);
+}
+
+.file-upload-label svg {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.file-upload-label span {
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.file-upload-label small {
+  color: var(--text-light);
+  font-size: 0.75rem;
+}
+
+.file-list {
+  margin-top: 1rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+}
+
+.file-item-name {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.file-item-remove {
+  background: none;
+  border: none;
+  color: var(--error-color);
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-actions .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.info-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.info-card > p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Contact Methods */
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.method-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.method-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.method-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.method-content a:hover {
+  text-decoration: underline;
+}
+
+.method-content address {
+  color: var(--text-secondary);
+  font-style: normal;
+  line-height: 1.5;
+}
+
+/* Business Hours */
+.hours-list {
+  margin-bottom: 1rem;
+}
+
+.hours-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.hours-item:last-child {
+  border-bottom: none;
+}
+
+.day {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.time {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.hours-note {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.hours-note p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all var(--transition-base);
+}
+
+.social-link:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Contact Map */
+.contact-map {
+  margin-top: 4rem;
+}
+
+.map-container {
+  height: 400px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+}
+
+.map-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem;
+}
+
+.map-placeholder svg {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.map-placeholder h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.map-placeholder p {
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-form-container {
+    padding: 1.5rem;
+  }
+  
+  .info-card {
+    padding: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .contact-method {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .hours-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+}
+
+/* Form Validation */
+.form-group input:invalid,
+.form-group select:invalid,
+.form-group textarea:invalid {
+  border-color: var(--error-color);
+}
+
+.form-group input:valid,
+.form-group select:valid,
+.form-group textarea:valid {
+  border-color: var(--success-color);
+}
+
+/* Loading State */
+.form-loading .btn[type="submit"] {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.form-loading .btn[type="submit"]::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Success Message */
+.form-success {
+  background: var(--success-color);
+  color: white;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Error Message */
+.form-error {
+  background: var(--error-color);
+  color: white;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const contactForm = document.getElementById('contact-form');
+  const resetBtn = document.getElementById('reset-form');
+  const fileInput = document.getElementById('contact-file');
+  const fileList = document.getElementById('file-list');
+  const chatBtn = document.querySelector('.chat-btn');
+  const getDirectionsBtn = document.getElementById('get-directions');
+  
+  // File upload handling
+  if (fileInput && fileList) {
+    const uploadedFiles = [];
+    
+    fileInput.addEventListener('change', function(e) {
+      const files = Array.from(e.target.files);
+      
+      files.forEach(file => {
+        if (file.size > 10 * 1024 * 1024) { // 10MB limit
+          showNotification('File size must be less than 10MB', 'error');
+          return;
+        }
+        
+        uploadedFiles.push(file);
+        addFileToList(file);
+      });
+    });
+    
+    function addFileToList(file) {
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      fileItem.innerHTML = `
+        <span class="file-item-name">${file.name} (${formatFileSize(file.size)})</span>
+        <button type="button" class="file-item-remove" data-file="${file.name}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      
+      fileList.appendChild(fileItem);
+      
+      fileItem.querySelector('.file-item-remove').addEventListener('click', function() {
+        const fileName = this.getAttribute('data-file');
+        const index = uploadedFiles.findIndex(f => f.name === fileName);
+        if (index > -1) {
+          uploadedFiles.splice(index, 1);
+        }
+        fileItem.remove();
+      });
+    }
+    
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+  }
+  
+  // Form submission
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Add loading state
+      contactForm.classList.add('form-loading');
+      
+      // Simulate form submission
+      setTimeout(() => {
+        contactForm.classList.remove('form-loading');
+        
+        // Show success message
+        showNotification('Message sent successfully! We\'ll get back to you within 24 hours.', 'success');
+        
+        // Reset form
+        contactForm.reset();
+        if (fileList) {
+          fileList.innerHTML = '';
+        }
+      }, 2000);
+    });
+  }
+  
+  // Reset form
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      contactForm.reset();
+      if (fileList) {
+        fileList.innerHTML = '';
+      }
+    });
+  }
+  
+  // Live chat button
+  if (chatBtn) {
+    chatBtn.addEventListener('click', function() {
+      showNotification('Live chat feature coming soon!', 'info');
+    });
+  }
+  
+  // Get directions button
+  if (getDirectionsBtn) {
+    getDirectionsBtn.addEventListener('click', function() {
+      const address = '{{ section.settings.address | default: "123 Innovation Drive, Tech City, TC 12345" }}';
+      const encodedAddress = encodeURIComponent(address);
+      window.open(`https://maps.google.com/?q=${encodedAddress}`, '_blank');
+    });
+  }
+  
+  // Form validation feedback
+  const inputs = contactForm?.querySelectorAll('input, select, textarea');
+  inputs?.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (this.hasAttribute('required') && !this.value.trim()) {
+        this.style.borderColor = 'var(--error-color)';
+      } else if (this.value.trim()) {
+        this.style.borderColor = 'var(--success-color)';
+      }
+    });
+    
+    input.addEventListener('focus', function() {
+      this.style.borderColor = 'var(--primary-color)';
+    });
+  });
+  
+  // Smooth scroll to contact form
+  document.querySelectorAll('a[href^="#contact"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('.section-contact').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    });
+  });
+  
+  // Notification system
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    // Add styles if not already present
+    if (!document.querySelector('#notification-styles')) {
+      const style = document.createElement('style');
+      style.id = 'notification-styles';
+      style.textContent = `
+        .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: var(--bg-primary);
+          color: var(--text-primary);
+          padding: 1rem 1.5rem;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-lg);
+          z-index: 10000;
+          transform: translateX(400px);
+          transition: transform var(--transition-base);
+          border-left: 4px solid var(--primary-color);
+          max-width: 400px;
+        }
+        .notification-success {
+          border-left-color: var(--success-color);
+          background: var(--success-color);
+          color: white;
+        }
+        .notification-error {
+          border-left-color: var(--error-color);
+          background: var(--error-color);
+          color: white;
+        }
+        .notification-info {
+          border-left-color: var(--primary-color);
+        }
+        .notification.show {
+          transform: translateX(0);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => notification.classList.add('show'), 10);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Contact Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "We're here to help with your 3D printing needs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_file_upload",
+      "label": "Show File Upload",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Show Map",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "default": "info@3dprinting.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address",
+      "default": "123 Innovation Drive, Tech City, TC 12345"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Section",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

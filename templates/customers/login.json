@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "show_signup_form": true,
+        "show_guest_checkout": true,
+        "show_social_login": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

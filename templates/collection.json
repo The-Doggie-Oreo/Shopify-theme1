@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "settings": {
+        "show_collection_image": true,
+        "show_collection_description": true
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "filter_by_tag": {
+          "type": "filter",
+          "settings": {
+            "filter_type": "tag",
+            "title": "Filter by tag"
+          }
+        },
+        "filter_by_vendor": {
+          "type": "filter",
+          "settings": {
+            "filter_type": "vendor",
+            "title": "Filter by vendor"
+          }
+        },
+        "sort_by": {
+          "type": "sort",
+          "settings": {
+            "title": "Sort by"
+          }
+        }
+      },
+      "block_order": [
+        "filter_by_tag",
+        "filter_by_vendor",
+        "sort_by"
+      ],
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "image_ratio": "square"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "main"
+  ]
+}

@@ -1,0 +1,1042 @@
+<section class="section section-pricing" id="pricing-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Pricing Toggle -->
+    {% if section.settings.show_toggle %}
+    <div class="pricing-toggle mb-6">
+      <div class="toggle-container">
+        <span class="toggle-label">Monthly</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="pricing-toggle">
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">Annual <span class="discount-badge">Save 20%</span></span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Pricing Cards -->
+    <div class="pricing-grid">
+      {% for block in section.blocks %}
+      <article class="pricing-card {{ block.settings.featured ? 'featured' : '' }}" data-plan="{{ block.id }}">
+        {% if block.settings.badge %}
+        <div class="plan-badge">{{ block.settings.badge }}</div>
+        {% endif %}
+
+        <div class="plan-header">
+          <h3 class="plan-name">{{ block.settings.name }}</h3>
+          <p class="plan-description">{{ block.settings.description }}</p>
+          
+          <div class="plan-price">
+            {% if block.settings.currency %}
+            <span class="currency">{{ block.settings.currency }}</span>
+            {% endif %}
+            <span class="price-amount" data-monthly="{{ block.settings.price_monthly }}" data-annual="{{ block.settings.price_annual }}">{{ block.settings.price_monthly }}</span>
+            {% if block.settings.period %}
+            <span class="price-period">/{{ block.settings.period }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="plan-features">
+          <ul>
+            {% assign features = block.settings.features | split: ',' %}
+            {% for feature in features %}
+            <li>{{ feature | strip }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="plan-footer">
+          {% if block.settings.cta_text and block.settings.cta_link %}
+          <a href="{{ block.settings.cta_link }}" class="btn {{ block.settings.featured ? 'btn-primary' : 'btn-outline' }}">
+            {{ block.settings.cta_text }}
+          </a>
+          {% endif %}
+          
+          {% if block.settings.trial_text %}
+          <p class="trial-text">{{ block.settings.trial_text }}</p>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Pricing Features -->
+    {% if section.settings.features_title %}
+    <div class="pricing-features mt-12">
+      <div class="features-header text-center mb-8">
+        <h3 class="section-title">{{ section.settings.features_title }}</h3>
+        {% if section.settings.features_subtitle %}
+        <p class="section-subtitle">{{ section.settings.features_subtitle }}</p>
+        {% endif %}
+      </div>
+
+      <div class="features-grid">
+        {% for i in (1..4) %}
+          {% assign feature_icon = "feature_icon_" | append: i %}
+          {% assign feature_title = "feature_title_" | append: i %}
+          {% assign feature_text = "feature_text_" | append: i %}
+          
+          {% if section.settings[feature_title] %}
+          <div class="feature-item">
+            <div class="feature-icon">
+              {% if section.settings[feature_icon] %}
+                {{ section.settings[feature_icon] }}
+              {% else %}
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                </svg>
+              {% endif %}
+            </div>
+            <h4>{{ section.settings[feature_title] }}</h4>
+            <p>{{ section.settings[feature_text] }}</p>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- FAQ Section -->
+    {% if section.settings.show_faq %}
+    <div class="pricing-faq mt-12">
+      <div class="faq-header text-center mb-8">
+        <h3 class="section-title">Frequently Asked Questions</h3>
+        <p class="section-subtitle">Everything you need to know about our pricing</p>
+      </div>
+
+      <div class="faq-items">
+        {% for i in (1..4) %}
+          {% assign faq_question = "faq_question_" | append: i %}
+          {% assign faq_answer = "faq_answer_" | append: i %}
+          
+          {% if section.settings[faq_question] %}
+          <div class="faq-item">
+            <button class="faq-question">
+              {{ section.settings[faq_question] }}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <p>{{ section.settings[faq_answer] }}</p>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Contact CTA -->
+    {% if section.settings.contact_cta %}
+    <div class="pricing-contact-cta text-center mt-12">
+      <div class="cta-card">
+        <h3>{{ section.settings.contact_cta }}</h3>
+        {% if section.settings.contact_subtext %}
+        <p>{{ section.settings.contact_subtext }}</p>
+        {% endif %}
+        <div class="cta-actions">
+          {% if section.settings.contact_button_text and section.settings.contact_button_link %}
+          <a href="{{ section.settings.contact_button_link }}" class="btn btn-primary">
+            {{ section.settings.contact_button_text }}
+          </a>
+          {% endif %}
+          {% if section.settings.contact_phone %}
+          <a href="tel:{{ section.settings.contact_phone }}" class="btn btn-outline">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            {{ section.settings.contact_phone }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.section-pricing {
+  background-color: var(--bg-secondary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Pricing Toggle */
+.pricing-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.toggle-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--transition-base);
+}
+
+.toggle-label:first-child {
+  color: var(--text-primary);
+}
+
+.discount-badge {
+  background: var(--success-color);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-color);
+  transition: var(--transition-base);
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: var(--transition-base);
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(28px);
+}
+
+input:checked ~ .toggle-label:first-child {
+  color: var(--text-secondary);
+}
+
+input:checked ~ .toggle-label:last-child {
+  color: var(--text-primary);
+}
+
+/* Pricing Grid */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.pricing-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: relative;
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.pricing-card.featured {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.05);
+}
+
+.pricing-card.featured:hover {
+  transform: scale(1.05) translateY(-4px);
+}
+
+/* Plan Badge */
+.plan-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Plan Header */
+.plan-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.plan-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.plan-description {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.currency {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.price-amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.price-period {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Plan Features */
+.plan-features {
+  flex-grow: 1;
+  margin-bottom: 2rem;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-secondary);
+}
+
+.plan-features li:last-child {
+  border-bottom: none;
+}
+
+.plan-features li::before {
+  content: "✓";
+  color: var(--success-color);
+  font-weight: bold;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+/* Plan Footer */
+.plan-footer {
+  text-align: center;
+}
+
+.trial-text {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+/* Pricing Features */
+.pricing-features {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.feature-item {
+  text-align: center;
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.feature-item h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Pricing FAQ */
+.pricing-faq {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+}
+
+.faq-items {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: background-color var(--transition-base);
+}
+
+.faq-question:hover {
+  background-color: var(--bg-secondary);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base);
+  border-top: 1px solid var(--border-light);
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+}
+
+.faq-answer p {
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Contact CTA */
+.pricing-contact-cta {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-card {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.cta-card h3 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.cta-card p {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-actions .btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.cta-actions .btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pricing-card.featured {
+    transform: scale(1);
+  }
+  
+  .pricing-card.featured:hover {
+    transform: translateY(-4px);
+  }
+  
+  .toggle-container {
+    padding: 0.5rem 1rem;
+    gap: 0.75rem;
+  }
+  
+  .toggle-label {
+    font-size: 0.875rem;
+  }
+  
+  .price-amount {
+    font-size: 2.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pricing-features,
+  .pricing-faq {
+    padding: 2rem 1rem;
+  }
+  
+  .cta-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Animations */
+.pricing-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.pricing-card:nth-child(1) { animation-delay: 0.1s; }
+.pricing-card:nth-child(2) { animation-delay: 0.2s; }
+.pricing-card:nth-child(3) { animation-delay: 0.3s; }
+.pricing-card:nth-child(4) { animation-delay: 0.4s; }
+
+.feature-item {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.feature-item:nth-child(1) { animation-delay: 0.1s; }
+.feature-item:nth-child(2) { animation-delay: 0.2s; }
+.feature-item:nth-child(3) { animation-delay: 0.3s; }
+.feature-item:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Pricing toggle functionality
+  const pricingToggle = document.getElementById('pricing-toggle');
+  const priceAmounts = document.querySelectorAll('.price-amount');
+  
+  if (pricingToggle && priceAmounts.length > 0) {
+    pricingToggle.addEventListener('change', function() {
+      const isAnnual = this.checked;
+      
+      priceAmounts.forEach(amount => {
+        const monthlyPrice = amount.getAttribute('data-monthly');
+        const annualPrice = amount.getAttribute('data-annual');
+        
+        if (isAnnual && annualPrice) {
+          amount.textContent = annualPrice;
+        } else if (monthlyPrice) {
+          amount.textContent = monthlyPrice;
+        }
+      });
+    });
+  }
+  
+  // FAQ accordion functionality
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    
+    question.addEventListener('click', function() {
+      const isActive = item.classList.contains('active');
+      
+      // Close all other FAQ items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+        }
+      });
+      
+      // Toggle current item
+      item.classList.toggle('active');
+    });
+  });
+  
+  // Smooth scroll for pricing links
+  document.querySelectorAll('.pricing-card a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+  
+  // Intersection Observer for pricing cards animation
+  const pricingCards = document.querySelectorAll('.pricing-card');
+  const pricingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        pricingObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  pricingCards.forEach(card => {
+    card.style.animationPlayState = 'paused';
+    pricingObserver.observe(card);
+  });
+  
+  // Featured plan highlight effect
+  const featuredCard = document.querySelector('.pricing-card.featured');
+  if (featuredCard) {
+    let mouseX = 0;
+    let mouseY = 0;
+    
+    featuredCard.addEventListener('mousemove', (e) => {
+      const rect = featuredCard.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (mouseY - centerY) / 20;
+      const rotateY = (centerX - mouseX) / 20;
+      
+      featuredCard.style.transform = `scale(1.05) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    
+    featuredCard.addEventListener('mouseleave', () => {
+      featuredCard.style.transform = 'scale(1.05)';
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Pricing Section",
+  "blocks": [
+    {
+      "type": "pricing_plan",
+      "name": "Pricing Plan",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Plan Name",
+          "default": "Professional"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Plan Description",
+          "default": "Perfect for professionals and small businesses"
+        },
+        {
+          "type": "text",
+          "id": "currency",
+          "label": "Currency",
+          "default": "$"
+        },
+        {
+          "type": "text",
+          "id": "price_monthly",
+          "label": "Monthly Price",
+          "default": "99"
+        },
+        {
+          "type": "text",
+          "id": "price_annual",
+          "label": "Annual Price",
+          "default": "79"
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "default": "month"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features",
+          "info": "Separate multiple features with commas",
+          "default": "Unlimited projects, Priority support, Advanced materials, 24hr turnaround"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Button Link"
+        },
+        {
+          "type": "text",
+          "id": "trial_text",
+          "label": "Trial Text",
+          "default": "14-day free trial"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text",
+          "default": "Most Popular"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured Plan",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Simple, Transparent Pricing"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Choose the perfect plan for your 3D printing needs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_toggle",
+      "label": "Show Monthly/Annual Toggle",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "features_title",
+      "label": "Features Title",
+      "default": "Why Choose Our Services"
+    },
+    {
+      "type": "textarea",
+      "id": "features_subtitle",
+      "label": "Features Subtitle",
+      "default": "Industry-leading features and benefits"
+    },
+    {
+      "type": "text",
+      "id": "feature_icon_1",
+      "label": "Feature 1 Icon",
+      "info": "HTML/SVG icon code"
+    },
+    {
+      "type": "text",
+      "id": "feature_title_1",
+      "label": "Feature 1 Title",
+      "default": "Fast Turnaround"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_text_1",
+      "label": "Feature 1 Text",
+      "default": "Get your prints delivered in as little as 24 hours"
+    },
+    {
+      "type": "text",
+      "id": "feature_icon_2",
+      "label": "Feature 2 Icon",
+      "info": "HTML/SVG icon code"
+    },
+    {
+      "type": "text",
+      "id": "feature_title_2",
+      "label": "Feature 2 Title",
+      "default": "Quality Assurance"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_text_2",
+      "label": "Feature 2 Text",
+      "default": "Every print is inspected for quality and accuracy"
+    },
+    {
+      "type": "text",
+      "id": "feature_icon_3",
+      "label": "Feature 3 Icon",
+      "info": "HTML/SVG icon code"
+    },
+    {
+      "type": "text",
+      "id": "feature_title_3",
+      "label": "Feature 3 Title",
+      "default": "Expert Support"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_text_3",
+      "label": "Feature 3 Text",
+      "default": "Get help from our team of 3D printing experts"
+    },
+    {
+      "type": "text",
+      "id": "feature_icon_4",
+      "label": "Feature 4 Icon",
+      "info": "HTML/SVG icon code"
+    },
+    {
+      "type": "text",
+      "id": "feature_title_4",
+      "label": "Feature 4 Title",
+      "default": "Material Variety"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_text_4",
+      "label": "Feature 4 Text",
+      "default": "Choose from 15+ different materials and finishes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Show FAQ Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "faq_question_1",
+      "label": "FAQ Question 1",
+      "default": "Can I change my plan later?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_1",
+      "label": "FAQ Answer 1",
+      "default": "Yes! You can upgrade or downgrade your plan at any time. Changes take effect at the next billing cycle."
+    },
+    {
+      "type": "text",
+      "id": "faq_question_2",
+      "label": "FAQ Question 2",
+      "default": "What payment methods do you accept?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_2",
+      "label": "FAQ Answer 2",
+      "default": "We accept all major credit cards, PayPal, and bank transfers for enterprise accounts."
+    },
+    {
+      "type": "text",
+      "id": "faq_question_3",
+      "label": "FAQ Question 3",
+      "default": "Is there a setup fee?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_3",
+      "label": "FAQ Answer 3",
+      "default": "No, there are no setup fees. You only pay for the plan you choose and any additional services."
+    },
+    {
+      "type": "text",
+      "id": "faq_question_4",
+      "label": "FAQ Question 4",
+      "default": "Do you offer custom pricing?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_4",
+      "label": "FAQ Answer 4",
+      "default": "Yes! Contact our sales team for custom pricing on large volume orders or enterprise solutions."
+    },
+    {
+      "type": "textarea",
+      "id": "contact_cta",
+      "label": "Contact CTA Heading",
+      "default": "Need a Custom Solution?"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_subtext",
+      "label": "Contact CTA Subtext",
+      "default": "Our team is ready to create a tailored plan for your specific needs."
+    },
+    {
+      "type": "text",
+      "id": "contact_button_text",
+      "label": "Contact Button Text",
+      "default": "Contact Sales"
+    },
+    {
+      "type": "url",
+      "id": "contact_button_link",
+      "label": "Contact Button Link"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact Phone",
+      "default": "+1 (555) 123-4567"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pricing Plans",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "pricing_plan",
+          "settings": {
+            "name": "Starter",
+            "description": "Perfect for hobbyists and beginners",
+            "price_monthly": "29",
+            "price_annual": "23",
+            "features": "5 projects/month, Standard materials, Email support, 5-7 day turnaround",
+            "cta_text": "Get Started",
+            "trial_text": "7-day free trial"
+          }
+        },
+        {
+          "type": "pricing_plan",
+          "settings": {
+            "name": "Professional",
+            "description": "Ideal for professionals and small businesses",
+            "price_monthly": "99",
+            "price_annual": "79",
+            "features": "Unlimited projects, Priority support, Advanced materials, 24hr turnaround",
+            "cta_text": "Get Started",
+            "trial_text": "14-day free trial",
+            "badge": "Most Popular",
+            "featured": true
+          }
+        },
+        {
+          "type": "pricing_plan",
+          "settings": {
+            "name": "Enterprise",
+            "description": "Custom solutions for large organizations",
+            "price_monthly": "299",
+            "price_annual": "239",
+            "features": "Everything in Professional, Dedicated account manager, Custom materials, Same-day delivery",
+            "cta_text": "Contact Sales"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

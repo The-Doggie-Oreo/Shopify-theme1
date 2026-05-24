@@ -1,0 +1,261 @@
+{{ 'header' | liquid_component }}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "3DPrint Pro"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Account",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_item",
+      "name": "Menu Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}
+
+<header class="navbar">
+  <div class="container">
+    <div class="navbar-container">
+      <!-- Logo -->
+      <div class="navbar-brand">
+        {% if section.settings.logo_image %}
+          <img src="{{ section.settings.logo_image | img_url: 'medium' }}" alt="{{ section.settings.logo_text }}" class="logo-image">
+        {% else %}
+          {{ section.settings.logo_text }}
+        {% endif %}
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="navbar-nav">
+        {% if section.settings.main_menu %}
+          {% for link in linklists[section.settings.main_menu].links %}
+            <a href="{{ link.url }}" class="navbar-link">{{ link.title }}</a>
+          {% endfor %}
+        {% endif %}
+        
+        {% for block in section.blocks %}
+          {% if block.type == 'menu_item' %}
+            <a href="{{ block.settings.url }}" class="navbar-link">{{ block.settings.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <!-- Actions -->
+      <div class="navbar-actions">
+        {% if section.settings.show_search %}
+          <button class="btn btn-outline search-toggle" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
+        {% endif %}
+        
+        {% if section.settings.show_account %}
+          <a href="/account" class="btn btn-outline" aria-label="Account">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+        {% endif %}
+        
+        {% if section.settings.show_cart %}
+          <a href="/cart" class="btn btn-outline cart-link" aria-label="Cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="cart-count">{{ cart.item_count }}</span>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button class="navbar-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Dropdown -->
+  {% if section.settings.show_search %}
+  <div class="search-dropdown" style="display: none;">
+    <div class="container">
+      <div class="search-form">
+        <input type="search" class="search-input" placeholder="Search for products, materials, or help..." autocomplete="off">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+      <div class="search-results"></div>
+    </div>
+  </div>
+  {% endif %}
+</header>
+
+<style>
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+}
+
+.cart-link {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+}
+
+.search-form {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem 0;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+  
+  .search-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchToggle = document.querySelector('.search-toggle');
+  const searchDropdown = document.querySelector('.search-dropdown');
+  const searchInput = document.querySelector('.search-input');
+  
+  if (searchToggle && searchDropdown) {
+    searchToggle.addEventListener('click', function() {
+      const isVisible = searchDropdown.style.display !== 'none';
+      searchDropdown.style.display = isVisible ? 'none' : 'block';
+      
+      if (!isVisible) {
+        searchInput.focus();
+      }
+    });
+  }
+  
+  // Close search when clicking outside
+  document.addEventListener('click', function(e) {
+    if (searchDropdown && searchDropdown.style.display !== 'none') {
+      if (!e.target.closest('.search-toggle') && !e.target.closest('.search-dropdown')) {
+        searchDropdown.style.display = 'none';
+      }
+    }
+  });
+});
+</script>

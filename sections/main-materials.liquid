@@ -1,52 +1,1018 @@
-{% comment %} Minimal stub: main-materials.liquid {% endcomment %}
-<section id="main-materials-{{ section.id }}" class="main-materials kg-section">
-  <div class="kg-container">
-    {% if section.settings.heading %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading %}<p>{{ section.settings.subheading }}</p>{% endif %}
+<section class="section section-materials" id="materials-{{ section.id }}">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header text-center mb-8">
+      {% if section.settings.heading %}
+      <h2 class="section-title animate-fade-in-up">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading %}
+      <p class="section-subtitle text-large animate-fade-in-up">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
 
-    <div class="materials-grid">
+    <!-- View Toggle -->
+    <div class="view-toggle mb-6">
+      <button class="toggle-btn active" data-view="grid">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Grid View
+      </button>
+      <button class="toggle-btn" data-view="compare">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 11H3v10h6V11zm4-7H7v14h6V4zm4 3h-6v11h6V7zm4 8h-6v6h6v-6z"/>
+        </svg>
+        Compare Mode
+      </button>
+    </div>
+
+    <!-- Materials Grid -->
+    <div class="materials-grid" id="materials-grid">
       {% for block in section.blocks %}
-        <article class="material-item">
-          <h3>{{ block.settings.name }}</h3>
-          {% if block.settings.accent_color %}<div class="swatch" style="background: {{ block.settings.accent_color }}"></div>{% endif %}
-          {% if block.settings.description %}<div class="desc">{{ block.settings.description }}</div>{% endif %}
-          <ul class="props">
-            {% if block.settings.strength %}<li>Strength: {{ block.settings.strength }}</li>{% endif %}
-            {% if block.settings.flexibility %}<li>Flexibility: {{ block.settings.flexibility }}</li>{% endif %}
-            {% if block.settings.heat_resistance %}<li>Heat resistance: {{ block.settings.heat_resistance }}</li>{% endif %}
-          </ul>
-        </article>
+      <article class="material-card" data-material-id="{{ block.id }}">
+        <!-- Material Header -->
+        <div class="material-header">
+          <div class="material-info">
+            <h3 class="material-name">{{ block.settings.name }}</h3>
+            <span class="material-type">{{ block.settings.type }}</span>
+          </div>
+          {% if block.settings.accent_color %}
+          <div class="material-swatch" style="background-color: {{ block.settings.accent_color }}"></div>
+          {% endif %}
+        </div>
+
+        <!-- Material Description -->
+        <p class="material-description">{{ block.settings.description }}</p>
+
+        <!-- Properties Visualization -->
+        <div class="material-properties">
+          <div class="property">
+            <div class="property-header">
+              <span class="property-label">Strength</span>
+              <span class="property-value">{{ block.settings.strength }}%</span>
+            </div>
+            <div class="property-bar">
+              <div class="property-fill" style="width: {{ block.settings.strength }}%; background-color: {{ block.settings.accent_color }}"></div>
+            </div>
+          </div>
+
+          <div class="property">
+            <div class="property-header">
+              <span class="property-label">Flexibility</span>
+              <span class="property-value">{{ block.settings.flexibility }}%</span>
+            </div>
+            <div class="property-bar">
+              <div class="property-fill" style="width: {{ block.settings.flexibility }}%; background-color: {{ block.settings.accent_color }}"></div>
+            </div>
+          </div>
+
+          <div class="property">
+            <div class="property-header">
+              <span class="property-label">Heat Resistance</span>
+              <span class="property-value">{{ block.settings.heat_resistance }}%</span>
+            </div>
+            <div class="property-bar">
+              <div class="property-fill" style="width: {{ block.settings.heat_resistance }}%; background-color: {{ block.settings.accent_color }}"></div>
+            </div>
+          </div>
+
+          <div class="property">
+            <div class="property-header">
+              <span class="property-label">Detail Quality</span>
+              <span class="property-value">{{ block.settings.detail }}%</span>
+            </div>
+            <div class="property-bar">
+              <div class="property-fill" style="width: {{ block.settings.detail }}%; background-color: {{ block.settings.accent_color }}"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Specs -->
+        <div class="material-specs">
+          <div class="spec-item">
+            <span class="spec-label">Min Layer:</span>
+            <span class="spec-value">{{ block.settings.layer_min }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Temp:</span>
+            <span class="spec-value">{{ block.settings.temp }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Price:</span>
+            <span class="spec-value">{{ block.settings.price_tier }}</span>
+          </div>
+        </div>
+
+        <!-- Best For -->
+        <div class="material-best-for">
+          <h4>Best For:</h4>
+          <p>{{ block.settings.best_for }}</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="material-actions">
+          <button class="btn btn-outline select-material-btn" data-material="{{ block.id }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Select to Compare
+          </button>
+          <button class="btn btn-primary material-details-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Details
+          </button>
+        </div>
+      </article>
       {% endfor %}
+    </div>
+
+    <!-- Compare Button (Hidden by default) -->
+    <div class="compare-section" id="compare-section" style="display: none;">
+      <div class="compare-bar">
+        <span class="compare-count">0 materials selected</span>
+        <button class="btn btn-primary compare-materials-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 11H3v10h6V11zm4-7H7v14h6V4zm4 3h-6v11h6V7zm4 8h-6v6h6v-6z"/>
+          </svg>
+          Compare Selected
+        </button>
+        <button class="btn btn-outline clear-selection-btn">
+          Clear Selection
+        </button>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison-table" id="comparison-table" style="display: none;">
+      <div class="comparison-header">
+        <h3>Material Comparison</h3>
+        <button class="btn btn-outline close-comparison-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          Close
+        </button>
+      </div>
+      <div class="comparison-content" id="comparison-content">
+        <!-- Comparison content will be dynamically generated -->
+      </div>
     </div>
   </div>
 </section>
 
+<style>
+.section-materials {
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.section-header {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.toggle-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.toggle-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-inverse);
+}
+
+/* Materials Grid */
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.material-card {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: relative;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.material-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-color);
+}
+
+.material-card.selected {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 102, 255, 0.05) 100%);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+/* Material Header */
+.material-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.material-info {
+  flex: 1;
+}
+
+.material-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.material-type {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.material-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Material Description */
+.material-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Properties Visualization */
+.material-properties {
+  margin-bottom: 1.5rem;
+}
+
+.property {
+  margin-bottom: 1rem;
+}
+
+.property-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.property-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.property-value {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+}
+
+.property-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.property-fill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  transition: width 1s ease-out;
+}
+
+/* Technical Specs */
+.material-specs {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+}
+
+.spec-item {
+  text-align: center;
+}
+
+.spec-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.spec-value {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+/* Best For */
+.material-best-for h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.material-best-for p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Material Actions */
+.material-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.material-actions .btn {
+  flex: 1;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+
+.material-card.selected .select-material-btn {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  color: var(--text-inverse);
+}
+
+/* Compare Section */
+.compare-section {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  padding: 1rem 2rem;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+.compare-bar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.compare-count {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Comparison Table */
+.comparison-table {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  margin-top: 3rem;
+  overflow: hidden;
+}
+
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.comparison-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.comparison-content {
+  padding: 2rem;
+  overflow-x: auto;
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.comparison-table th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+  position: sticky;
+  top: 0;
+}
+
+.comparison-table td {
+  color: var(--text-secondary);
+}
+
+.comparison-table .material-name-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .view-toggle {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .toggle-btn {
+    justify-content: center;
+  }
+  
+  .materials-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .material-card {
+    padding: 1.5rem;
+  }
+  
+  .material-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .material-specs {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .material-actions {
+    flex-direction: column;
+  }
+  
+  .compare-section {
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+    bottom: 1rem;
+  }
+  
+  .compare-bar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .comparison-content {
+    padding: 1rem;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.material-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.material-card:nth-child(1) { animation-delay: 0.1s; }
+.material-card:nth-child(2) { animation-delay: 0.2s; }
+.material-card:nth-child(3) { animation-delay: 0.3s; }
+.material-card:nth-child(4) { animation-delay: 0.4s; }
+.material-card:nth-child(5) { animation-delay: 0.5s; }
+.material-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Loading states */
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const selectedMaterials = new Set();
+  const materialData = {};
+  
+  // Collect material data
+  document.querySelectorAll('.material-card').forEach(card => {
+    const materialId = card.getAttribute('data-material-id');
+    materialData[materialId] = {
+      name: card.querySelector('.material-name').textContent,
+      type: card.querySelector('.material-type').textContent,
+      description: card.querySelector('.material-description').textContent,
+      strength: card.querySelector('.property:nth-child(1) .property-value').textContent,
+      flexibility: card.querySelector('.property:nth-child(2) .property-value').textContent,
+      heatResistance: card.querySelector('.property:nth-child(3) .property-value').textContent,
+      detail: card.querySelector('.property:nth-child(4) .property-value').textContent,
+      layerMin: card.querySelector('.spec-item:nth-child(1) .spec-value').textContent,
+      temp: card.querySelector('.spec-item:nth-child(2) .spec-value').textContent,
+      price: card.querySelector('.spec-item:nth-child(3) .spec-value').textContent,
+      bestFor: card.querySelector('.material-best-for p').textContent
+    };
+  });
+  
+  // View toggle functionality
+  const toggleButtons = document.querySelectorAll('.toggle-btn');
+  const materialsGrid = document.getElementById('materials-grid');
+  
+  toggleButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const view = this.getAttribute('data-view');
+      
+      // Update active button
+      toggleButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Toggle compare mode
+      if (view === 'compare') {
+        materialsGrid.classList.add('compare-mode');
+        document.querySelectorAll('.select-material-btn').forEach(btn => {
+          btn.style.display = 'flex';
+        });
+      } else {
+        materialsGrid.classList.remove('compare-mode');
+        document.querySelectorAll('.select-material-btn').forEach(btn => {
+          btn.style.display = 'none';
+        });
+        clearSelection();
+      }
+    });
+  });
+  
+  // Material selection functionality
+  document.querySelectorAll('.select-material-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const materialId = this.getAttribute('data-material');
+      const materialCard = document.querySelector(`[data-material-id="${materialId}"]`);
+      
+      if (selectedMaterials.has(materialId)) {
+        selectedMaterials.delete(materialId);
+        materialCard.classList.remove('selected');
+        this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Select to Compare';
+      } else {
+        selectedMaterials.add(materialId);
+        materialCard.classList.add('selected');
+        this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Selected';
+      }
+      
+      updateCompareSection();
+    });
+  });
+  
+  // Update compare section
+  function updateCompareSection() {
+    const compareSection = document.getElementById('compare-section');
+    const compareCount = document.querySelector('.compare-count');
+    const compareBtn = document.querySelector('.compare-materials-btn');
+    
+    if (selectedMaterials.size > 0) {
+      compareSection.style.display = 'block';
+      compareCount.textContent = `${selectedMaterials.size} material${selectedMaterials.size > 1 ? 's' : ''} selected`;
+      compareBtn.disabled = selectedMaterials.size < 2;
+    } else {
+      compareSection.style.display = 'none';
+    }
+  }
+  
+  // Clear selection
+  function clearSelection() {
+    selectedMaterials.clear();
+    document.querySelectorAll('.material-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+    document.querySelectorAll('.select-material-btn').forEach(btn => {
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Select to Compare';
+    });
+    updateCompareSection();
+  }
+  
+  // Clear selection button
+  document.querySelector('.clear-selection-btn')?.addEventListener('click', clearSelection);
+  
+  // Compare materials button
+  document.querySelector('.compare-materials-btn')?.addEventListener('click', function() {
+    if (selectedMaterials.size >= 2) {
+      showComparisonTable();
+    }
+  });
+  
+  // Show comparison table
+  function showComparisonTable() {
+    const comparisonTable = document.getElementById('comparison-table');
+    const comparisonContent = document.getElementById('comparison-content');
+    
+    let tableHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<th>${materialData[materialId].name}</th>`;
+    });
+    
+    tableHTML += `
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Type</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].type}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Strength</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].strength}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Flexibility</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].flexibility}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Heat Resistance</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].heatResistance}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Detail Quality</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].detail}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Min Layer</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].layerMin}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Temperature</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].temp}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Price Tier</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].price}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+          <tr>
+            <td><strong>Best For</strong></td>
+    `;
+    
+    selectedMaterials.forEach(materialId => {
+      tableHTML += `<td>${materialData[materialId].bestFor}</td>`;
+    });
+    
+    tableHTML += `
+          </tr>
+        </tbody>
+      </table>
+    `;
+    
+    comparisonContent.innerHTML = tableHTML;
+    comparisonTable.style.display = 'block';
+    comparisonTable.scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  // Close comparison table
+  document.querySelector('.close-comparison-btn')?.addEventListener('click', function() {
+    document.getElementById('comparison-table').style.display = 'none';
+  });
+  
+  // Material details buttons
+  document.querySelectorAll('.material-details-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const materialCard = this.closest('.material-card');
+      const materialName = materialCard.querySelector('.material-name').textContent;
+      console.log('Show details for:', materialName);
+      // Implement modal or navigation to detailed material page
+    });
+  });
+  
+  // Initialize property bars animation on scroll
+  const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+  
+  const propertyObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const propertyFills = entry.target.querySelectorAll('.property-fill');
+        propertyFills.forEach(fill => {
+          const width = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => {
+            fill.style.width = width;
+          }, 100);
+        });
+        propertyObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  document.querySelectorAll('.material-card').forEach(card => {
+    propertyObserver.observe(card);
+  });
+});
+</script>
+
 {% schema %}
 {
-  "name": "Materials Lab (stub)",
+  "name": "Interactive Materials Lab",
   "blocks": [
     {
       "type": "material",
       "name": "Material",
       "settings": [
-        { "type": "text", "id": "name", "label": "Name" },
-        { "type": "text", "id": "type", "label": "Type" },
-        { "type": "color", "id": "accent_color", "label": "Accent color" },
-        { "type": "textarea", "id": "description", "label": "Description" },
-        { "type": "number", "id": "strength", "label": "Strength (0-100)" },
-        { "type": "number", "id": "flexibility", "label": "Flexibility (0-100)" },
-        { "type": "number", "id": "heat_resistance", "label": "Heat resistance (0-100)" },
-        { "type": "text", "id": "layer_min", "label": "Layer min" },
-        { "type": "text", "id": "temp", "label": "Temperature" },
-        { "type": "text", "id": "price_tier", "label": "Price tier" },
-        { "type": "text", "id": "best_for", "label": "Best for" }
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Material Name",
+          "default": "PLA"
+        },
+        {
+          "type": "text",
+          "id": "type",
+          "label": "Material Type",
+          "default": "FDM Filament"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent Color",
+          "default": "#1e40af"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "The go-to material for prototyping. Biodegradable, easy to print, and available in many colors."
+        },
+        {
+          "type": "range",
+          "id": "strength",
+          "label": "Strength",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 60
+        },
+        {
+          "type": "range",
+          "id": "flexibility",
+          "label": "Flexibility",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "heat_resistance",
+          "label": "Heat Resistance",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "detail",
+          "label": "Detail Quality",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 70
+        },
+        {
+          "type": "text",
+          "id": "layer_min",
+          "label": "Minimum Layer Height",
+          "default": "0.1mm"
+        },
+        {
+          "type": "text",
+          "id": "temp",
+          "label": "Print Temperature",
+          "default": "200°C"
+        },
+        {
+          "type": "text",
+          "id": "price_tier",
+          "label": "Price Tier",
+          "default": "$$"
+        },
+        {
+          "type": "text",
+          "id": "best_for",
+          "label": "Best For",
+          "default": "Prototypes, display models, low-stress parts"
+        }
       ]
     }
   ],
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading" },
-    { "type": "text", "id": "subheading", "label": "Subheading" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Material Lab"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Deep-dive into every material we offer. Compare properties, discover what's best for your project."
+    }
   ],
-  "presets": [ { "name": "Materials Lab" } ]
+  "presets": [
+    {
+      "name": "Interactive Materials Lab",
+      "category": "Materials",
+      "blocks": [
+        {
+          "type": "material",
+          "settings": {
+            "name": "PLA",
+            "type": "FDM Filament",
+            "accent_color": "#1e40af",
+            "description": "The go-to material for prototyping. Biodegradable, easy to print, and available in many colors.",
+            "strength": 60,
+            "flexibility": 40,
+            "heat_resistance": 30,
+            "detail": 70,
+            "layer_min": "0.1mm",
+            "temp": "200°C",
+            "price_tier": "$$",
+            "best_for": "Prototypes, display models, low-stress parts"
+          }
+        },
+        {
+          "type": "material",
+          "settings": {
+            "name": "PETG",
+            "type": "FDM Filament",
+            "accent_color": "#0066ff",
+            "description": "Durable and weather-resistant material with good chemical resistance.",
+            "strength": 75,
+            "flexibility": 55,
+            "heat_resistance": 65,
+            "detail": 60,
+            "layer_min": "0.1mm",
+            "temp": "230°C",
+            "price_tier": "$$",
+            "best_for": "Outdoor parts, food-safe containers, mechanical parts"
+          }
+        },
+        {
+          "type": "material",
+          "settings": {
+            "name": "ABS",
+            "type": "FDM Filament",
+            "accent_color": "#ff6b35",
+            "description": "Strong and temperature-resistant material ideal for functional parts.",
+            "strength": 85,
+            "flexibility": 30,
+            "heat_resistance": 80,
+            "detail": 55,
+            "layer_min": "0.1mm",
+            "temp": "250°C",
+            "price_tier": "$$$",
+            "best_for": "Functional prototypes, end-use parts, automotive components"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
