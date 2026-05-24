@@ -1,0 +1,52 @@
+{% comment %} Minimal stub: main-materials.liquid {% endcomment %}
+<section id="main-materials-{{ section.id }}" class="main-materials kg-section">
+  <div class="kg-container">
+    {% if section.settings.heading %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+    {% if section.settings.subheading %}<p>{{ section.settings.subheading }}</p>{% endif %}
+
+    <div class="materials-grid">
+      {% for block in section.blocks %}
+        <article class="material-item">
+          <h3>{{ block.settings.name }}</h3>
+          {% if block.settings.accent_color %}<div class="swatch" style="background: {{ block.settings.accent_color }}"></div>{% endif %}
+          {% if block.settings.description %}<div class="desc">{{ block.settings.description }}</div>{% endif %}
+          <ul class="props">
+            {% if block.settings.strength %}<li>Strength: {{ block.settings.strength }}</li>{% endif %}
+            {% if block.settings.flexibility %}<li>Flexibility: {{ block.settings.flexibility }}</li>{% endif %}
+            {% if block.settings.heat_resistance %}<li>Heat resistance: {{ block.settings.heat_resistance }}</li>{% endif %}
+          </ul>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Materials Lab (stub)",
+  "blocks": [
+    {
+      "type": "material",
+      "name": "Material",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "type", "label": "Type" },
+        { "type": "color", "id": "accent_color", "label": "Accent color" },
+        { "type": "textarea", "id": "description", "label": "Description" },
+        { "type": "number", "id": "strength", "label": "Strength (0-100)" },
+        { "type": "number", "id": "flexibility", "label": "Flexibility (0-100)" },
+        { "type": "number", "id": "heat_resistance", "label": "Heat resistance (0-100)" },
+        { "type": "text", "id": "layer_min", "label": "Layer min" },
+        { "type": "text", "id": "temp", "label": "Temperature" },
+        { "type": "text", "id": "price_tier", "label": "Price tier" },
+        { "type": "text", "id": "best_for", "label": "Best for" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "subheading", "label": "Subheading" }
+  ],
+  "presets": [ { "name": "Materials Lab" } ]
+}
+{% endschema %}

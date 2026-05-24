@@ -1,0 +1,47 @@
+{% comment %} Minimal stub: section-masonry-portfolio.liquid {% endcomment %}
+<section id="section-masonry-portfolio-{{ section.id }}" class="section-masonry-portfolio kg-section">
+  <div class="kg-container">
+    {% if section.settings.section_title %}<h2>{{ section.settings.section_title }}</h2>{% endif %}
+    {% if section.settings.section_subtitle %}<p>{{ section.settings.section_subtitle }}</p>{% endif %}
+
+    <div class="masonry-grid">
+      {% for block in section.blocks %}
+        <article class="masonry-item">
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: '720x' }}" alt="{{ block.settings.title }}" loading="lazy" decoding="async">
+          {% endif %}
+          <h3>{{ block.settings.title }}</h3>
+          {% if block.settings.tag %}<div class="tag">{{ block.settings.tag }}</div>{% endif %}
+          {% if block.settings.material %}<div class="material">{{ block.settings.material }}</div>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Masonry Portfolio (stub)",
+  "blocks": [
+    {
+      "type": "portfolio_item",
+      "name": "Portfolio item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "tag", "label": "Tag" },
+        { "type": "select", "id": "layout", "label": "Layout", "options": [{"value":"square","label":"Square"},{"value":"wide","label":"Wide"},{"value":"tall","label":"Tall"}], "default":"square" },
+        { "type": "text", "id": "material", "label": "Material" },
+        { "type": "text", "id": "print_time", "label": "Print time" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "section_title", "label": "Section title" },
+    { "type": "text", "id": "section_subtitle", "label": "Section subtitle" },
+    { "type": "number", "id": "columns_desktop", "label": "Columns (desktop)", "default": 3 },
+    { "type": "number", "id": "gap", "label": "Gap (px)", "default": 16 }
+  ],
+  "presets": [ { "name": "Masonry Portfolio" } ]
+}
+{% endschema %}

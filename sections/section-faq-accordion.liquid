@@ -1,0 +1,37 @@
+{% comment %} Minimal stub: section-faq-accordion.liquid {% endcomment %}
+<section id="section-faq-accordion-{{ section.id }}" class="section-faq-accordion kg-section">
+  <div class="kg-container">
+    {% if section.settings.heading %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+    {% if section.settings.subheading %}<p>{{ section.settings.subheading }}</p>{% endif %}
+
+    <div class="faq-list">
+      {% for block in section.blocks %}
+        <details class="faq-item">
+          <summary>{{ block.settings.question }}</summary>
+          <div class="faq-answer">{{ block.settings.answer }}</div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ Accordion (stub)",
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "subheading", "label": "Subheading" }
+  ],
+  "presets": [ { "name": "FAQ Accordion" } ]
+}
+{% endschema %}

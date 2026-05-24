@@ -1,0 +1,51 @@
+{% comment %} Minimal stub: section-hero-3d.liquid {% endcomment %}
+<section id="section-hero-3d-{{ section.id }}" class="section-hero-3d kg-section">
+  <div class="kg-container">
+    {% if section.settings.hero_image %}
+      <div class="hero__media">
+        <img src="{{ section.settings.hero_image | image_url: '2048x' }}" alt="{{ section.settings.heading }}" loading="lazy" decoding="async">
+      </div>
+    {% endif %}
+
+    <div class="hero__content">
+      {% if section.settings.badge_text %}
+        <div class="kg-badge">{{ section.settings.badge_text }}</div>
+      {% endif %}
+
+      {% if section.settings.heading %}
+        <h1>{{ section.settings.heading }}</h1>
+      {% endif %}
+
+      {% if section.settings.subheading %}
+        <div class="subheading">{{ section.settings.subheading }}</div>
+      {% endif %}
+
+      <div class="hero__actions">
+        {% if section.settings.cta_label and section.settings.cta_link %}
+          <a class="kg-btn kg-btn--solid" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+        {% endif %}
+        {% if section.settings.cta2_label and section.settings.cta2_link %}
+          <a class="kg-btn kg-btn--text" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2_label }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero 3D (stub)",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "badge_text", "label": "Badge text" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": false },
+    { "type": "text", "id": "cta_label", "label": "CTA label" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "text", "id": "cta2_label", "label": "CTA 2 label" },
+    { "type": "url", "id": "cta2_link", "label": "CTA 2 link" }
+  ],
+  "presets": [ { "name": "Hero 3D" } ]
+}
+{% endschema %}
