@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{ request.locale | default: 'en' }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    {{ content_for_header }}
+    <link rel="stylesheet" href="{{ 'theme-settings.css' | asset_url }}" />
+  </head>
+  <body>
+    {{ content_for_layout }}
+    <script src="{{ 'kinetic-grid.js' | asset_url }}" defer></script>
+  </body>
+</html>
