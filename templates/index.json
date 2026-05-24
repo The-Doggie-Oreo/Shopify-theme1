@@ -1,9 +1,37 @@
 {
   "sections": {
-    "main": {
-      "type": "main-collection",
-      "settings": {}
+    "ultimate_grid": {
+      "type": "ultimate-grid-orchestrator",
+      "settings": {
+        "columns_desktop": 4,
+        "columns_tablet": 2,
+        "columns_mobile": 1,
+        "gap_size": "3",
+        "full_width": false,
+        "show_grid_lines": false,
+        "show_outer_border": false,
+        "outer_border_color": "#e6e9ef"
+      },
+      "blocks": {
+        "block_1": {
+          "type": "editorial_callout",
+          "settings": {
+            "background_type": "color",
+            "background_color": "#ffffff",
+            "rich_text": "<h1>Welcome to Kinetic Grid 3D</h1><p>This is your home page — customize sections and blocks here.</p>",
+            "primary_action_label": "Shop Now",
+            "primary_action_url": "/collections/all",
+            "primary_action_style": "solid",
+            "padding": "3"
+          }
+        }
+      },
+      "block_order": [
+        "block_1"
+      ]
     }
   },
-  "order": ["main"]
+  "order": [
+    "ultimate_grid"
+  ]
 }
