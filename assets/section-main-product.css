@@ -1099,6 +1099,62 @@ a.product__text {
     width: calc(25% - 0.8rem);
   }
 
+/* CUSTOM OVERRIDES: product page layout tweaks to match requested design */
+@media screen and (min-width: 990px) {
+  .product__title h1,
+  .product__title .h1 {
+    font-size: 6.0rem;
+    line-height: 1;
+    letter-spacing: -0.02rem;
+    margin-bottom: 1.6rem;
+    font-weight: 400;
+  }
+
+  .product__info-wrapper {
+    padding-left: 4rem;
+  }
+
+  .product__info-container > * {
+    max-width: 48rem;
+  }
+
+  /* Make the Add to cart button more prominent and outlined */
+  .product-form__submit {
+    background: transparent;
+    border: 0.16rem solid rgba(var(--color-foreground), 0.12);
+    border-radius: 2.2rem;
+    padding: 1.2rem 2.2rem;
+    font-size: 1.6rem;
+    color: rgb(var(--color-foreground));
+  }
+
+  .shopify-payment-button__button--unbranded {
+    border-radius: 1.2rem;
+    padding: 1.2rem 1.8rem;
+  }
+}
+
+/* CART DRAWER: use darker background and ensure text is legible */
+.drawer {
+  background-color: rgba(0,0,0,0.55) !important;
+}
+
+.drawer__inner {
+  background-color: #0b0b0b !important;
+  color: #ffffff !important;
+}
+
+.drawer__heading,
+.drawer__close {
+  color: #ffffff !important;
+}
+
+.cart-items .cart-item__title,
+.cart-items .cart-item__price {
+  color: #ffffff !important;
+}
+
+
   .product--thumbnail_slider .slider-mobile-gutter .slider-button {
     display: flex;
   }
