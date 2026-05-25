@@ -155,6 +155,20 @@
         background-color: transparent !important;
         background-image: none !important;
       }
+      /* Restore backgrounds for cart and customer sections that require opaque panels.
+         The global transparency above was too aggressive and hid cart/account contents. */
+      main#MainContent .customer,
+      main#MainContent .customer.account,
+      main#MainContent .cart,
+      main#MainContent cart-items,
+      #main-cart-items,
+      .cart__contents,
+      cart-drawer,
+      cart-notification {
+        background: rgb(var(--color-background-contrast)) !important;
+        background-color: rgb(var(--color-background-contrast)) !important;
+        background-image: none !important;
+      }
 
       sticky-header,
       .header-wrapper,
