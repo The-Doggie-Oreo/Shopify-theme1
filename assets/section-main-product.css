@@ -751,6 +751,69 @@ a.product__text {
   width: 2.2rem;
 }
 
+/* --- Left-column thumbnail layout and fullscreen button tweaks --- */
+@media screen and (min-width: 990px) {
+  /* Place thumbnails in a left column when product is configured with thumbnail gallery + left media position */
+  .product--thumbnail.product--left media-gallery {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .product--thumbnail.product--left media-gallery > .thumbnail-slider {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .product--thumbnail.product--left media-gallery > slider-component:not(.thumbnail-slider) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* Make the thumbnail list stack vertically and scroll if needed */
+  .product--thumbnail.product--left .thumbnail-list.slider {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: min(60vh, 600px);
+    overflow-y: auto;
+    padding: 0.25rem;
+  }
+
+  .product--thumbnail.product--left .thumbnail-list__item.slider__slide {
+    width: 5.6rem !important;
+    flex: 0 0 auto;
+    height: auto;
+  }
+
+  .product--thumbnail.product--left .thumbnail-list__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--media-radius);
+  }
+
+  /* Make the image modal / fullscreen button more visible */
+  .product__modal-opener--image .product__media-icon {
+    background-color: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    opacity: 1;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    left: 1rem;
+    top: 1rem;
+  }
+
+  .product__modal-opener--image .product__media-icon .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .product__modal-opener .product__media-icon {
+    opacity: 1;
+  }
+}
+
 /* Product popup */
 
 .product-popup-modal {

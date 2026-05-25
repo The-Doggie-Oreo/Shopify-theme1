@@ -77,6 +77,17 @@ if (!customElements.get('media-gallery')) {
           .querySelectorAll('button')
           .forEach((element) => element.removeAttribute('aria-current'));
         thumbnail.querySelector('button').setAttribute('aria-current', true);
+        // Determine if thumbnails are displayed vertically (left column on desktop)
+        const productEl = this.closest('.product');
+        const isVertical = productEl && productEl.classList.contains('product--thumbnail') && productEl.classList.contains('product--left');
+
+        if (isVertical) {
+          // Scroll vertically if necessary
+          const slider = this.elements.thumbnails.slider;
+          if (slider) slider.scrollTo({ top: thumbnail.offsetTop });
+          return;
+        }
+
         if (this.elements.thumbnails.isSlideVisible(thumbnail, 10)) return;
 
         this.elements.thumbnails.slider.scrollTo({ left: thumbnail.offsetLeft });
